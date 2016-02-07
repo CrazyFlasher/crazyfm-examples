@@ -4,7 +4,7 @@
 package com.crazyfm.example
 {
 	import com.crazyfm.example.model.ApplicationContext;
-	import com.crazyfm.example.view.ApplicationViewControllerFlash;
+	import com.crazyfm.example.view.BallViewController;
 
 	import flash.display.Sprite;
 
@@ -12,7 +12,7 @@ package com.crazyfm.example
 	{
 		public function Main()
 		{
-			new ApplicationContext().addView(new ApplicationViewControllerFlash(this));
+			new ApplicationContext().addView(new BallViewController(this));
 		}
 	}
 }

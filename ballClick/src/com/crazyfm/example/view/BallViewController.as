@@ -10,11 +10,11 @@ package com.crazyfm.example.view
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 
-	public class ApplicationViewControllerFlash extends ViewController
+	public class BallViewController extends ViewController
 	{
 		private var _ball:BallView;
 
-		public function ApplicationViewControllerFlash(container:DisplayObjectContainer)
+		public function BallViewController(container:DisplayObjectContainer)
 		{
 			super(container);
 
