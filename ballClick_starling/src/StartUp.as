@@ -28,15 +28,15 @@ package
 		{
 			//We can make that ordinary way:
 
-			//import com.crazyfm.example.ballClick.Main;
+			//import com.crazyfm.example.ballClickStarling.PreInit;
 			//...
-			//stage.addChild(new Main());
+			//stage.addChild(new PreInit());
 
-			//But in that case, preloader won't show until all Main dependencies are preloaded,
+			//But in that case, preloader won't show until all PreInit dependencies are preloaded,
 			//and user will see blank screen longer.
 
-			var MainClass:Class = getDefinitionByName("com.crazyfm.example.ballClick.Main") as Class;
-			stage.addChild(new MainClass());
+			var PreInitClass:Class = getDefinitionByName("com.crazyfm.example.ballClickStarling.PreInit") as Class;
+			stage.addChild(new PreInitClass());
 			stage.removeChild(this);
 		}
 	}
