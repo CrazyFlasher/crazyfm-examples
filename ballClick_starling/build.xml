@@ -21,11 +21,9 @@
             <arg value="${src}/StartUp.as"/>
             <arg value="-source-path+=${src}"/>
             <arg value="-swf-version=${swf-version}"/>
-            <arg value="-library-path+=${crazyfm-core}"/>
-            <arg value="-library-path+=${crazyfm-ext-starlingApp}"/>
-            <arg value="-library-path+=${as3-signals}"/>
-            <arg value="-library-path+=${starling}"/>
-            <arg value="-library-path+=${starling-ext-graphics}"/>
+            <!-- libs -->
+            <arg value="-library-path+=${libs_path}"/>
+            <!-- output -->
             <arg value="-output=${swf}/${project.title}.swf"/>
             <arg value="-frame=two,com.crazyfm.example.ballClickStarling.PreInit"/>
             <arg value="-debug"/>

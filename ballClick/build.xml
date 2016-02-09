@@ -21,8 +21,7 @@
             <arg value="${src}/StartUp.as"/>
             <arg value="-source-path+=${src}"/>
             <arg value="-swf-version=${swf-version}"/>
-            <arg value="-library-path+=${crazyfm-core}"/>
-            <arg value="-library-path+=${as3-signals}"/>
+            <arg value="-library-path+=${libs_path}"/>
             <arg value="-output=${swf}/${project.title}.swf"/>
             <arg value="-frame=two,com.crazyfm.example.ballClick.Main"/>
             <!--arg value="-debug"/-->
