@@ -23,6 +23,7 @@
             <arg value="-swf-version=${swf-version}"/>
             <!-- libs -->
             <arg value="-library-path+=${libs_path}"/>
+            <arg value="-library-path+=${libs_path}/crazyfm"/>
             <!-- output -->
             <arg value="-output=${swf}/${project.title}.swf"/>
             <arg value="-frame=two,com.crazyfm.example.ballClickStarling.PreInit"/>
