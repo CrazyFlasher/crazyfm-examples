@@ -4,4 +4,8 @@ Simple example, that represents how to work with framework, how events are dispa
 ###Dependencies:
 **CrazyFM-Core**
 	- [source](https://github.com/CrazyFlasher/crazyfm/tree/master/core)
-	- [binary]()
+	- [binary](https://github.com/CrazyFlasher/crazyfm/tree/master/dependencies/crazyfm): **cfm-core-_x.x.x_.swc**
+
+**as3-signals**
+	- [source](https://github.com/robertpenner/as3-signals)
+	- [binary](https://github.com/CrazyFlasher/crazyfm/tree/master/dependencies)**as3-signals-_x_.swc**
