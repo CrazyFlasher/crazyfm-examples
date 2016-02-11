@@ -1,6 +1,7 @@
-##Ball Click Starling
+##Ball Click Starling Nape
 Simple example, that represents how to work with framework, how events are dispatches and how model and view components communicate.
 For rendering we use [Starling 1.x](https://github.com/Gamua/Starling-Framework) framework here.
+For physics simulation - [Nape Physics](https://github.com/deltaluca/www.napephys.com).
 
 ###Dependencies
 **CrazyFM-Core**
@@ -11,7 +12,11 @@ For rendering we use [Starling 1.x](https://github.com/Gamua/Starling-Framework)
 - [source](https://github.com/CrazyFlasher/crazyfm/tree/master/extensions/starlingApp)
 - [binary](https://github.com/CrazyFlasher/crazyfm/tree/master/dependencies/crazyfm): cfm-ext-starlingApp-_x.x.x_.swc
 
-####Third-party
+**CrazyFM-Extensions-Physics**
+- [source](https://github.com/CrazyFlasher/crazyfm/tree/master/extensions/physics)
+- [binary](https://github.com/CrazyFlasher/crazyfm/tree/master/dependencies/crazyfm): cfm-ext-physics-_x.x.x_.swc
+
+###Third-party
 **as3-signals**
 - [source](https://github.com/robertpenner/as3-signals)
 - [binary](https://github.com/CrazyFlasher/crazyfm/tree/master/dependencies): as3-signals-_x_.swc
@@ -23,3 +28,7 @@ For rendering we use [Starling 1.x](https://github.com/Gamua/Starling-Framework)
 **Starling-Extension-Graphics**
 - [source](https://github.com/StarlingGraphics/Starling-Extension-Graphics)
 - [binary](https://github.com/CrazyFlasher/crazyfm/tree/master/dependencies): starling-extension-graphics.swc
+
+**Nape Physics**
+- [source](https://github.com/deltaluca/www.napephys.com)
+- [binary](https://github.com/CrazyFlasher/crazyfm/tree/master/dependencies): nape-release.swc
