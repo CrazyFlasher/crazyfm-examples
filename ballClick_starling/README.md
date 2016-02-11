@@ -7,7 +7,7 @@ For rendering we use [Starling 1.x](https://github.com/Gamua/Starling-Framework)
 - [source](https://github.com/CrazyFlasher/crazyfm/tree/master/core)
 - [binary](https://github.com/CrazyFlasher/crazyfm/tree/master/dependencies/crazyfm): cfm-core-_x.x.x_.swc
 
-##CrazyFM-Extensions-StarlingApp
+**CrazyFM-Extensions-StarlingApp**
 - [source](https://github.com/CrazyFlasher/crazyfm/tree/master/extensions/starlingApp)
 - [binary](https://github.com/CrazyFlasher/crazyfm/tree/master/dependencies/crazyfm): cfm-ext-starlingApp-_x.x.x_.swc
 
