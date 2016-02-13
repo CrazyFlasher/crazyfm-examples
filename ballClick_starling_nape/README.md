@@ -12,10 +12,6 @@ For physics simulation - [Nape Physics](https://github.com/deltaluca/www.napephy
 - [source](https://github.com/CrazyFlasher/crazyfm/tree/master/extensions/starlingApp)
 - [binary](https://github.com/CrazyFlasher/crazyfm/tree/master/dependencies/crazyfm): cfm-ext-starlingApp-_x.x.x_.swc
 
-**CrazyFM-Extensions-Physics**
-- [source](https://github.com/CrazyFlasher/crazyfm/tree/master/extensions/physics)
-- [binary](https://github.com/CrazyFlasher/crazyfm/tree/master/dependencies/crazyfm): cfm-ext-physics-_x.x.x_.swc
-
 ###Third-party
 **as3-signals**
 - [source](https://github.com/robertpenner/as3-signals)
