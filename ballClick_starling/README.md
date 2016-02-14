@@ -18,7 +18,7 @@ For rendering we use [Starling 1.x](https://github.com/Gamua/Starling-Framework)
 
 **Starling-Framework**
 - [source](https://github.com/Gamua/Starling-Framework)
-- [binary](https://github.com/CrazyFlasher/crazyfm/tree/master/dependencies): starling.swc
+- [binary](https://github.com/CrazyFlasher/crazyfm/tree/master/dependencies): starling-1.x.x.swc
 
 **Starling-Extension-Graphics**
 - [source](https://github.com/StarlingGraphics/Starling-Extension-Graphics)

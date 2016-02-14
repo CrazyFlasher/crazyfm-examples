@@ -3,8 +3,8 @@
  */
 package com.crazyfm.example.ballClickStarlingNape
 {
-	import com.crazyfm.core.extension.starlingApp.initializer.models.StarlingInitializerContext;
-	import com.crazyfm.core.extension.starlingApp.initializer.models.StarlingProperties;
+	import com.crazyfm.extension.starlingApp.initializer.models.StarlingInitializerContext;
+	import com.crazyfm.extension.starlingApp.initializer.models.StarlingProperties;
 
 	import flash.display.Sprite;
 	import flash.events.Event;

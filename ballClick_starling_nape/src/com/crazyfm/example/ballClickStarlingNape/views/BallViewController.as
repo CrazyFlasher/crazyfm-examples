@@ -3,10 +3,10 @@
  */
 package com.crazyfm.example.ballClickStarlingNape.views
 {
-	import com.crazyfm.core.extension.starlingApp.mvc.view.StarlingViewController;
 	import com.crazyfm.core.mvc.event.ISignalEvent;
 	import com.crazyfm.example.ballClickStarlingNape.signals.BallModelSignalEnum;
 	import com.crazyfm.example.ballClickStarlingNape.signals.BallViewSignalEnum;
+	import com.crazyfm.extension.starlingApp.mvc.view.StarlingViewController;
 
 	import flash.geom.Point;
 

@@ -26,7 +26,7 @@
             <arg value="-library-path+=${libs_path}/crazyfm"/>
             <!-- output -->
             <arg value="-output=${swf}/${project.title}.swf"/>
-            <arg value="-frame=two,com.crazyfm.example.ballClickStarling.PreInit"/>
+            <arg value="-frame=two,com.crazyfm.example.ballClickStarlingNape.PreInit"/>
             <arg value="-debug"/>
         </java>
     </target>
