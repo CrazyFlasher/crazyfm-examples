@@ -23,7 +23,7 @@ package com.crazyfm.example.ballClickStarlingNape.views
 			var shape:Shape = new Shape();
 			//Draws red ball
 			shape.graphics.beginFill(0xFF0000);
-			shape.graphics.drawCircle(0, 0, 50);
+			shape.graphics.drawCircle(0, 0, 20);
 			shape.graphics.endFill();
 
 			addChild(shape);

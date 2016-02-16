@@ -1,51 +1,24 @@
 /**
- * Created by Anton Nefjodov on 13.02.2016.
+ * Created by Anton Nefjodov on 16.02.2016.
  */
 package com.crazyfm.example.ballClickStarlingNape.models
 {
-	import com.crazyfm.core.mvc.model.Context;
-
-	import nape.geom.Vec2;
-	import nape.phys.Body;
+	import nape.phys.BodyType;
+	import nape.phys.Material;
 	import nape.shape.Circle;
 
-	public class PhysicsBallModel extends Context
+	public class PhysicsBallModel extends PhysicsObjectModel
 	{
-		private var _body:Body;
-
 		public function PhysicsBallModel()
 		{
-			super();
-
-			init();
+			super(BodyType.DYNAMIC);
 		}
 
-		private function init():void
+		override protected function addBodyShapes():void
 		{
-			_body = new Body();
-			_body.shapes.add(new Circle(50));
-		}
+			_body.shapes.add(new Circle(20));
 
-		public function get body():Body
-		{
-			return _body;
-		}
-
-		override public function dispose():void
-		{
-			_body = null;
-
-			super.dispose();
-		}
-
-		public function set position(position:Vec2):void
-		{
-			_body.position = position;
-		}
-
-		public function get position():Vec2
-		{
-			return _body.position;
+			_body.setShapeMaterials(Material.rubber())
 		}
 	}
 }

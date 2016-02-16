@@ -3,12 +3,10 @@
  */
 package com.crazyfm.example.ballClickStarlingNape.views
 {
-	import com.crazyfm.core.mvc.event.ISignalEvent;
-	import com.crazyfm.example.ballClickStarlingNape.signals.BallModelSignalEnum;
 	import com.crazyfm.example.ballClickStarlingNape.signals.BallViewSignalEnum;
 	import com.crazyfm.extension.starlingApp.mvc.view.StarlingViewController;
 
-	import flash.geom.Point;
+	import nape.geom.Vec2;
 
 	import starling.display.DisplayObjectContainer;
 	import starling.events.TouchEvent;
@@ -37,29 +35,21 @@ package com.crazyfm.example.ballClickStarlingNape.views
 			//Adds to display list
 			_container.addChild(_ball);
 
-			//Ask ball to listen MouseEvent.CLICK event
+			//Ask ball to listen TouchEvent.TOUCH event
 			_ball.addEventListener(TouchEvent.TOUCH, ballClicked);
-
-			//Listens BallModelSignalEnum.BALL_COORDINATES_CHANGED signal
-			addSignalListener(BallModelSignalEnum.BALL_COORDINATES_CHANGED, updateBallPosition);
 		}
 
 		private function ballClicked(event:TouchEvent):void
 		{
 			if (event.getTouch(_ball, TouchPhase.ENDED))
 			{
-				//Dispatches BallViewSignalEnum.BALL_CLICKED signal to IContext
-				dispatchSignal(BallViewSignalEnum.BALL_CLICKED);
+				//Dispatches BallViewSignalEnum.BALL_MOVE_TO_NEW_POSITION signal to IContext
+				dispatchSignal(BallViewSignalEnum.BALL_MOVE_TO_NEW_POSITION);
 			}
 		}
 
-		//Handles received BallModelSignalEnum.BALL_COORDINATES_CHANGED signal from IContext
-		private function updateBallPosition(event:ISignalEvent):void
+		public function updateTransform(position:Vec2):void
 		{
-			//Data received from IContext model hierarchy
-			var position:Point = event.data as Point;
-
-			//Updates position of visual ball
 			_ball.x = position.x;
 			_ball.y = position.y;
 		}

@@ -1,11 +1,9 @@
 /**
  * Created by Anton Nefjodov on 7.02.2016.
  */
-package com.crazyfm.example.ballClickStarlingNape.models
+package com.crazyfm.core.example.ballClick.model
 {
-	import com.crazyfm.core.mvc.event.ISignalEvent;
-	import com.crazyfm.core.mvc.model.Context;
-	import com.crazyfm.example.ballClickStarlingNape.signals.BallViewSignalEnum;
+	import com.crazyfm.core.example.ballClick.events.BallViewEventEnum;
 
 	/**
 	 * Simple application context, that creates and work with ball model.
@@ -31,7 +29,7 @@ package com.crazyfm.example.ballClickStarlingNape.models
 			addModel(_ball);
 
 			//Listens BallViewEventEnum.BALL_CLICKED signal
-			addSignalListener(BallViewSignalEnum.BALL_CLICKED, ballClicked);
+			addSignalListener(BallViewEventEnum.BALL_CLICKED, ballClicked);
 		}
 
 		//BallViewEventEnum.BALL_CLICKED handler

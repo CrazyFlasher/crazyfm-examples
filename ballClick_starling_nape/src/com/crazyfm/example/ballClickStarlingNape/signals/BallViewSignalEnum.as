@@ -5,7 +5,7 @@ package com.crazyfm.example.ballClickStarlingNape.signals
 {
 	public class BallViewSignalEnum
 	{
-		public static const BALL_CLICKED:String = "com.crazyfm.example.ballClick.signals.BALL_CLICKED";
+		public static const BALL_MOVE_TO_NEW_POSITION:String = "com.crazyfm.example.ballClick.signals.BALL_MOVE_TO_NEW_POSITION";
 	}
 }
 

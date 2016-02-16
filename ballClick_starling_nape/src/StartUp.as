@@ -35,7 +35,7 @@ package
 			//But in that case, preloader won't show until all PreInit dependencies are preloaded,
 			//and user will see blank screen longer.
 
-			var PreInitClass:Class = getDefinitionByName("com.crazyfm.example.ballClickStarling.PreInit") as Class;
+			var PreInitClass:Class = getDefinitionByName("com.crazyfm.example.ballClickStarlingNape.PreInit") as Class;
 			stage.addChild(new PreInitClass());
 			stage.removeChild(this);
 		}
