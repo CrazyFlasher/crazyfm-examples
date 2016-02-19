@@ -18,7 +18,7 @@ package com.crazyfm.example.ballClickStarlingNape.models
 		{
 			_body.shapes.add(new Circle(20));
 
-			_body.setShapeMaterials(Material.rubber())
+			_body.setShapeMaterials(new Material(1.5));
 		}
 	}
 }

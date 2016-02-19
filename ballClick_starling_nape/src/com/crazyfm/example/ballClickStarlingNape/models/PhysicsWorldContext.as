@@ -48,7 +48,7 @@ package com.crazyfm.example.ballClickStarlingNape.models
 		{
 			_ball = new PhysicsBallModel();
 			_ball.position = new Vec2(70, 70);
-			_ball.velocity = new Vec2(10, 10);
+			_ball.velocity = new Vec2(50, 0);
 			addModel(_ball);
 
 			_ball.addViewController(_mainViewController);
