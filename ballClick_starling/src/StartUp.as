@@ -4,6 +4,8 @@ package
 
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
 	import flash.utils.getDefinitionByName;
 
 	[SWF(width="500", height="500", frameRate="60", backgroundColor="#000000")]
@@ -13,12 +15,20 @@ package
 	 */
 	public class StartUp extends AbstractInternalPreloader
 	{
+		private var descriptionTf:TextField;
+
 		public function StartUp()
 		{
 			super();
 
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
+
+			descriptionTf = new TextField();
+			descriptionTf.autoSize = TextFieldAutoSize.LEFT;
+			descriptionTf.textColor = 0xFFFFFF;
+			descriptionTf.text = "Click the ball!";
+			stage.addChild(descriptionTf);
 		}
 
 		/**
