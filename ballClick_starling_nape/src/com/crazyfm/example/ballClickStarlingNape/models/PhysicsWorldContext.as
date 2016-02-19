@@ -15,13 +15,17 @@ package com.crazyfm.example.ballClickStarlingNape.models
 
 	public class PhysicsWorldContext extends Context
 	{
+		//Physics space
 		private var _space:Space;
 
-		private var _walls:PhysicsWallsModel;
-		private var _ball:PhysicsObjectModel
+		//Walls physics model
+		private var _walls:PhysicsObjectModel;
 
+		//Ball physics model
+		private var _ball:PhysicsObjectModel;
+
+		//View controller, that is used as ball model view
 		private var _mainViewController:IViewController;
-
 
 		public function PhysicsWorldContext(mainViewController:IViewController)
 		{
@@ -32,9 +36,13 @@ package com.crazyfm.example.ballClickStarlingNape.models
 
 		private function init():void
 		{
+			//Create new physics space
 			_space = new Space(new Vec2(0, 10));
 
+			//Create physics walls
 			createWalls();
+
+			//Create physics ball
 			createBall();
 		}
 
@@ -51,23 +59,36 @@ package com.crazyfm.example.ballClickStarlingNape.models
 			_ball.velocity = new Vec2(50, 0);
 			addModel(_ball);
 
+			//Adding view controller to ball physics model
 			_ball.addViewController(_mainViewController);
 
+			//Listening view controller event
 			addSignalListener(BallViewSignalEnum.BALL_MOVE_TO_NEW_POSITION, ballNewPosition);
 		}
 
 		private function ballNewPosition(event:ISignalEvent):void
 		{
+			//Updating ball position to random one
 			_ball.position = new Vec2(10 + Math.floor(Math.random() * 450), 10 + Math.floor(Math.random() * 450));
 		}
 
+		/**
+		 * Physics step
+		 * @param deltaTime
+		 */
 		public function step(deltaTime:Number):void
 		{
+			//Updating space
 			_space.step(deltaTime);
 
+			//Dispatching signal to child models (e.q. _ball, walls)
 			dispatchSignalToChildren(PhysicsWorldSignalEnum.WORLD_STEP);
 		}
 
+		/**
+		 * Adding phys model to context and to space
+		 * @param model
+		 */
 		override public function addModel(model:IModel):void
 		{
 			super.addModel(model);
@@ -75,6 +96,9 @@ package com.crazyfm.example.ballClickStarlingNape.models
 			_space.bodies.add((model as PhysicsObjectModel).body);
 		}
 
+		/**
+		 * Removing space and other models.
+		 */
 		override public function disposeWithAllChildren():void
 		{
 			_space.clear();

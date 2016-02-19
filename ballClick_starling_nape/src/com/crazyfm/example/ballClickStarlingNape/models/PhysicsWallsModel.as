@@ -7,6 +7,9 @@ package com.crazyfm.example.ballClickStarlingNape.models
 	import nape.phys.BodyType;
 	import nape.shape.Polygon;
 
+	/**
+	 * Physics walls model class.
+	 */
 	public class PhysicsWallsModel extends PhysicsObjectModel
 	{
 		public function PhysicsWallsModel()

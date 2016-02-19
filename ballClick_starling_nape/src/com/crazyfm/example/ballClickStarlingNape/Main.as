@@ -18,13 +18,16 @@ package com.crazyfm.example.ballClickStarlingNape
 
 		public function Main()
 		{
+			//Creating physics and adding view controller to it
 			physicsModel = new PhysicsWorldContext(new BallViewController(this));
 
+			//adding ENTER_FRAME listener to simulate physics
 			addEventListener(Event.ENTER_FRAME, enterFrame);
 		}
 
 		private function enterFrame(event:Event, passedTime:Number):void
 		{
+			//simulating physics, telling that 4x more time passed to speed up simulation
 			physicsModel.step(passedTime * 4);
 		}
 	}

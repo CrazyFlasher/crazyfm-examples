@@ -13,6 +13,9 @@ package com.crazyfm.example.ballClickStarlingNape.models
 	import nape.phys.Body;
 	import nape.phys.BodyType;
 
+	/**
+	 * Base physics model class, that created body, connects to view controller in listens for WORLD_STEP signal from PhysicsWorldContext
+	 */
 	public class PhysicsObjectModel extends Context
 	{
 		protected var _body:Body;
@@ -40,7 +43,7 @@ package com.crazyfm.example.ballClickStarlingNape.models
 
 		protected function addBodyShapes():void
 		{
-
+			//override
 		}
 
 		protected function onWorldStep(event:ISignalEvent):void

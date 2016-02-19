@@ -37,7 +37,7 @@ package com.crazyfm.example.ballClickStarling.views
 			//Adds to display list
 			_container.addChild(_ball);
 
-			//Ask ball to listen MouseEvent.CLICK event
+			//Ask ball to listen TouchEvent.TOUCH event
 			_ball.addEventListener(TouchEvent.TOUCH, ballClicked);
 
 			//Listens BallModelSignalEnum.BALL_COORDINATES_CHANGED signal
