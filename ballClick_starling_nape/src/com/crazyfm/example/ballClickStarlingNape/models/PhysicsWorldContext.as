@@ -19,10 +19,10 @@ package com.crazyfm.example.ballClickStarlingNape.models
 		private var _space:Space;
 
 		//Walls physics model
-		private var _walls:PhysicsObjectModel;
+		private var _walls:PhysicsObjectContext;
 
 		//Ball physics model
-		private var _ball:PhysicsObjectModel;
+		private var _ball:PhysicsObjectContext;
 
 		//View controller, that is used as ball model view
 		private var _mainViewController:IViewController;
@@ -48,13 +48,13 @@ package com.crazyfm.example.ballClickStarlingNape.models
 
 		private function createWalls():void
 		{
-			_walls = new PhysicsWallsModel();
+			_walls = new PhysicsWallsContext();
 			addModel(_walls);
 		}
 
 		private function createBall():void
 		{
-			_ball = new PhysicsBallModel();
+			_ball = new PhysicsBallContext();
 			_ball.position = new Vec2(70, 70);
 			_ball.velocity = new Vec2(50, 0);
 			addModel(_ball);
@@ -93,7 +93,7 @@ package com.crazyfm.example.ballClickStarlingNape.models
 		{
 			super.addModel(model);
 
-			_space.bodies.add((model as PhysicsObjectModel).body);
+			_space.bodies.add((model as PhysicsObjectContext).body);
 		}
 
 		/**

@@ -16,14 +16,14 @@ package com.crazyfm.example.ballClickStarlingNape.models
 	/**
 	 * Base physics model class, that created body, connects to view controller in listens for WORLD_STEP signal from PhysicsWorldContext
 	 */
-	public class PhysicsObjectModel extends Context
+	public class PhysicsObjectContext extends Context
 	{
 		protected var _body:Body;
 		protected var _view:IViewController;
 
 		private var _bodyType:BodyType;
 
-		public function PhysicsObjectModel(bodyType:BodyType)
+		public function PhysicsObjectContext(bodyType:BodyType)
 		{
 			super();
 

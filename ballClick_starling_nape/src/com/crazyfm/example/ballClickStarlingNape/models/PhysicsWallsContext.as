@@ -10,9 +10,9 @@ package com.crazyfm.example.ballClickStarlingNape.models
 	/**
 	 * Physics walls model class.
 	 */
-	public class PhysicsWallsModel extends PhysicsObjectModel
+	public class PhysicsWallsContext extends PhysicsObjectContext
 	{
-		public function PhysicsWallsModel()
+		public function PhysicsWallsContext()
 		{
 			super(BodyType.STATIC);
 		}
