@@ -1,5 +1,5 @@
 ##Ball Click Starling Nape
-![](https://github.com/CrazyFlasher/crazyfm/blob/gh-pages/assets/example-nape.jpg?raw=true
+![](https://github.com/CrazyFlasher/crazyfm/blob/gh-pages/assets/example-nape.jpg?raw=true)
 
 Simple example, that represents how to work with framework, how events are dispatches and how model and view components communicate.
 For rendering we use [Starling 1.x](https://github.com/Gamua/Starling-Framework) framework here.
