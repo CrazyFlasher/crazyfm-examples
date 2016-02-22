@@ -38,7 +38,7 @@ package
 		{
 			//We can make that ordinary way:
 
-			//import com.crazyfm.example.ballClickStarling.PreInit;
+			//import com.crazyfm.example.ballClickStarlingNape.PreInit;
 			//...
 			//stage.addChild(new PreInit());
 
