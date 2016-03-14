@@ -7,6 +7,10 @@ package
 
 	public class Test extends Sprite
 	{
+
+		[Embed(source="../resources/test.json")]
+		private var WorldClass:Class;
+
 		public function Test()
 		{
 			super();
