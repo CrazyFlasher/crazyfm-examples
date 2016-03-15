@@ -1,15 +1,18 @@
-/**
+﻿/**
  * Created by Anton Nefjodov on 14.03.2016.
  */
 package {
 	import flash.display.DisplayObjectContainer;
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 
 	public class FlashPhysicsJSONBuilder extends Sprite
 	{
 		public function FlashPhysicsJSONBuilder()
 		{
-			var world:DisplayObjectContainer = new world_1();
+			var world:MovieClip = new world_1();
+			world.gotoAndStop(2);
+
 			var worldData:Object =
 			{
 				id:world.name,
@@ -21,9 +24,9 @@ package {
 
 				]
 			};
-			for each (var body:Object in getAllChildren(world))
+			for each (var body:MovieClip in getAllChildren(world))
 			{
-				if(body is Sprite)
+				if(body is MovieClip)
 				{
 					worldData.bodies.push(
 							{
@@ -51,12 +54,36 @@ package {
 				if(shape is DisplayObjectContainer)
 				{
 					var shapeData:Object = {
-						x:body.x,
-						y:body.y,
+						x:shape.x,
+						y:shape.y,
 						angle:shape.rotation * Math.PI / 180,
 						id:shape.name,
 						vertices:getShapeVertices(shape)
 					};
+					if(shape.filter)
+					{
+						shapeData.filter = {};
+						if(shape.filter.collisionGroup)
+						{
+							shapeData.filter.collisionGroup = shape.filter.collisionGroup;
+						}
+						if(shape.filter.collisionMask)
+						{
+							shapeData.filter.collisionMask = shape.filter.collisionMask;
+						}
+						if(shape.filter.sensorGroup)
+						{
+							shapeData.filter.sensorGroup = shape.filter.sensorGroup;
+						}
+						if(shape.filter.sensorMask)
+						{
+							shapeData.filter.sensorMask = shape.filter.sensorMask;
+						}
+						if(shape.filter.fluidGroup)
+						{
+							shapeData.filter.fluidGroup = shape.filter.fluidGroup;
+						}
+					}
 					if(shape.material)
 					{
 						shapeData.material = {};
