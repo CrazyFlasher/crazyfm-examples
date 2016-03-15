@@ -22,22 +22,45 @@ package {
 				},
 				bodies:[
 
+				],
+				joints:[
+
 				]
 			};
-			for each (var body:MovieClip in getAllChildren(world))
+			for each (var physObject:MovieClip in getAllChildren(world))
 			{
-				if(body is MovieClip)
+				var body:MovieClip;
+				var joint:MovieClip;
+				if(physObject is MovieClip)
 				{
-					worldData.bodies.push(
-							{
-								x:body.x,
-								y:body.y,
-								angle:body.rotation * Math.PI / 180,
-								id:body.name,
-								type:body.type,
-								shapes:getBodyShapes(body)
-							}
-					);
+					if(physObject is pivot_joint)
+					{
+						joint = physObject;
+
+						var jointData:Object = {
+							id:joint.name,
+							type:"pivot",
+							x:joint.x,
+							y:joint.y,
+							minAngle:joint.minAngle,
+							maxAngle:joint.maxAngle
+						};
+						worldData.joints.push(jointData);
+					}else
+					{
+						body = physObject;
+
+						worldData.bodies.push(
+								{
+									x:body.x,
+									y:body.y,
+									angle:body.rotation * Math.PI / 180,
+									id:body.name,
+									type:body.type,
+									shapes:getBodyShapes(body)
+								}
+						);
+					}
 				}
 			}
 
@@ -57,9 +80,15 @@ package {
 						x:shape.x,
 						y:shape.y,
 						angle:shape.rotation * Math.PI / 180,
-						id:shape.name,
-						vertices:getShapeVertices(shape)
+						id:shape.name
 					};
+					if(!isCircleShape(shape))
+					{
+						shapeData.vertices = getShapeVertices(shape);
+					}else
+					{
+						shapeData.radius = shape.width / 2;
+					}
 					if(shape.filter)
 					{
 						shapeData.filter = {};
@@ -113,6 +142,11 @@ package {
 			}
 
 			return shapes;
+		}
+
+		private function isCircleShape(shape:Object):Boolean
+		{
+			return shape is circle;
 		}
 
 		private function getShapeVertices(shape:Object):Array
