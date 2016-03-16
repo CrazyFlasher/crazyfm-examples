@@ -13,11 +13,9 @@ package
 	import flash.utils.ByteArray;
 
 	import nape.constraint.PivotJoint;
-
 	import nape.geom.Vec2;
 	import nape.phys.Body;
 	import nape.phys.BodyList;
-
 	import nape.util.BitmapDebug;
 	import nape.util.Debug;
 
@@ -67,6 +65,13 @@ package
 			if (simulate)
 			{
 				world.space.step(1 / stage.frameRate);
+
+				// If the hand joint is active, then set its first anchor to be
+				// at the mouse coordinates so that we drag bodies that have
+				// have been set as the hand joint's body2.
+				if (handJoint.active) {
+					handJoint.anchor1.setxy(mouseX, mouseY);
+				}
 			}
 
 			debug.clear();
