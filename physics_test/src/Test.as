@@ -70,7 +70,7 @@ package
 				// at the mouse coordinates so that we drag bodies that have
 				// have been set as the hand joint's body2.
 				if (handJoint.active) {
-					handJoint.anchor1.setxy(mouseX, mouseY);
+					handJoint.anchor1.setxy(mouseX, mouseY)
 				}
 			}
 
@@ -113,7 +113,7 @@ package
 				handJoint.anchor2.set(body.worldPointToLocal(mousePoint, true));
 
 				// Enable hand joint!
-				handJoint.active = true;
+				handJoint.active = true
 
 				break;
 			}

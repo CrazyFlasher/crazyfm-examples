@@ -18,7 +18,7 @@ package {
 				id:world.name,
 				gravity:{
 					x:0,
-					y:9.8
+					y:100
 				},
 				bodies:[
 
