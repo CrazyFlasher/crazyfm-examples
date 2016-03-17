@@ -16,10 +16,6 @@ package {
 			var worldData:Object =
 			{
 				id:world.name,
-				gravity:{
-					x:0,
-					y:100
-				},
 				bodies:[
 
 				],
@@ -27,6 +23,14 @@ package {
 
 				]
 			};
+			if(world.gravity)
+			{
+				worldData.gravity = world.gravity;
+			}else
+			{
+				worldData.gravity = {x:0, y:100};
+			}
+
 			for each (var physObject:MovieClip in getAllChildren(world))
 			{
 				var body:MovieClip;
@@ -45,6 +49,10 @@ package {
 							minAngle:joint.minAngle,
 							maxAngle:joint.maxAngle
 						};
+						if(joint.bodies)
+						{
+							jointData.bodies = joint.bodies;
+						}
 						worldData.joints.push(jointData);
 					}else
 					{

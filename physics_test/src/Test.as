@@ -81,7 +81,7 @@ package
 
 		private function createDebugDraw():void
 		{
-			debug = new BitmapDebug(550, 400, 0x000000, false);
+			debug = new BitmapDebug(550, 400, 0x000000, false)
 			debug.drawCollisionArbiters = true;
 			debug.drawConstraints = true;
 			addChild(debug.display);
