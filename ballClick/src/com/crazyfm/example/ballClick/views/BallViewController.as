@@ -33,7 +33,7 @@ package com.crazyfm.example.ballClick.views
 			_ball = new BallView();
 
 			//Adds to display list
-			_container.addChild(_ball);
+			container.addChild(_ball);
 
 			//Ask ball to listen MouseEvent.CLICK event
 			_ball.addEventListener(MouseEvent.CLICK, ballClicked);

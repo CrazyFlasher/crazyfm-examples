@@ -33,7 +33,7 @@ package com.crazyfm.example.ballClickStarlingNape.views
 			_ball = new BallView();
 
 			//Adds to display list
-			_container.addChild(_ball);
+			container.addChild(_ball);
 
 			//Ask ball to listen TouchEvent.TOUCH event
 			_ball.addEventListener(TouchEvent.TOUCH, ballClicked);

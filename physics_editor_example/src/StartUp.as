@@ -21,7 +21,7 @@ package
 
 	[SWF(width="550", height="400", frameRate="60", backgroundColor="#000000")]
 
-	public class Test extends Sprite
+	public class StartUp extends Sprite
 	{
 
 		[Embed(source="../resources/test.json", mimeType="application/octet-stream")]
@@ -33,7 +33,7 @@ package
 		private var simulate:Boolean;
 		private var handJoint:PivotJoint;
 
-		public function Test()
+		public function StartUp()
 		{
 			super();
 

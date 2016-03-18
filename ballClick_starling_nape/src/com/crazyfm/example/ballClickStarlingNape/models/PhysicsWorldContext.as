@@ -6,6 +6,7 @@ package com.crazyfm.example.ballClickStarlingNape.models
 	import com.crazyfm.core.mvc.event.ISignalEvent;
 	import com.crazyfm.core.mvc.model.Context;
 	import com.crazyfm.core.mvc.model.IModel;
+	import com.crazyfm.core.mvc.model.IModelContainer;
 	import com.crazyfm.core.mvc.view.IViewController;
 	import com.crazyfm.example.ballClickStarlingNape.signals.BallViewSignalEnum;
 	import com.crazyfm.example.ballClickStarlingNape.signals.PhysicsWorldSignalEnum;
@@ -89,11 +90,13 @@ package com.crazyfm.example.ballClickStarlingNape.models
 		 * Adding phys model to context and to space
 		 * @param model
 		 */
-		override public function addModel(model:IModel):void
+		override public function addModel(model:IModel):IModelContainer
 		{
 			super.addModel(model);
 
 			_space.bodies.add((model as PhysicsObjectContext).body);
+
+			return this;
 		}
 
 		/**
