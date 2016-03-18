@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<project name="crazyfm-examples" basedir="." default="package">
+
+    <property environment="env."/>
+    <property name="FLEX_HOME" location="${env.FLEX_HOME}"/>
+
+    <property file="build.properties"/>
+
+    <taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+
+    <target name="package" depends="build_all,copy_all"/>
+    <target name="build_all">
+        <echo>[build_all] Building all examples...</echo>
+        <ant antfile="build.xml" target="package" dir="${basedir}/ballClick" inheritall="false"/>
+        <ant antfile="build.xml" target="package" dir="${basedir}/ballClick_starling" inheritall="false"/>
+        <ant antfile="build.xml" target="package" dir="${basedir}/ballClick_starling_nape" inheritall="false"/>
+        <ant antfile="build.xml" target="package" dir="${basedir}/physics_editor_example" inheritall="false"/>
+    </target>
+    <target name="copy_all">
+        <copy todir="build">
+            <fileset dir="${basedir}/ballClick/out/swf"/>
+            <fileset dir="${basedir}/ballClick_starling/out/swf"/>
+            <fileset dir="${basedir}/ballClick_starling_nape/out/swf"/>
+            <fileset dir="${basedir}/physics_editor_example/out/swf"/>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+</project>

@@ -4,6 +4,7 @@ var jsonURI = FLfile.platformPathToURI(baseDir + "test.json");
 fl.openDocument(fileURI);
 fl.sourcePath = "../src";
 fl.getDocumentDOM().docClass = "com.crazyfm.extensions.flashPhysicsEditor.FlashPhysicsJSONBuilder";
+fl.getDocumentDOM().libraryPath = "../../../crazyfm/dependencies/crazyfm/";
 fl.getDocumentDOM().testMovie();
 fl.outputPanel.save(jsonURI);
 fl.getDocumentDOM().close(false);
