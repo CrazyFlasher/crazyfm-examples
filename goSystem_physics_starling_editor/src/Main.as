@@ -35,14 +35,18 @@ package
 			world = new WorldObject();
 			world.data = PhysicsParser.parseWorld(JSON.parse((new WorldClass() as ByteArray).toString()));
 
+			world.bodyObjectById("ball").body.velocity.setxy(150, -150);
+
 			goSystem = new GOSystem()
 					.setJuggler(Starling.juggler)
 					.addGameObject(new GameObject()
-										   .addComponent(new PhysWorldComponent()))
+							.addComponent(new PhysWorldComponent()
+									.setSpace(world.space)))
 					.addGameObject(new GameObject()
-										   .addComponent(new PhysObjectComponent().setBody(world.bodyObjectById("ball").body))
-										   .addComponent(new BallViewComponent()
-																 .setViewContainer(this)));
+							.addComponent(new PhysObjectComponent()
+									.setBody(world.bodyObjectById("ball").body))
+							.addComponent(new BallViewComponent()
+									.setViewContainer(this)));
 		}
 	}
 }

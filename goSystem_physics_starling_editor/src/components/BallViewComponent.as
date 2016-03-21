@@ -20,7 +20,7 @@ package components
 			super();
 		}
 
-		override public function setViewContainer(value:DisplayObjectContainer):IGameComponent
+		override public function setViewContainer(value:DisplayObjectContainer):ViewComponent
 		{
 			if (ball)
 			{
@@ -37,7 +37,7 @@ package components
 			var shape:Shape = new Shape();
 			//Draws red ball
 			shape.graphics.beginFill(0xFF0000);
-			shape.graphics.drawCircle(0, 0, 50);
+			shape.graphics.drawCircle(0, 0, 25);
 			shape.graphics.endFill();
 
 			ball.addChild(shape);
@@ -48,6 +48,7 @@ package components
 		override public function dispose():void
 		{
 			physComponent = null;
+
 			if (ball)
 			{
 				if (ball.parent)

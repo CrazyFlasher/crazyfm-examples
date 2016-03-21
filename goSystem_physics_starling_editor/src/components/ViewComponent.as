@@ -16,7 +16,7 @@ package components
 		{
 		}
 
-		public function setViewContainer(value:DisplayObjectContainer):IGameComponent
+		public function setViewContainer(value:DisplayObjectContainer):ViewComponent
 		{
 			viewContainer = value;
 
