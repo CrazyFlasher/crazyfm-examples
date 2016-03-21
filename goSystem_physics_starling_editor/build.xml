@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<project name="crazyfm-example-goSystem_physics_starling_editor" basedir="." default="package">
+	
+	<property environment="env."/>
+	<property name="FLEX_HOME" location="${env.FLEX_HOME}"/>
+
+    <property name="src" value="${basedir}/src"/>
+    <property name="out" value="${basedir}/out"/>
+    <property name="doc" value="${out}/doc"/>
+    <property name="swf" value="${out}/swf"/>
+    <property name="jslf" value="${basedir}/compile_fla.jsfl"/>
+    <property name="jslf_copy" value="${basedir}/compile_fla_copy.jsfl"/>
+
+    <property file="build.properties"/>
+
+    <target name="package" depends="clean,swf"/>
+    <!--target name="build_resources">
+        <copy file="${jslf}" tofile="${jslf_copy}"/>
+        <replace file="${jslf_copy}" token="@@@" value="${basedir}/resources/"/>
+        <replace file="${jslf_copy}" token="\" value="/"/>
+        <exec executable="${flash_ide}">
+            <arg line="${jslf_copy}"/>
+        </exec>
+    </target-->
+    <target name="swf">
+        <mkdir dir="${swf}"/>
+        <echo>-----------------------------------</echo>
+        <echo>[swf] Building example...</echo>
+        <echo>-----------------------------------</echo>
+        <java jar="${FLEX_HOME}/lib/mxmlc.jar" dir="${FLEX_HOME}/frameworks" fork="true" failonerror="true">
+            <arg value="${src}/StartUp.as"/>
+            <arg value="-source-path+=${src}"/>
+            <arg value="-swf-version=${swf-version}"/>
+            <!-- libs -->
+            <arg value="-library-path+=${libs_path}"/>
+            <arg value="-library-path+=${libs_path}/crazyfm"/>
+            <!-- output -->
+            <arg value="-output=${swf}/${project.title}.swf"/>
+            <arg value="-frame=two,PreInit"/>
+            <arg value="-debug"/>
+        </java>
+    </target>
+    <target name="clean">
+        <echo>-----------------------------------</echo>
+        <echo>[clean] Cleaning build directory...</echo>
+        <echo>-----------------------------------</echo>
+        <delete dir="${out}"/>
+    </target>
+</project>
