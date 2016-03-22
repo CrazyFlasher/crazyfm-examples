@@ -24,13 +24,13 @@ package components
 			super.dispose();
 		}
 
-		override public function advanceTime(time:Number):void
+		override public function interact(timePassed:Number):void
 		{
-			super.advanceTime(time);
+			super.interact(timePassed);
 
 			if (_space)
 			{
-				_space.step(time);
+				_space.step(timePassed);
 			}
 		}
 

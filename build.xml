@@ -15,6 +15,7 @@
         <ant antfile="build.xml" target="package" dir="${basedir}/ballClick_starling" inheritall="false"/>
         <ant antfile="build.xml" target="package" dir="${basedir}/ballClick_starling_nape" inheritall="false"/>
         <ant antfile="build.xml" target="package" dir="${basedir}/physics_editor_example" inheritall="false"/>
+        <ant antfile="build.xml" target="package" dir="${basedir}/goSystem_physics_starling_editor" inheritall="false"/>
     </target>
     <target name="copy_all">
         <copy todir="build">
@@ -22,6 +23,7 @@
             <fileset dir="${basedir}/ballClick_starling/out/swf"/>
             <fileset dir="${basedir}/ballClick_starling_nape/out/swf"/>
             <fileset dir="${basedir}/physics_editor_example/out/swf"/>
+            <fileset dir="${basedir}/goSystem_physics_starling_editor/out/swf"/>
         </copy>
     </target>
     <target name="clean">

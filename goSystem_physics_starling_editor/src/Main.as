@@ -3,6 +3,7 @@
  */
 package
 {
+	import com.crazyfm.devkit.goSystem.mechanisms.StarlingJugglerMechanism;
 	import com.crazyfm.extension.goSystem.GOSystem;
 	import com.crazyfm.extension.goSystem.GameObject;
 	import com.crazyfm.extension.goSystem.IGOSystem;
@@ -38,7 +39,8 @@ package
 			world.bodyObjectById("ball").body.velocity.setxy(150, -150);
 
 			goSystem = new GOSystem()
-					.setJuggler(Starling.juggler)
+					.setMechanism(new StarlingJugglerMechanism()
+							.setJuggler(Starling.juggler))
 					.addGameObject(new GameObject()
 							.addComponent(new PhysWorldComponent()
 									.setSpace(world.space)))

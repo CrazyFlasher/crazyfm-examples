@@ -3,8 +3,6 @@
  */
 package components
 {
-	import com.crazyfm.extension.goSystem.IGameComponent;
-
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Shape;
 	import starling.display.Sprite;
@@ -61,9 +59,9 @@ package components
 			super.dispose();
 		}
 
-		override public function advanceTime(time:Number):void
+		override public function interact(timePassed:Number):void
 		{
-			super.advanceTime(time);
+			super.interact(timePassed);
 
 			if (!physComponent)
 			{
