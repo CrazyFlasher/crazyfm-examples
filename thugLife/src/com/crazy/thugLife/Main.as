@@ -21,6 +21,7 @@ package com.crazy.thugLife
 
 	import starling.core.Starling;
 	import starling.display.Sprite;
+	import starling.events.KeyboardEvent;
 
 	public class Main extends Sprite
 	{
@@ -41,6 +42,8 @@ package com.crazy.thugLife
 
 			worldDataObject = new WorldObject();
 			worldDataObject.data = PhysicsParser.parseWorld(JSON.parse((new WorldClass() as ByteArray).toString()));
+
+			//stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown)
 
 			goSystem = new GOSystem()
 					.setMechanism(new StarlingJugglerMechanism()
