@@ -7,7 +7,7 @@ package com.crazy.thugLife.controller
 	{
 		function moveLeft():void;
 		function moveRight():void;
-		function moveUp():void;
-		function moveDown():void;
+		function jump():void;
+		function stop():void;
 	}
 }

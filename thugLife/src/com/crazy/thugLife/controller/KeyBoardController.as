@@ -14,6 +14,9 @@ package com.crazy.thugLife.controller
 		private var stage:Stage;
 		private var controllableObject:IControllableComponent;
 
+		private var _moveLeft:Boolean;
+		private var _moveRight:Boolean;
+
 		public function KeyBoardController()
 		{
 			super();
@@ -31,26 +34,32 @@ package com.crazy.thugLife.controller
 
 		private function keyUp(event:KeyboardEvent):void
 		{
-
+			if (event.keyCode == Keyboard.RIGHT)
+			{
+				_moveRight = false;
+			}
+			if (event.keyCode == Keyboard.LEFT)
+			{
+				_moveLeft = false;
+			}
 		}
 
 		private function keyDown(event:KeyboardEvent):void
 		{
 			if (event.keyCode == Keyboard.RIGHT)
 			{
-				controllableObject.moveRight();
+				_moveRight = true;
 			}
 			if (event.keyCode == Keyboard.LEFT)
 			{
-				controllableObject.moveLeft();
+				_moveLeft = true;
 			}
 			if (event.keyCode == Keyboard.UP)
 			{
-				controllableObject.moveUp();
+				controllableObject.jump();
 			}
 			if (event.keyCode == Keyboard.DOWN)
 			{
-				controllableObject.moveDown();
 			}
 		}
 
@@ -67,12 +76,26 @@ package com.crazy.thugLife.controller
 
 		override public function interact(timePassed:Number):void
 		{
+			super.interact(timePassed);
+
 			if (!controllableObject)
 			{
 				controllableObject = gameObject.getComponentByType(IControllableComponent) as IControllableComponent;
+				controllableObject.stop();
 			}
 
-			super.interact(timePassed);
+			if (_moveLeft)
+			{
+				controllableObject.moveLeft();
+			}
+			if (_moveRight)
+			{
+				controllableObject.moveRight();
+			}
+			if (!_moveLeft && !_moveRight)
+			{
+				controllableObject.stop();
+			}
 		}
 	}
 }
