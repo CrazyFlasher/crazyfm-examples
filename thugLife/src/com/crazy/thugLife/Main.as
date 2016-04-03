@@ -3,11 +3,11 @@
  */
 package com.crazy.thugLife
 {
-	import com.crazy.thugLife.controller.ControllableComponent;
-	import com.crazy.thugLife.controller.KeyBoardController;
-	import com.crazy.thugLife.physics.PhysObjectComponent;
-	import com.crazy.thugLife.physics.PhysWorldComponent;
-	import com.crazy.thugLife.view.PhysDebugViewComponent;
+	import com.crazy.thugLife.goSystem.components.controller.Controllable;
+	import com.crazy.thugLife.goSystem.components.controller.KeyboardController;
+	import com.crazyfm.devkit.goSystem.components.view.PhysDebugView;
+	import com.crazyfm.devkit.goSystem.components.physyics.PhysBodyObject;
+	import com.crazyfm.devkit.goSystem.components.physyics.PhysWorld;
 	import com.crazyfm.devkit.goSystem.mechanisms.StarlingJugglerMechanism;
 	import com.crazyfm.extension.goSystem.GOSystem;
 	import com.crazyfm.extension.goSystem.GameObject;
@@ -19,9 +19,14 @@ package com.crazy.thugLife
 
 	import flash.utils.ByteArray;
 
+	import nape.phys.Body;
+
+	import nape.space.Space;
+
+	import org.swiftsuspenders.Injector;
+
 	import starling.core.Starling;
 	import starling.display.Sprite;
-	import starling.events.KeyboardEvent;
 
 	public class Main extends Sprite
 	{
@@ -45,24 +50,21 @@ package com.crazy.thugLife
 
 			//stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown)
 
-			goSystem = new GOSystem()
-					.setMechanism(new StarlingJugglerMechanism()
-							.setJuggler(Starling.juggler))
+			var space:Space = worldDataObject.space;
+			var floorBody:Body = worldDataObject.bodyObjectById("ground").body;
+			var userBody:Body = worldDataObject.bodyObjectById("user").body;
+
+			goSystem = new GOSystem(new StarlingJugglerMechanism(Starling.juggler))
 					.addGameObject(main = new GameObject()
-							.addComponent(new PhysWorldComponent()
-									.setSpace(worldDataObject.space))
-							.addComponent(new PhysDebugViewComponent()
-									.setSpace(worldDataObject.space)
-									.setViewContainer(Starling.current.nativeOverlay)))
+							.addComponent(new PhysWorld(space))
+							.addComponent(new PhysDebugView(space, Starling.current.nativeOverlay)))
 					.addGameObject(user = new GameObject()
-							.addComponent(new PhysObjectComponent()
-									.setBody(worldDataObject.bodyObjectById("user").body))
-							.addComponent(new ControllableComponent())
-							.addComponent(new KeyBoardController()
-									.setNativeStage(Starling.current.nativeStage)))
+							.addComponent(new PhysBodyObject(userBody))
+							.addComponent(new Controllable())
+							.addComponent(new KeyboardController(Starling.current.nativeStage)))
 					.addGameObject(floor = new GameObject()
-							.addComponent(new PhysObjectComponent()
-									.setBody(worldDataObject.bodyObjectById("ground").body)));
+							.addComponent(new PhysBodyObject(floorBody)));
+
 		}
 	}
 }

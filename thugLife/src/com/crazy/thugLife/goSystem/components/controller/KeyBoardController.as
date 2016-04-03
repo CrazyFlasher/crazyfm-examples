@@ -1,7 +1,7 @@
 /**
  * Created by Anton Nefjodov on 24.03.2016.
  */
-package com.crazy.thugLife.controller
+package com.crazy.thugLife.goSystem.components.controller
 {
 	import com.crazyfm.extension.goSystem.GameComponent;
 
@@ -9,48 +9,50 @@ package com.crazy.thugLife.controller
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 
-	public class KeyBoardController extends GameComponent
+	public class KeyboardController extends GameComponent
 	{
 		private var stage:Stage;
-		private var controllableObject:IControllableComponent;
+		private var controllableObject:IControllable;
 
-		public function KeyBoardController()
+		private var _moveLeft:Boolean;
+		private var _moveRight:Boolean;
+
+		public function KeyboardController(stage:Stage)
 		{
 			super();
-		}
 
-		public function setNativeStage(value:Stage):KeyBoardController
-		{
-			stage = value;
+			this.stage = stage;
 
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
-
-			return this;
 		}
 
 		private function keyUp(event:KeyboardEvent):void
 		{
-
+			if (event.keyCode == Keyboard.RIGHT)
+			{
+				_moveRight = false;
+			}
+			if (event.keyCode == Keyboard.LEFT)
+			{
+				_moveLeft = false;
+			}
 		}
 
 		private function keyDown(event:KeyboardEvent):void
 		{
 			if (event.keyCode == Keyboard.RIGHT)
 			{
-				controllableObject.moveRight();
-			}
+				_moveRight = true;
+			}else
 			if (event.keyCode == Keyboard.LEFT)
 			{
-				controllableObject.moveLeft();
+				_moveLeft = true;
 			}
+			else
 			if (event.keyCode == Keyboard.UP)
 			{
-				controllableObject.moveUp();
-			}
-			if (event.keyCode == Keyboard.DOWN)
-			{
-				controllableObject.moveDown();
+				controllableObject.jump();
 			}
 		}
 
@@ -67,12 +69,24 @@ package com.crazy.thugLife.controller
 
 		override public function interact(timePassed:Number):void
 		{
+			super.interact(timePassed);
+
 			if (!controllableObject)
 			{
-				controllableObject = gameObject.getComponentByType(IControllableComponent) as IControllableComponent;
+				controllableObject = gameObject.getComponentByType(IControllable) as IControllable;
 			}
 
-			super.interact(timePassed);
+			if (_moveLeft)
+			{
+				controllableObject.moveLeft();
+			}else
+			if (_moveRight)
+			{
+				controllableObject.moveRight();
+			}else
+			{
+				controllableObject.stop();
+			}
 		}
 	}
 }

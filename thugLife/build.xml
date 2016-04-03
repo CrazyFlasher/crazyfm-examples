@@ -37,6 +37,8 @@
             <!-- output -->
             <arg value="-output=${swf}/${project.title}.swf"/>
             <arg value="-frame=two,PreInit"/>
+            <arg value="-keep-as3-metadata+=Inject"/>
+            <arg value="-keep-as3-metadata+=PostConstruct"/>
             <arg value="-debug"/>
         </java>
     </target>
