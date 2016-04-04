@@ -1,7 +1,7 @@
 /**
  * Created by Anton Nefjodov on 24.03.2016.
  */
-package com.crazy.thugLife.controller
+package com.crazy.thugLife.goSystem.components.controller
 {
 	import com.crazyfm.extension.goSystem.GameComponent;
 
@@ -9,27 +9,22 @@ package com.crazy.thugLife.controller
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 
-	public class KeyBoardController extends GameComponent
+	public class KeyboardController extends GameComponent
 	{
 		private var stage:Stage;
-		private var controllableObject:IControllableComponent;
+		private var controllableObject:IControllable;
 
 		private var _moveLeft:Boolean;
 		private var _moveRight:Boolean;
 
-		public function KeyBoardController()
+		public function KeyboardController(stage:Stage)
 		{
 			super();
-		}
 
-		public function setNativeStage(value:Stage):KeyBoardController
-		{
-			stage = value;
+			this.stage = stage;
 
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
-
-			return this;
 		}
 
 		private function keyUp(event:KeyboardEvent):void
@@ -49,17 +44,15 @@ package com.crazy.thugLife.controller
 			if (event.keyCode == Keyboard.RIGHT)
 			{
 				_moveRight = true;
-			}
+			}else
 			if (event.keyCode == Keyboard.LEFT)
 			{
 				_moveLeft = true;
 			}
+			else
 			if (event.keyCode == Keyboard.UP)
 			{
 				controllableObject.jump();
-			}
-			if (event.keyCode == Keyboard.DOWN)
-			{
 			}
 		}
 
@@ -80,19 +73,17 @@ package com.crazy.thugLife.controller
 
 			if (!controllableObject)
 			{
-				controllableObject = gameObject.getComponentByType(IControllableComponent) as IControllableComponent;
-				controllableObject.stop();
+				controllableObject = gameObject.getComponentByType(IControllable) as IControllable;
 			}
 
 			if (_moveLeft)
 			{
 				controllableObject.moveLeft();
-			}
+			}else
 			if (_moveRight)
 			{
 				controllableObject.moveRight();
-			}
-			if (!_moveLeft && !_moveRight)
+			}else
 			{
 				controllableObject.stop();
 			}
