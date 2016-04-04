@@ -4,10 +4,10 @@
 package com.crazy.thugLife
 {
 	import com.crazy.thugLife.goSystem.components.controller.Controllable;
-	import com.crazy.thugLife.goSystem.components.controller.KeyboardController;
-	import com.crazyfm.devkit.goSystem.components.view.PhysDebugView;
+	import com.crazy.thugLife.goSystem.components.controller.KeyboardInput;
 	import com.crazyfm.devkit.goSystem.components.physyics.PhysBodyObject;
 	import com.crazyfm.devkit.goSystem.components.physyics.PhysWorld;
+	import com.crazyfm.devkit.goSystem.components.view.PhysDebugView;
 	import com.crazyfm.devkit.goSystem.mechanisms.StarlingJugglerMechanism;
 	import com.crazyfm.extension.goSystem.GOSystem;
 	import com.crazyfm.extension.goSystem.GameObject;
@@ -20,10 +20,7 @@ package com.crazy.thugLife
 	import flash.utils.ByteArray;
 
 	import nape.phys.Body;
-
 	import nape.space.Space;
-
-	import org.swiftsuspenders.Injector;
 
 	import starling.core.Starling;
 	import starling.display.Sprite;
@@ -60,8 +57,8 @@ package com.crazy.thugLife
 							.addComponent(new PhysDebugView(space, Starling.current.nativeOverlay)))
 					.addGameObject(user = new GameObject()
 							.addComponent(new PhysBodyObject(userBody))
-							.addComponent(new Controllable())
-							.addComponent(new KeyboardController(Starling.current.nativeStage)))
+							.addComponent(new Controllable(150, 350))
+							.addComponent(new KeyboardInput(Starling.current.nativeStage)))
 					.addGameObject(floor = new GameObject()
 							.addComponent(new PhysBodyObject(floorBody)));
 

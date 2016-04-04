@@ -9,7 +9,7 @@ package com.crazy.thugLife.goSystem.components.controller
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 
-	public class KeyboardController extends GameComponent
+	public class KeyboardInput extends GameComponent
 	{
 		private var stage:Stage;
 		private var controllableObject:IControllable;
@@ -17,7 +17,7 @@ package com.crazy.thugLife.goSystem.components.controller
 		private var _moveLeft:Boolean;
 		private var _moveRight:Boolean;
 
-		public function KeyboardController(stage:Stage)
+		public function KeyboardInput(stage:Stage)
 		{
 			super();
 
