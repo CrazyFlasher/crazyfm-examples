@@ -3,6 +3,7 @@
  */
 package com.crazy.thugLife
 {
+	import com.crazy.thugLife.goSystem.components.camera.Camera;
 	import com.crazy.thugLife.goSystem.components.controller.Controllable;
 	import com.crazy.thugLife.goSystem.components.controller.KeyboardInput;
 	import com.crazyfm.devkit.goSystem.components.physyics.PhysBodyObject;
@@ -55,6 +56,8 @@ package com.crazy.thugLife
 					.addGameObject(main = new GameObject()
 							.addComponent(new PhysWorld(space))
 							.addComponent(new PhysDebugView(space, Starling.current.nativeOverlay)))
+
+//							.addComponent(new Camera(Starling.current.nativeOverlay).))
 					.addGameObject(user = new GameObject()
 							.addComponent(new PhysBodyObject(userBody))
 							.addComponent(new Controllable(150, 350))

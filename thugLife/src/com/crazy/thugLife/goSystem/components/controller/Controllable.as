@@ -50,6 +50,10 @@ package com.crazy.thugLife.goSystem.components.controller
 		{
 			if (!_isJumping)
 			{
+				_isJumping = true;
+
+				rotate(0);
+
 				body.velocity.setxy(body.velocity.x, -jumpSpeed);
 			}
 		}
@@ -114,10 +118,11 @@ package com.crazy.thugLife.goSystem.components.controller
 
 			rotateBodyToNormal(collision);
 
-			if (!_isWalking)
+			if (!_isWalking && !_isJumping)
 			{
 				body.velocity.setxy(0, 0);
 
+				//trace("sleep");
 				ForcedSleep.sleepBody(body);
 			}
 
