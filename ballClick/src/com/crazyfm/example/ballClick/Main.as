@@ -3,8 +3,7 @@
  */
 package com.crazyfm.example.ballClick
 {
-	import com.crazyfm.core.mvc.model.IContext;
-	import com.crazyfm.core.mvc.view.IViewController;
+	import com.crazyfm.core.mvc.context.IContext;
 	import com.crazyfm.example.ballClick.models.ApplicationContext;
 	import com.crazyfm.example.ballClick.views.BallViewController;
 

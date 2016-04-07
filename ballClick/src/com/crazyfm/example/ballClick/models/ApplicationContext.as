@@ -3,8 +3,8 @@
  */
 package com.crazyfm.example.ballClick.models
 {
+	import com.crazyfm.core.mvc.context.Context;
 	import com.crazyfm.core.mvc.event.ISignalEvent;
-	import com.crazyfm.core.mvc.model.Context;
 	import com.crazyfm.example.ballClick.signals.BallViewSignalEnum;
 
 	/**

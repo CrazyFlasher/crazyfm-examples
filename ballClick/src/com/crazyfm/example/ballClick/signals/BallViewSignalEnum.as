@@ -3,9 +3,16 @@
  */
 package com.crazyfm.example.ballClick.signals
 {
-	public class BallViewSignalEnum
+	import com.crazyfm.core.common.Enum;
+
+	public class BallViewSignalEnum extends Enum
 	{
-		public static const BALL_CLICKED:String = "com.crazyfm.example.ballClick.signals.BALL_CLICKED";
+		public static const BALL_CLICKED:BallViewSignalEnum = new BallViewSignalEnum("BALL_CLICKED");
+
+		public function BallViewSignalEnum(name:String)
+		{
+			super(name);
+		}
 	}
 }
 

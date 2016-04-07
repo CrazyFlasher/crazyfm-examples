@@ -3,12 +3,19 @@
  */
 package com.crazyfm.example.ballClickStarlingNape.signals
 {
+	import com.crazyfm.core.common.Enum;
+
 	/**
 	 * Signal types, that BallViewController dispatches.
 	 */
-	public class BallViewSignalEnum
+	public class BallViewSignalEnum extends Enum
 	{
-		public static const BALL_MOVE_TO_NEW_POSITION:String = "com.crazyfm.example.ballClick.signals.BALL_MOVE_TO_NEW_POSITION";
+		public static const BALL_MOVE_TO_NEW_POSITION:BallViewSignalEnum = new BallViewSignalEnum("BALL_MOVE_TO_NEW_POSITION");
+
+		public function BallViewSignalEnum(name:String)
+		{
+			super(name);
+		}
 	}
 }
 

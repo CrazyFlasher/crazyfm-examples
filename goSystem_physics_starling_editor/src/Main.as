@@ -38,9 +38,7 @@ package
 
 			world.bodyObjectById("ball").body.velocity.setxy(150, -150);
 
-			goSystem = new GOSystem()
-					.setMechanism(new StarlingJugglerMechanism()
-							.setJuggler(Starling.juggler))
+			goSystem = new GOSystem(new StarlingJugglerMechanism(Starling.juggler))
 					.addGameObject(new GameObject()
 							.addComponent(new PhysWorldComponent()
 									.setSpace(world.space)))

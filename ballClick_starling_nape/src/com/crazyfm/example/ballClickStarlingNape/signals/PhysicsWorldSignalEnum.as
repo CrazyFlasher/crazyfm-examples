@@ -3,11 +3,18 @@
  */
 package com.crazyfm.example.ballClickStarlingNape.signals
 {
+	import com.crazyfm.core.common.Enum;
+
 	/**
 	 * Signal types, that PhysicsWorldContext dispatches to children.
 	 */
-	public class PhysicsWorldSignalEnum
+	public class PhysicsWorldSignalEnum extends Enum
 	{
-		public static const WORLD_STEP:String = "com.crazyfm.example.ballClickStarlingNape.signals.WORLD_STEP";
+		public static const WORLD_STEP:BallViewSignalEnum = new BallViewSignalEnum("WORLD_STEP");
+
+		public function PhysicsWorldSignalEnum(name:String)
+		{
+			super(name);
+		}
 	}
 }

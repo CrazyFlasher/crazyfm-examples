@@ -3,11 +3,10 @@
  */
 package com.crazyfm.example.ballClickStarlingNape.models
 {
+	import com.crazyfm.core.mvc.context.Context;
 	import com.crazyfm.core.mvc.event.ISignalEvent;
-	import com.crazyfm.core.mvc.model.Context;
 	import com.crazyfm.core.mvc.model.IModel;
 	import com.crazyfm.core.mvc.model.IModelContainer;
-	import com.crazyfm.core.mvc.view.IViewController;
 	import com.crazyfm.example.ballClickStarlingNape.signals.BallViewSignalEnum;
 	import com.crazyfm.example.ballClickStarlingNape.signals.PhysicsWorldSignalEnum;
 

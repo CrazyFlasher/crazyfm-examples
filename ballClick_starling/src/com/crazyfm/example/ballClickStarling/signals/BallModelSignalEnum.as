@@ -3,8 +3,15 @@
  */
 package com.crazyfm.example.ballClickStarling.signals
 {
-	public class BallModelSignalEnum
+	import com.crazyfm.core.common.Enum;
+
+	public class BallModelSignalEnum extends Enum
 	{
-		public static const BALL_COORDINATES_CHANGED:String = "com.crazyfm.example.ballClick.signals.BALL_COORDINATES_CHANGED";
+		public static const BALL_COORDINATES_CHANGED:BallModelSignalEnum = new BallModelSignalEnum("BALL_COORDINATES_CHANGED");
+
+		public function BallModelSignalEnum(name:String)
+		{
+			super(name);
+		}
 	}
 }
