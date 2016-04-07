@@ -6,7 +6,7 @@ package com.crazyfm.example.ballClickStarling.views
 	import com.crazyfm.core.mvc.event.ISignalEvent;
 	import com.crazyfm.example.ballClickStarling.signals.BallModelSignalEnum;
 	import com.crazyfm.example.ballClickStarling.signals.BallViewSignalEnum;
-	import com.crazyfm.extension.starlingApp.mvc.view.StarlingViewController;
+	import com.crazyfm.extension.starlingApp.mvc.view.StarlingView;
 
 	import flash.geom.Point;
 
@@ -18,7 +18,7 @@ package com.crazyfm.example.ballClickStarling.views
 	 * Simple ball view controllers, that creates BallView,
 	 * listens user input events, and dispatches signal to IContext.
 	 */
-	public class BallViewController extends StarlingViewController
+	public class BallViewController extends StarlingView
 	{
 		private var _ball:BallView;
 

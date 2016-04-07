@@ -4,8 +4,9 @@
 package com.crazyfm.example.ballClickStarlingNape.models
 {
 	import com.crazyfm.core.mvc.context.Context;
-	import com.crazyfm.core.mvc.context.IContext;
 	import com.crazyfm.core.mvc.event.ISignalEvent;
+	import com.crazyfm.core.mvc.view.IView;
+	import com.crazyfm.core.mvc.view.IViewContainer;
 	import com.crazyfm.example.ballClickStarlingNape.signals.PhysicsWorldSignalEnum;
 	import com.crazyfm.example.ballClickStarlingNape.views.BallViewController;
 
@@ -19,7 +20,7 @@ package com.crazyfm.example.ballClickStarlingNape.models
 	public class PhysicsObjectContext extends Context
 	{
 		protected var _body:Body;
-		protected var _view:IViewController;
+		protected var _view:IView;
 
 		private var _bodyType:BodyType;
 
@@ -88,11 +89,11 @@ package com.crazyfm.example.ballClickStarlingNape.models
 			return _body.position;
 		}
 
-		override public function addViewController(viewController:IViewController):IContext
+		override public function addView(view:IView):IViewContainer
 		{
-			super.addViewController(viewController);
+			super.addView(view);
 
-			_view = viewController;
+			_view = view;
 
 			return this;
 		}

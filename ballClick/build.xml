@@ -25,7 +25,7 @@
             <arg value="-library-path+=${libs_path}/crazyfm"/>
             <arg value="-output=${swf}/${project.title}.swf"/>
             <arg value="-frame=two,com.crazyfm.example.ballClick.Main"/>
-            <!--arg value="-debug"/-->
+            <arg value="-debug"/>
         </java>
     </target>
     <target name="clean">

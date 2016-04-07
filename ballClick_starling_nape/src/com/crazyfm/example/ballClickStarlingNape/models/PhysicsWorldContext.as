@@ -7,6 +7,7 @@ package com.crazyfm.example.ballClickStarlingNape.models
 	import com.crazyfm.core.mvc.event.ISignalEvent;
 	import com.crazyfm.core.mvc.model.IModel;
 	import com.crazyfm.core.mvc.model.IModelContainer;
+	import com.crazyfm.core.mvc.view.IView;
 	import com.crazyfm.example.ballClickStarlingNape.signals.BallViewSignalEnum;
 	import com.crazyfm.example.ballClickStarlingNape.signals.PhysicsWorldSignalEnum;
 
@@ -25,9 +26,9 @@ package com.crazyfm.example.ballClickStarlingNape.models
 		private var _ball:PhysicsObjectContext;
 
 		//View controller, that is used as ball model view
-		private var _mainViewController:IViewController;
+		private var _mainViewController:IView;
 
-		public function PhysicsWorldContext(mainViewController:IViewController)
+		public function PhysicsWorldContext(mainViewController:IView)
 		{
 			_mainViewController = mainViewController;
 
@@ -60,7 +61,7 @@ package com.crazyfm.example.ballClickStarlingNape.models
 			addModel(_ball);
 
 			//Adding view controller to ball physics model
-			_ball.addViewController(_mainViewController);
+			_ball.addView(_mainViewController);
 
 			//Listening view controller event
 			addSignalListener(BallViewSignalEnum.BALL_MOVE_TO_NEW_POSITION, ballNewPosition);

@@ -4,7 +4,7 @@
 package com.crazyfm.example.ballClickStarlingNape.views
 {
 	import com.crazyfm.example.ballClickStarlingNape.signals.BallViewSignalEnum;
-	import com.crazyfm.extension.starlingApp.mvc.view.StarlingViewController;
+	import com.crazyfm.extension.starlingApp.mvc.view.StarlingView;
 
 	import nape.geom.Vec2;
 
@@ -16,7 +16,7 @@ package com.crazyfm.example.ballClickStarlingNape.views
 	 * Simple ball view controllers, that creates BallView,
 	 * listens user input events, and dispatches signal to IContext.
 	 */
-	public class BallViewController extends StarlingViewController
+	public class BallViewController extends StarlingView
 	{
 		private var _ball:BallView;
 

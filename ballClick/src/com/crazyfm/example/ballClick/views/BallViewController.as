@@ -4,7 +4,7 @@
 package com.crazyfm.example.ballClick.views
 {
 	import com.crazyfm.core.mvc.event.ISignalEvent;
-	import com.crazyfm.core.mvc.view.ViewController;
+	import com.crazyfm.core.mvc.view.View;
 	import com.crazyfm.example.ballClick.signals.BallModelSignalEnum;
 	import com.crazyfm.example.ballClick.signals.BallViewSignalEnum;
 
@@ -16,7 +16,7 @@ package com.crazyfm.example.ballClick.views
 	 * Simple ball view controllers, that creates BallView,
 	 * listens user input events, and dispatches signal to IContext.
 	 */
-	public class BallViewController extends ViewController
+	public class BallViewController extends View
 	{
 		private var _ball:BallView;
 

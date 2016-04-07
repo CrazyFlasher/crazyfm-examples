@@ -4,6 +4,7 @@
 package com.crazyfm.example.ballClickStarling
 {
 	import com.crazyfm.core.mvc.context.IContext;
+	import com.crazyfm.core.mvc.view.IView;
 	import com.crazyfm.example.ballClickStarling.models.ApplicationContext;
 	import com.crazyfm.example.ballClickStarling.views.BallViewController;
 
@@ -20,10 +21,10 @@ package com.crazyfm.example.ballClickStarling
 			var context:IContext = new ApplicationContext();
 
 			//Creates new IViewController and passes this as visual DisplayObjectContainer
-			var viewController:IViewController = new BallViewController(this);
+			var viewController:IView = new BallViewController(this);
 
 			//Adds IViewController to IContext view controllers' list
-			context.addViewController(viewController);
+			context.addView(viewController);
 		}
 	}
 }
