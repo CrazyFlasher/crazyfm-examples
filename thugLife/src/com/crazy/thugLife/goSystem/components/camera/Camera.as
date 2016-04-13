@@ -5,8 +5,9 @@ package com.crazy.thugLife.goSystem.components.camera
 {
 	import com.crazyfm.extension.goSystem.GameComponent;
 
-	import flash.display.DisplayObject;
 	import flash.geom.Rectangle;
+
+	import starling.display.DisplayObject;
 
 	public class Camera extends GameComponent implements ICamera
 	{
@@ -38,7 +39,7 @@ package com.crazy.thugLife.goSystem.components.camera
 			if (!focusObject) return;
 			if (viewPort.width >= viewContainer.width) return;
 
-			viewContainer.x -= focusObject.x;
+			viewContainer.x = -focusObject.x + viewPort.width / 2;
 		}
 
 		public function setViewport(value:Rectangle):ICamera

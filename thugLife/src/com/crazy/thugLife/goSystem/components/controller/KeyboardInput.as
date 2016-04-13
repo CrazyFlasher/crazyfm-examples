@@ -5,11 +5,12 @@ package com.crazy.thugLife.goSystem.components.controller
 {
 	import com.crazyfm.extension.goSystem.GameComponent;
 
-	import flash.display.Stage;
-	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 
-	public class KeyboardInput extends GameComponent
+	import starling.display.Stage;
+	import starling.events.KeyboardEvent;
+
+	public class KeyboardInput extends GameComponent implements IInput
 	{
 		private var stage:Stage;
 		private var controllableObject:IControllable;
@@ -27,32 +28,32 @@ package com.crazy.thugLife.goSystem.components.controller
 			stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
 		}
 
-		private function keyUp(event:KeyboardEvent):void
+		private function keyUp(event:KeyboardEvent, keyCode:uint):void
 		{
-			if (event.keyCode == Keyboard.RIGHT)
+			if (keyCode == Keyboard.RIGHT)
 			{
-				_moveRight = false;
+				outputRight();
 			}
-			if (event.keyCode == Keyboard.LEFT)
+			if (keyCode == Keyboard.LEFT)
 			{
-				_moveLeft = false;
+				outputLeft();
 			}
 		}
 
-		private function keyDown(event:KeyboardEvent):void
+		private function keyDown(event:KeyboardEvent, keyCode:uint):void
 		{
-			if (event.keyCode == Keyboard.RIGHT)
+			if (keyCode == Keyboard.RIGHT)
 			{
-				_moveRight = true;
+				inputRight();
 			}else
-			if (event.keyCode == Keyboard.LEFT)
+			if (keyCode == Keyboard.LEFT)
 			{
-				_moveLeft = true;
+				inputLeft();
 			}
 			else
-			if (event.keyCode == Keyboard.UP)
+			if (keyCode == Keyboard.UP)
 			{
-				controllableObject.jump();
+				inputJump();
 			}
 		}
 
@@ -87,6 +88,48 @@ package com.crazy.thugLife.goSystem.components.controller
 			{
 				controllableObject.stop();
 			}
+		}
+
+		public function inputRight():IInput
+		{
+			_moveRight = true;
+
+			return this;
+		}
+
+		public function inputLeft():IInput
+		{
+			_moveLeft = true;
+
+			return this;
+		}
+
+		public function inputJump():IInput
+		{
+			controllableObject.jump();
+
+			return this;
+		}
+
+		public function outputRight():IInput
+		{
+			_moveRight = false;
+
+			return this;
+		}
+
+		public function outputLeft():IInput
+		{
+			_moveLeft = false;
+
+			return this;
+		}
+
+		public function outputJump():IInput
+		{
+			//do nothing
+
+			return this;
 		}
 	}
 }

@@ -3,7 +3,9 @@
  */
 package com.crazy.thugLife.goSystem.components.controller
 {
-	public interface IControllable
+	import com.crazyfm.extension.goSystem.IGameComponent;
+
+	public interface IControllable extends IGameComponent
 	{
 		function moveLeft():void;
 		function moveRight():void;

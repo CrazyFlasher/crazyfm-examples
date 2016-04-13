@@ -4,11 +4,14 @@
 package com.crazy.thugLife
 {
 	import com.crazy.thugLife.goSystem.components.camera.Camera;
+	import com.crazy.thugLife.goSystem.components.camera.ICamera;
 	import com.crazy.thugLife.goSystem.components.controller.Controllable;
 	import com.crazy.thugLife.goSystem.components.controller.KeyboardInput;
-	import com.crazyfm.devkit.goSystem.components.physyics.PhysBodyObject;
-	import com.crazyfm.devkit.goSystem.components.physyics.PhysWorld;
-	import com.crazyfm.devkit.goSystem.components.view.PhysDebugView;
+	import com.crazy.thugLife.goSystem.components.view.FloorSkin;
+	import com.crazy.thugLife.goSystem.components.view.UserSkin;
+	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysBodyObjectModel;
+	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysWorldModel;
+	import com.crazyfm.devkit.goSystem.components.physyics.view.IPhysBodyObjectView;
 	import com.crazyfm.devkit.goSystem.mechanisms.StarlingJugglerMechanism;
 	import com.crazyfm.extension.goSystem.GOSystem;
 	import com.crazyfm.extension.goSystem.GameObject;
@@ -18,6 +21,8 @@ package com.crazy.thugLife
 	import com.crazyfm.extensions.physics.WorldObject;
 	import com.crazyfm.extensions.physics.utils.PhysicsParser;
 
+	import flash.display.Sprite;
+	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
 
 	import nape.phys.Body;
@@ -25,6 +30,7 @@ package com.crazy.thugLife
 
 	import starling.core.Starling;
 	import starling.display.Sprite;
+	import starling.events.Event;
 
 	public class Main extends Sprite
 	{
@@ -39,32 +45,53 @@ package com.crazy.thugLife
 		private var floor:IGameObject;
 		private var user:IGameObject;
 
+		private var camera:ICamera;
+		private var userSkin:IPhysBodyObjectView;
+
 		public function Main()
 		{
 			super();
 
+			Starling.current.showStats = true;
+
 			worldDataObject = new WorldObject();
 			worldDataObject.data = PhysicsParser.parseWorld(JSON.parse((new WorldClass() as ByteArray).toString()));
 
-			//stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown)
+			addEventListener(Event.ADDED_TO_STAGE, added);
+		}
 
+		private function added():void
+		{
 			var space:Space = worldDataObject.space;
 			var floorBody:Body = worldDataObject.bodyObjectById("ground").body;
 			var userBody:Body = worldDataObject.bodyObjectById("user").body;
 
+			var debugViewSprite:flash.display.Sprite = new flash.display.Sprite();
+			debugViewSprite.alpha = 0.5;
+			Starling.current.nativeOverlay.addChild(debugViewSprite);
+
+			var mainViewContainer:Sprite = new Sprite();
+			addChild(mainViewContainer);
+
 			goSystem = new GOSystem(new StarlingJugglerMechanism(Starling.juggler))
 					.addGameObject(main = new GameObject()
-							.addComponent(new PhysWorld(space))
-							.addComponent(new PhysDebugView(space, Starling.current.nativeOverlay)))
-
-//							.addComponent(new Camera(Starling.current.nativeOverlay).))
+							.addComponent(new PhysWorldModel(space))
+//							.addComponent(new PhysDebugView(space, debugViewSprite))
+							.addComponent(camera = new Camera(mainViewContainer)))
 					.addGameObject(user = new GameObject()
-							.addComponent(new PhysBodyObject(userBody))
+							.addComponent(new PhysBodyObjectModel(userBody))
 							.addComponent(new Controllable(150, 350))
-							.addComponent(new KeyboardInput(Starling.current.nativeStage)))
+							.addComponent(new KeyboardInput(stage))
+							.addComponent(userSkin = new UserSkin(mainViewContainer)))
 					.addGameObject(floor = new GameObject()
-							.addComponent(new PhysBodyObject(floorBody)));
+							.addComponent(new PhysBodyObjectModel(floorBody))
+							.addComponent(new FloorSkin(mainViewContainer))
+					);
 
+			goSystem.updateNow();
+
+			camera.setFocusObject(userSkin.skin);
+			camera.setViewport(new Rectangle(0, 0, stage.stageWidth, stage.stageHeight));
 		}
 	}
 }

@@ -4,8 +4,8 @@
 package com.crazy.thugLife.goSystem.components.controller
 {
 	import com.crazyfm.core.mvc.event.ISignalEvent;
-	import com.crazyfm.devkit.goSystem.components.physyics.PhysBodyObject;
-	import com.crazyfm.devkit.goSystem.components.physyics.PhysObjectSignalEnum;
+	import com.crazyfm.devkit.goSystem.components.physyics.event.PhysObjectSignalEnum;
+	import com.crazyfm.devkit.goSystem.components.physyics.model.IPhysBodyObjectModel;
 	import com.crazyfm.extension.goSystem.GameComponent;
 
 	import nape.callbacks.InteractionCallback;
@@ -15,7 +15,7 @@ package com.crazy.thugLife.goSystem.components.controller
 	public class Controllable extends GameComponent implements IControllable
 	{
 		private var body:Body;
-		private var physObj:PhysBodyObject;
+		private var physObj:IPhysBodyObjectModel;
 
 		private var _isJumping:Boolean;
 		private var _isInAir:Boolean = true;
@@ -64,7 +64,7 @@ package com.crazy.thugLife.goSystem.components.controller
 
 			if (!physObj)
 			{
-				physObj = gameObject.getComponentByType(PhysBodyObject) as PhysBodyObject;
+				physObj = gameObject.getComponentByType(IPhysBodyObjectModel) as IPhysBodyObjectModel;
 
 				physObj.addSignalListener(PhysObjectSignalEnum.COLLISION_BEGIN, collisionBegin);
 				physObj.addSignalListener(PhysObjectSignalEnum.COLLISION_ONGOING, collisionOnGoing);

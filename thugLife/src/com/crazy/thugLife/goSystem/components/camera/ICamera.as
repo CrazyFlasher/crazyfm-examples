@@ -3,10 +3,13 @@
  */
 package com.crazy.thugLife.goSystem.components.camera
 {
-	import flash.display.DisplayObject;
+	import com.crazyfm.extension.goSystem.IGameComponent;
+
 	import flash.geom.Rectangle;
 
-	public interface ICamera
+	import starling.display.DisplayObject;
+
+	public interface ICamera extends IGameComponent
 	{
 		function setFocusObject(value:DisplayObject):ICamera;
 		function setViewport(value:Rectangle):ICamera;
