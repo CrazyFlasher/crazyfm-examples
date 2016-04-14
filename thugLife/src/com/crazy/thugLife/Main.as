@@ -12,7 +12,7 @@ package com.crazy.thugLife
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysBodyObjectModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysWorldModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.view.IPhysBodyObjectView;
-	import com.crazyfm.devkit.goSystem.mechanisms.StarlingJugglerMechanism;
+	import com.crazyfm.devkit.goSystem.mechanisms.StarlingEnterFrameMechanism;
 	import com.crazyfm.extension.goSystem.GOSystem;
 	import com.crazyfm.extension.goSystem.GameObject;
 	import com.crazyfm.extension.goSystem.IGOSystem;
@@ -73,7 +73,7 @@ package com.crazy.thugLife
 			var mainViewContainer:Sprite = new Sprite();
 			addChild(mainViewContainer);
 
-			goSystem = new GOSystem(new StarlingJugglerMechanism(Starling.juggler))
+			goSystem = new GOSystem(new StarlingEnterFrameMechanism(1 / Starling.current.nativeStage.frameRate))
 					.addGameObject(main = new GameObject()
 							.addComponent(new PhysWorldModel(space))
 //							.addComponent(new PhysDebugView(space, debugViewSprite))

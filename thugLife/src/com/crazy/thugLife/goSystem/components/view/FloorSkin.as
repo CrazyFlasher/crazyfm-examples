@@ -38,7 +38,7 @@ package com.crazy.thugLife.goSystem.components.view
 			var shape:starling.display.Shape = new starling.display.Shape();
 			skin.addChild(shape);
 
-			shape.graphics.lineStyle(1, 0xFFCC00);
+			shape.graphics.lineStyle(3, 0xFFCC00);
 
 			for (var i:int = 0; i < model.body.shapes.length; i++)
 			{
