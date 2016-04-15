@@ -9,7 +9,6 @@ package com.crazy.thugLife.goSystem.components.controller
 	import com.crazyfm.extension.goSystem.GameComponent;
 
 	import nape.callbacks.InteractionCallback;
-	import nape.hacks.ForcedSleep;
 
 	public class Controllable extends GameComponent implements IControllable
 	{
@@ -118,11 +117,6 @@ package com.crazy.thugLife.goSystem.components.controller
 			if (!_isWalking && !_isJumping)
 			{
 				physModel.putToSleep();
-
-				body.velocity.setxy(0, 0);
-
-				//trace("sleep");
-				ForcedSleep.sleepBody(body);
 			}
 
 			_isInAir = false;
@@ -157,7 +151,7 @@ package com.crazy.thugLife.goSystem.components.controller
 
 		public function stop():void
 		{
-			if (body && _isWalking)
+			if (physModel && _isWalking)
 			{
 				_isWalking = false;
 
