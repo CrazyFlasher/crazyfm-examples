@@ -11,9 +11,9 @@ package com.crazy.thugLife.goSystem.components.view
 	import starling.display.Shape;
 	import starling.display.Sprite;
 
-	public class UserSkin extends PhysBodyObjectView
+	public class UserView extends PhysBodyObjectView
 	{
-		public function UserSkin(viewContainer:DisplayObjectContainer)
+		public function UserView(viewContainer:DisplayObjectContainer)
 		{
 			super(viewContainer);
 		}

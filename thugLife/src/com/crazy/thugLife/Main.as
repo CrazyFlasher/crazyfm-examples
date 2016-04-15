@@ -7,8 +7,8 @@ package com.crazy.thugLife
 	import com.crazy.thugLife.goSystem.components.camera.ICamera;
 	import com.crazy.thugLife.goSystem.components.controller.Controllable;
 	import com.crazy.thugLife.goSystem.components.controller.KeyboardInput;
-	import com.crazy.thugLife.goSystem.components.view.FloorSkin;
-	import com.crazy.thugLife.goSystem.components.view.UserSkin;
+	import com.crazy.thugLife.goSystem.components.view.FloorView;
+	import com.crazy.thugLife.goSystem.components.view.UserView;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysBodyObjectModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysWorldModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.view.IPhysBodyObjectView;
@@ -82,10 +82,10 @@ package com.crazy.thugLife
 							.addComponent(new PhysBodyObjectModel(userBody))
 							.addComponent(new Controllable(150, 350))
 							.addComponent(new KeyboardInput(stage))
-							.addComponent(userSkin = new UserSkin(mainViewContainer)))
+							.addComponent(userSkin = new UserView(mainViewContainer)))
 					.addGameObject(floor = new GameObject()
 							.addComponent(new PhysBodyObjectModel(floorBody))
-							.addComponent(new FloorSkin(mainViewContainer))
+							.addComponent(new FloorView(mainViewContainer, worldDataObject.bodyObjectById("ground").data.shapeDataList))
 					);
 
 			goSystem.updateNow();

@@ -10,12 +10,10 @@ package com.crazy.thugLife.goSystem.components.controller
 
 	import nape.callbacks.InteractionCallback;
 	import nape.hacks.ForcedSleep;
-	import nape.phys.Body;
 
 	public class Controllable extends GameComponent implements IControllable
 	{
-		private var body:Body;
-		private var physObj:IPhysBodyObjectModel;
+		private var physModel:IPhysBodyObjectModel;
 
 		private var _isJumping:Boolean;
 		private var _isInAir:Boolean = true;
@@ -36,14 +34,14 @@ package com.crazy.thugLife.goSystem.components.controller
 		{
 			_isWalking = true;
 
-			body.velocity.setxy(-walkSpeed, body.velocity.y);
+			physModel.setVelocityX(-walkSpeed);
 		}
 
 		public function moveRight():void
 		{
 			_isWalking = true;
 
-			body.velocity.setxy(walkSpeed, body.velocity.y);
+			physModel.setVelocityX(walkSpeed);
 		}
 
 		public function jump():void
@@ -54,7 +52,7 @@ package com.crazy.thugLife.goSystem.components.controller
 
 				rotate(0);
 
-				body.velocity.setxy(body.velocity.x, -jumpSpeed);
+				physModel.setVelocityY(-jumpSpeed);
 			}
 		}
 
@@ -62,23 +60,22 @@ package com.crazy.thugLife.goSystem.components.controller
 		{
 			super.interact(timePassed);
 
-			if (!physObj)
+			if (!physModel)
 			{
-				physObj = gameObject.getComponentByType(IPhysBodyObjectModel) as IPhysBodyObjectModel;
+				physModel = gameObject.getComponentByType(IPhysBodyObjectModel) as IPhysBodyObjectModel;
 
-				physObj.addSignalListener(PhysObjectSignalEnum.COLLISION_BEGIN, collisionBegin);
-				physObj.addSignalListener(PhysObjectSignalEnum.COLLISION_ONGOING, collisionOnGoing);
-				physObj.addSignalListener(PhysObjectSignalEnum.COLLISION_END, collisionEnd);
+				physModel.addSignalListener(PhysObjectSignalEnum.COLLISION_BEGIN, collisionBegin);
+				physModel.addSignalListener(PhysObjectSignalEnum.COLLISION_ONGOING, collisionOnGoing);
+				physModel.addSignalListener(PhysObjectSignalEnum.COLLISION_END, collisionEnd);
 
-				body = physObj.body;
-				body.allowRotation = false;
+				physModel.setAllowRotation(false);
 
 				stop();
 			}
 
 			if (!_isJumping && _isInAir)
 			{
-				if (Math.abs(body.velocity.y) > walkSpeed / 3)
+				if (Math.abs(physModel.velocityY) > walkSpeed / 3)
 				{
 					_isJumping = true;
 
@@ -120,6 +117,8 @@ package com.crazy.thugLife.goSystem.components.controller
 
 			if (!_isWalking && !_isJumping)
 			{
+				physModel.putToSleep();
+
 				body.velocity.setxy(0, 0);
 
 				//trace("sleep");
@@ -138,7 +137,7 @@ package com.crazy.thugLife.goSystem.components.controller
 			{
 //				trace("normal:", body.worldVectorToLocal(collision.arbiters.at(i).collisionArbiter.normal).y);
 
-				if (body.worldVectorToLocal(collision.arbiters.at(i).collisionArbiter.normal).y < 0.3)
+				if (physModel.worldVectorToLocal(collision.arbiters.at(i).collisionArbiter.normal).y < 0.3)
 				{
 					return false;
 				}
@@ -149,10 +148,9 @@ package com.crazy.thugLife.goSystem.components.controller
 
 		override public function dispose():void
 		{
-			physObj.removeAllSignalListeners();
+			physModel.removeAllSignalListeners();
 
-			physObj = null;
-			body = null;
+			physModel = null;
 
 			super.dispose();
 		}
@@ -163,7 +161,7 @@ package com.crazy.thugLife.goSystem.components.controller
 			{
 				_isWalking = false;
 
-				body.velocity.setxy(0, body.velocity.y);
+				physModel.setVelocityX(0);
 			}
 		}
 
@@ -171,7 +169,7 @@ package com.crazy.thugLife.goSystem.components.controller
 		{
 			if (!rotateToPath) return;
 
-			body.rotation = angle;
+			physModel.setRotation(angle);
 		}
 
 		private function rotateBodyToNormal(collision:InteractionCallback):void
