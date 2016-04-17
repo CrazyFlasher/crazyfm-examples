@@ -95,8 +95,9 @@ package
 			// Determine the set of Body's which are intersecting mouse point.
 			// And search for any 'dynamic' type Body to begin dragging.
 			var bodies:BodyList = world.space.bodiesUnderPoint(mousePoint);
+			var body:Body;
 			for (var i:int = 0; i < bodies.length; i++) {
-				var body:Body = bodies.at(i);
+				 body = bodies.at(i);
 
 				if (!body.isDynamic()) {
 					continue;

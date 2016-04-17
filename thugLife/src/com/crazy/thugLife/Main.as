@@ -7,11 +7,10 @@ package com.crazy.thugLife
 	import com.crazy.thugLife.goSystem.components.camera.ICamera;
 	import com.crazy.thugLife.goSystem.components.controller.Controllable;
 	import com.crazy.thugLife.goSystem.components.controller.KeyboardInput;
-	import com.crazy.thugLife.goSystem.components.view.FloorView;
-	import com.crazy.thugLife.goSystem.components.view.UserView;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysBodyObjectModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysWorldModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.view.IPhysBodyObjectView;
+	import com.crazyfm.devkit.goSystem.components.physyics.view.starling.PhysBodyObjectFromDataView;
 	import com.crazyfm.devkit.goSystem.mechanisms.StarlingEnterFrameMechanism;
 	import com.crazyfm.extension.goSystem.GOSystem;
 	import com.crazyfm.extension.goSystem.GameObject;
@@ -44,6 +43,7 @@ package com.crazy.thugLife
 		private var main:IGameObject;
 		private var floor:IGameObject;
 		private var user:IGameObject;
+		private var sensors:IGameObject;
 
 		private var camera:ICamera;
 		private var userSkin:IPhysBodyObjectView;
@@ -65,6 +65,7 @@ package com.crazy.thugLife
 			var space:Space = worldDataObject.space;
 			var floorBody:Body = worldDataObject.bodyObjectById("ground").body;
 			var userBody:Body = worldDataObject.bodyObjectById("user").body;
+			var sensorsBody:Body = worldDataObject.bodyObjectById("sensors").body;
 
 			var debugViewSprite:flash.display.Sprite = new flash.display.Sprite();
 			debugViewSprite.alpha = 0.5;
@@ -82,10 +83,14 @@ package com.crazy.thugLife
 							.addComponent(new PhysBodyObjectModel(userBody))
 							.addComponent(new Controllable(150, 350))
 							.addComponent(new KeyboardInput(stage))
-							.addComponent(userSkin = new UserView(mainViewContainer)))
+							.addComponent(userSkin = new PhysBodyObjectFromDataView(mainViewContainer, worldDataObject.bodyObjectById("user").data.shapeDataList, 0x00CC00)))
 					.addGameObject(floor = new GameObject()
 							.addComponent(new PhysBodyObjectModel(floorBody))
-							.addComponent(new FloorView(mainViewContainer, worldDataObject.bodyObjectById("ground").data.shapeDataList))
+							.addComponent(new PhysBodyObjectFromDataView(mainViewContainer, worldDataObject.bodyObjectById("ground").data.shapeDataList, 0xFFCC00)))
+					.addGameObject(sensors = new GameObject()
+							.addComponent(new PhysBodyObjectModel(sensorsBody))
+							.addComponent(new PhysBodyObjectFromDataView(mainViewContainer, worldDataObject.bodyObjectById("sensors").data.shapeDataList, 0xFF00FF))
+
 					);
 
 			goSystem.updateNow();
