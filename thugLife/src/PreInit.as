@@ -3,10 +3,11 @@
  */
 package {
 	import com.crazy.thugLife.Main;
+	import com.crazyfm.extension.starlingApp.initializer.models.StarlingConfig;
 	import com.crazyfm.extension.starlingApp.initializer.models.StarlingInitializerContext;
-	import com.crazyfm.extension.starlingApp.initializer.models.StarlingProperties;
 
 	import flash.display.Sprite;
+	import flash.display3D.Context3DProfile;
 	import flash.events.Event;
 
 	/**
@@ -26,9 +27,10 @@ package {
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, added);
 
-			var properties:StarlingProperties = new StarlingProperties();
+			var properties:StarlingConfig = new StarlingConfig();
 			properties.stageWidth = stage.stageWidth;
 			properties.stageHeight = stage.stageHeight;
+			properties.context3DProfile = Context3DProfile.BASELINE;
 			properties.antiAliasing = 8;
 
 			//Creates IContext, that initializes Starling.

@@ -37,9 +37,31 @@ package com.crazy.thugLife.goSystem.components.camera
 
 			if (!viewPort) return;
 			if (!focusObject) return;
-			if (viewPort.width >= viewContainer.width) return;
 
-			viewContainer.x = -focusObject.x + viewPort.width / 2;
+			var x:Number = 0;
+			var y:Number = 0;
+
+			if (viewPort.width < viewContainer.width)
+			{
+				x = -focusObject.x + viewPort.width / 2;
+			}
+
+			if (viewPort.height < viewContainer.height)
+			{
+				y = -focusObject.y + viewPort.height / 2;
+			}
+
+			if (x > 0)
+			{
+				x = 0;
+			}else
+			if (x < viewPort.width - viewContainer.width)
+			{
+				x = viewPort.width - viewContainer.width;
+			}
+
+			viewContainer.x = x;
+			viewContainer.y = y;
 		}
 
 		public function setViewport(value:Rectangle):ICamera
