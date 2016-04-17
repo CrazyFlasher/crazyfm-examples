@@ -24,6 +24,8 @@ package com.crazy.thugLife.goSystem.components.controller
 		private var _isInAir:Boolean = true;
 		private var _isWalking:Boolean;
 		private var _isClimbing:Boolean;
+		private var _antiGravityForceAdded:Boolean;
+		private var _forceBeforeClimb:Vec2;
 
 		private var walkSpeed:Number = 0;
 		private var jumpSpeed:Number = 0;
@@ -84,13 +86,25 @@ package com.crazy.thugLife.goSystem.components.controller
 				stop();
 			}
 
-			if (!_isJumping && _isInAir)
+			if (!_isClimbing)
 			{
-				if (Math.abs(body.velocity.y) > walkSpeed / 3)
+				if (!_isJumping && _isInAir)
 				{
-					_isJumping = true;
+					if (Math.abs(body.velocity.y) > walkSpeed / 3)
+					{
+						_isJumping = true;
 
-					rotate(0);
+						rotate(0);
+					}
+				}
+			}else
+			{
+				if (!_antiGravityForceAdded)
+				{
+					trace("hij")
+					_antiGravityForceAdded = true;
+					_forceBeforeClimb = body.force;
+					body. = body.space.gravity.mul(-1);
 				}
 			}
 		}
@@ -117,8 +131,8 @@ package com.crazy.thugLife.goSystem.components.controller
 			if (!ladder) return;
 
 			_isClimbing = false;
-
-			body.force.sub(body.space.gravity.mul(-1, true));
+			_antiGravityForceAdded = false;
+			body.force = _forceBeforeClimb;
 		}
 
 		private function handleSensorOnGoing(collision:InteractionCallback):void
@@ -134,11 +148,10 @@ package com.crazy.thugLife.goSystem.components.controller
 
 			_isClimbing = true;
 
-			body.force.add(body.space.gravity.mul(-1, true));
 			body.velocity.setxy(0, 0);
 
 			var posX:Number = ladder.bounds.min.x + (ladder.bounds.max.x - ladder.bounds.min.x) / 2;
-			body.position.x = posX;
+			//body.position.x = posX;
 		}
 
 		private function collisionEnd(e:ISignalEvent):void
