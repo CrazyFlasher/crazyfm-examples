@@ -13,6 +13,7 @@ package com.crazy.thugLife.goSystem.components.controller
 	import nape.geom.Vec2;
 	import nape.hacks.ForcedSleep;
 	import nape.phys.Body;
+	import nape.phys.GravMassMode;
 	import nape.shape.Shape;
 
 	public class Controllable extends GameComponent implements IControllable
@@ -24,43 +25,70 @@ package com.crazy.thugLife.goSystem.components.controller
 		private var _isInAir:Boolean = true;
 		private var _isWalking:Boolean;
 		private var _isClimbing:Boolean;
-		private var _antiGravityForceAdded:Boolean;
-		private var _forceBeforeClimb:Vec2;
+		private var _canClimb:Boolean;
 
-		private var walkSpeed:Number = 0;
-		private var jumpSpeed:Number = 0;
+		private var _gravityMass:Number;
+
+		private var walkSpeed:Number;
+		private var jumpSpeed:Number;
+		private var climbSpeed:Number;
 		private var rotateToPath:Boolean;
 
-		public function Controllable(walkSpeed:Number, jumpSpeed:Number, rotateToPath:Boolean = true)
+		public function Controllable(walkSpeed:Number, jumpSpeed:Number, climbSpeed:Number, rotateToPath:Boolean = true)
 		{
 			this.walkSpeed = walkSpeed;
 			this.jumpSpeed = jumpSpeed;
+			this.climbSpeed = climbSpeed;
 			this.rotateToPath = rotateToPath;
 		}
 
 		public function moveLeft():void
 		{
-			_isWalking = true;
+			//if (!_isClimbing)
+			//{
+				_isWalking = true;
 
-			body.velocity.setxy(-walkSpeed, body.velocity.y);
+				body.velocity.x = -walkSpeed;
+			//}
 		}
 
 		public function moveRight():void
 		{
-			_isWalking = true;
+//			if (!_isClimbing)
+//			{
+				_isWalking = true;
 
-			body.velocity.setxy(walkSpeed, body.velocity.y);
+				body.velocity.x = walkSpeed;
+//			}
 		}
 
-		public function jump():void
+		public function moveUp():void
 		{
-			if (!_isJumping)
+			if (_canClimb)
 			{
-				_isJumping = true;
+				startClimbing();
+			}
+			if (_isClimbing)
+			{
+				body.velocity.y = -climbSpeed;
+			}else
+			{
+				if (!_isJumping)
+				{
+					_isJumping = true;
 
-				rotate(0);
+					rotate(0);
 
-				body.velocity.setxy(body.velocity.x, -jumpSpeed);
+					body.velocity.y = -jumpSpeed;
+				}
+			}
+		}
+
+		public function moveDown():void
+		{
+			if (_isClimbing)
+			{
+				body.velocity.y = jumpSpeed;
 			}
 		}
 
@@ -82,6 +110,7 @@ package com.crazy.thugLife.goSystem.components.controller
 
 				body = physObj.body;
 				body.allowRotation = false;
+				_gravityMass = body.gravMass;
 
 				stop();
 			}
@@ -99,12 +128,9 @@ package com.crazy.thugLife.goSystem.components.controller
 				}
 			}else
 			{
-				if (!_antiGravityForceAdded)
+				if (body.gravMass != 0)
 				{
-					trace("hij")
-					_antiGravityForceAdded = true;
-					_forceBeforeClimb = body.force;
-					body. = body.space.gravity.mul(-1);
+					body.gravMass = 0;
 				}
 			}
 		}
@@ -130,14 +156,34 @@ package com.crazy.thugLife.goSystem.components.controller
 
 			if (!ladder) return;
 
+			stopClimbing();
+		}
+
+		private function startClimbing():void
+		{
+			_canClimb = false;
+			_isClimbing = true;
+
+			body.velocity.setxy(0, 0);
+			rotate(0);
+
+			/*var posX:Number = ladder.bounds.min.x + (ladder.bounds.max.x - ladder.bounds.min.x) / 2;
+			 body.position.x = posX;*/
+		}
+		private function stopClimbing():void
+		{
+			_canClimb = false;
 			_isClimbing = false;
-			_antiGravityForceAdded = false;
-			body.force = _forceBeforeClimb;
+			body.gravMass = _gravityMass;
+			body.gravMassMode = GravMassMode.DEFAULT;
 		}
 
 		private function handleSensorOnGoing(collision:InteractionCallback):void
 		{
-
+			if (!_isClimbing)
+			{
+				handleSensorBegin(collision);
+			}
 		}
 
 		private function handleSensorBegin(collision:InteractionCallback):void
@@ -146,12 +192,7 @@ package com.crazy.thugLife.goSystem.components.controller
 
 			if (!ladder) return;
 
-			_isClimbing = true;
-
-			body.velocity.setxy(0, 0);
-
-			var posX:Number = ladder.bounds.min.x + (ladder.bounds.max.x - ladder.bounds.min.x) / 2;
-			//body.position.x = posX;
+			_canClimb = true;
 		}
 
 		private function collisionEnd(e:ISignalEvent):void
@@ -182,6 +223,11 @@ package com.crazy.thugLife.goSystem.components.controller
 		private function handleCollisionBegin(collision:InteractionCallback):void
 		{
 			if (!isOnLegs(collision)) return;
+
+			if (_isClimbing)
+			{
+				stopClimbing();
+			}
 
 			rotateBodyToNormal(collision);
 
@@ -224,11 +270,18 @@ package com.crazy.thugLife.goSystem.components.controller
 
 		public function stop():void
 		{
-			if (body && _isWalking)
+			if (body)
 			{
-				_isWalking = false;
+				if (_isWalking)
+				{
+					_isWalking = false;
 
-				body.velocity.setxy(0, body.velocity.y);
+					body.velocity.x = 0;
+				}
+				if (_isClimbing)
+				{
+					body.velocity.y = 0;
+				}
 			}
 		}
 
@@ -259,9 +312,11 @@ package com.crazy.thugLife.goSystem.components.controller
 
 		private function hittedLadder(collision:InteractionCallback):Shape
 		{
+			var arbiter:Arbiter;
+
 			for (var i:int = 0; i < collision.arbiters.length; i++)
 			{
-				var arbiter:Arbiter = collision.arbiters.at(i);
+				arbiter = collision.arbiters.at(i);
 				if (arbiter.shape1.userData.id.search("ladder") != -1) return arbiter.shape1;
 				if (arbiter.shape2.userData.id.search("ladder") != -1) return arbiter.shape2;
 			}

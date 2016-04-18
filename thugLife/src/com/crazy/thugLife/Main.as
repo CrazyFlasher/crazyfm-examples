@@ -81,7 +81,7 @@ package com.crazy.thugLife
 							.addComponent(camera = new Camera(mainViewContainer)))
 					.addGameObject(user = new GameObject()
 							.addComponent(new PhysBodyObjectModel(userBody))
-							.addComponent(new Controllable(150, 350))
+							.addComponent(new Controllable(150, 300, 150))
 							.addComponent(new KeyboardInput(stage))
 							.addComponent(userSkin = new PhysBodyObjectFromDataView(mainViewContainer, worldDataObject.bodyObjectById("user").data.shapeDataList, 0x00CC00)))
 					.addGameObject(floor = new GameObject()

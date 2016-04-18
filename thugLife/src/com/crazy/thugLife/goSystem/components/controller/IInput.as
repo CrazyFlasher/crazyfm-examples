@@ -9,10 +9,12 @@ package com.crazy.thugLife.goSystem.components.controller
 	{
 		function inputRight():IInput;
 		function inputLeft():IInput;
-		function inputJump():IInput;
+		function inputUp():IInput;
+		function inputDown():IInput;
 
 		function outputRight():IInput;
 		function outputLeft():IInput;
-		function outputJump():IInput;
+		function outputUp():IInput;
+		function outputDown():IInput;
 	}
 }

@@ -9,7 +9,8 @@ package com.crazy.thugLife.goSystem.components.controller
 	{
 		function moveLeft():void;
 		function moveRight():void;
-		function jump():void;
+		function moveUp():void;
+		function moveDown():void;
 		function stop():void;
 	}
 }

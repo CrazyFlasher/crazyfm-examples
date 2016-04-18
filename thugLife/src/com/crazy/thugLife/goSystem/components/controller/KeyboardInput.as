@@ -15,8 +15,10 @@ package com.crazy.thugLife.goSystem.components.controller
 		private var stage:Stage;
 		private var controllableObject:IControllable;
 
-		private var _moveLeft:Boolean;
-		private var _moveRight:Boolean;
+		private var _inputLeft:Boolean;
+		private var _inputRight:Boolean;
+		private var _inputUp:Boolean;
+		private var _inputDown:Boolean;
 
 		public function KeyboardInput(stage:Stage)
 		{
@@ -38,6 +40,14 @@ package com.crazy.thugLife.goSystem.components.controller
 			{
 				outputLeft();
 			}
+			if (keyCode == Keyboard.UP)
+			{
+				outputUp();
+			}
+			if (keyCode == Keyboard.DOWN)
+			{
+				outputDown();
+			}
 		}
 
 		private function keyDown(event:KeyboardEvent, keyCode:uint):void
@@ -50,10 +60,14 @@ package com.crazy.thugLife.goSystem.components.controller
 			{
 				inputLeft();
 			}
-			else
+
 			if (keyCode == Keyboard.UP)
 			{
-				inputJump();
+				inputUp();
+			}else
+			if (keyCode == Keyboard.DOWN)
+			{
+				inputDown();
 			}
 		}
 
@@ -77,14 +91,35 @@ package com.crazy.thugLife.goSystem.components.controller
 				controllableObject = gameObject.getComponentByType(IControllable) as IControllable;
 			}
 
-			if (_moveLeft)
+			var moving:Boolean;
+
+			if (_inputLeft)
 			{
+				moving = true;
+
 				controllableObject.moveLeft();
 			}else
-			if (_moveRight)
+			if (_inputRight)
 			{
+				moving = true;
+
 				controllableObject.moveRight();
+			}
+
+			if (_inputUp)
+			{
+				moving = true;
+
+				controllableObject.moveUp();
 			}else
+			if (_inputDown)
+			{
+				moving = true;
+
+				controllableObject.moveDown();
+			}
+
+			if (!moving)
 			{
 				controllableObject.stop();
 			}
@@ -92,42 +127,56 @@ package com.crazy.thugLife.goSystem.components.controller
 
 		public function inputRight():IInput
 		{
-			_moveRight = true;
+			_inputRight = true;
 
 			return this;
 		}
 
 		public function inputLeft():IInput
 		{
-			_moveLeft = true;
+			_inputLeft = true;
 
 			return this;
 		}
 
-		public function inputJump():IInput
+		public function inputUp():IInput
 		{
-			controllableObject.jump();
+			_inputUp = true;
+
+			return this;
+		}
+
+		public function inputDown():IInput
+		{
+			_inputDown = true;
 
 			return this;
 		}
 
 		public function outputRight():IInput
 		{
-			_moveRight = false;
+			_inputRight = false;
 
 			return this;
 		}
 
 		public function outputLeft():IInput
 		{
-			_moveLeft = false;
+			_inputLeft = false;
 
 			return this;
 		}
 
-		public function outputJump():IInput
+		public function outputUp():IInput
 		{
-			//do nothing
+			_inputUp = false;
+
+			return this;
+		}
+
+		public function outputDown():IInput
+		{
+			_inputDown = false;
 
 			return this;
 		}
