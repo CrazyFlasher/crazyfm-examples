@@ -4,6 +4,7 @@
 package com.crazy.thugLife.goSystem.components.controller
 {
 	import com.crazyfm.core.mvc.event.ISignalEvent;
+	import com.crazyfm.devkit.goSystem.components.physyics.event.PhysObjectSignalData;
 	import com.crazyfm.devkit.goSystem.components.physyics.event.PhysObjectSignalEnum;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.IPhysBodyObjectModel;
 	import com.crazyfm.extension.goSystem.GameComponent;
@@ -101,12 +102,7 @@ package com.crazy.thugLife.goSystem.components.controller
 				physObj = gameObject.getComponentByType(IPhysBodyObjectModel) as IPhysBodyObjectModel;
 
 				physObj.addSignalListener(PhysObjectSignalEnum.COLLISION_BEGIN, collisionBegin);
-				physObj.addSignalListener(PhysObjectSignalEnum.COLLISION_ONGOING, collisionOnGoing);
 				physObj.addSignalListener(PhysObjectSignalEnum.COLLISION_END, collisionEnd);
-
-				physObj.addSignalListener(PhysObjectSignalEnum.SENSOR_BEGIN, sensorBegin);
-				physObj.addSignalListener(PhysObjectSignalEnum.SENSOR_ONGOING, sensorOnGoing);
-				physObj.addSignalListener(PhysObjectSignalEnum.SENSOR_END, sensorEnd);
 
 				body = physObj.body;
 				body.allowRotation = false;
@@ -135,26 +131,9 @@ package com.crazy.thugLife.goSystem.components.controller
 			}
 		}
 
-		private function sensorEnd(e:ISignalEvent):void
+		private function handleSensorEnd(collisionData:PhysObjectSignalData):void
 		{
-			handleSensorEnd(e.data as InteractionCallback);
-		}
-
-		private function sensorOnGoing(e:ISignalEvent):void
-		{
-			handleSensorOnGoing(e.data as InteractionCallback);
-		}
-
-		private function sensorBegin(e:ISignalEvent):void
-		{
-			handleSensorBegin(e.data as InteractionCallback);
-		}
-
-		private function handleSensorEnd(collision:InteractionCallback):void
-		{
-			var ladder:Shape = hittedLadder(collision);
-
-			if (!ladder) return;
+			if (!isLadder(collisionData.otherShape)) return;
 
 			stopClimbing();
 		}
@@ -178,65 +157,64 @@ package com.crazy.thugLife.goSystem.components.controller
 			body.gravMassMode = GravMassMode.DEFAULT;
 		}
 
-		private function handleSensorOnGoing(collision:InteractionCallback):void
+		private function handleSensorBegin(collisionData:PhysObjectSignalData):void
 		{
-			if (!_isClimbing)
-			{
-				handleSensorBegin(collision);
-			}
-		}
-
-		private function handleSensorBegin(collision:InteractionCallback):void
-		{
-			var ladder:Shape = hittedLadder(collision);
-
-			if (!ladder) return;
+			if (!isLadder(collisionData.otherShape)) return;
 
 			_canClimb = true;
 		}
 
 		private function collisionEnd(e:ISignalEvent):void
 		{
-			handleCollisionEnd(e.data as InteractionCallback);
-		}
+			var collisionData:PhysObjectSignalData =  e.data as PhysObjectSignalData;
 
-		private function collisionOnGoing(e:ISignalEvent):void
-		{
-			handleCollisionOnGoing(e.data as InteractionCallback);
+			if (!collisionData.otherShape.sensorEnabled)
+			{
+				handleCollisionEnd(collisionData);
+			}else
+			{
+				handleSensorEnd(collisionData);
+			}
 		}
 
 		private function collisionBegin(e:ISignalEvent):void
 		{
-			handleCollisionBegin(e.data as InteractionCallback);
+			var collisionData:PhysObjectSignalData =  e.data as PhysObjectSignalData;
+
+			if (!collisionData.otherShape.sensorEnabled)
+			{
+				handleCollisionBegin(collisionData);
+			}else
+			{
+				handleSensorBegin(collisionData);
+			}
 		}
 
-		private function handleCollisionEnd(collision:InteractionCallback):void
+		private function handleCollisionEnd(collisionData:PhysObjectSignalData):void
 		{
 			_isInAir = true;
 		}
 
-		private function handleCollisionOnGoing(collision:InteractionCallback):void
+		private function handleCollisionBegin(collisionData:PhysObjectSignalData):void
 		{
-			handleCollisionBegin(collision);
-		}
-
-		private function handleCollisionBegin(collision:InteractionCallback):void
-		{
-			if (!isOnLegs(collision)) return;
+			if (!isOnLegs(collisionData.collision)) return;
 
 			if (_isClimbing)
 			{
 				stopClimbing();
 			}
 
-			rotateBodyToNormal(collision);
+			rotateBodyToNormal(collisionData.collision);
 
 			if (!_isWalking && !_isJumping)
 			{
 				body.velocity.setxy(0, 0);
 
-				//trace("sleep");
-				ForcedSleep.sleepBody(body);
+				if (!body.isSleeping)
+				{
+					//trace("sleep");
+					ForcedSleep.sleepBody(body);
+				}
 			}
 
 			_isInAir = false;
@@ -272,12 +250,12 @@ package com.crazy.thugLife.goSystem.components.controller
 		{
 			if (body)
 			{
-				if (_isWalking)
-				{
+				//if (_isWalking)
+				//{
 					_isWalking = false;
 
 					body.velocity.x = 0;
-				}
+				//}
 				if (_isClimbing)
 				{
 					body.velocity.y = 0;
@@ -310,18 +288,9 @@ package com.crazy.thugLife.goSystem.components.controller
 			}
 		}
 
-		private function hittedLadder(collision:InteractionCallback):Shape
+		private function isLadder(shape:Shape):Boolean
 		{
-			var arbiter:Arbiter;
-
-			for (var i:int = 0; i < collision.arbiters.length; i++)
-			{
-				arbiter = collision.arbiters.at(i);
-				if (arbiter.shape1.userData.id.search("ladder") != -1) return arbiter.shape1;
-				if (arbiter.shape2.userData.id.search("ladder") != -1) return arbiter.shape2;
-			}
-
-			return null;
+			return shape.userData.id.search("ladder") != -1;
 		}
 	}
 }
