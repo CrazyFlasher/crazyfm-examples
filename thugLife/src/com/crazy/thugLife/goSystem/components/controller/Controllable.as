@@ -34,6 +34,7 @@ package com.crazy.thugLife.goSystem.components.controller
 		private var jumpSpeed:Number;
 		private var climbSpeed:Number;
 		private var rotateToPath:Boolean;
+		private var _justEnded:Boolean;
 
 		public function Controllable(walkSpeed:Number, jumpSpeed:Number, climbSpeed:Number, rotateToPath:Boolean = true)
 		{
@@ -129,6 +130,8 @@ package com.crazy.thugLife.goSystem.components.controller
 					body.gravMass = 0;
 				}
 			}
+
+			_justEnded = false;
 		}
 
 		private function handleSensorEnd(collisionData:PhysObjectSignalData):void
@@ -193,10 +196,14 @@ package com.crazy.thugLife.goSystem.components.controller
 		private function handleCollisionEnd(collisionData:PhysObjectSignalData):void
 		{
 			_isInAir = true;
+			//TODO
+			_justEnded = true;
+			trace("handleCollisionEnd")
 		}
 
 		private function handleCollisionBegin(collisionData:PhysObjectSignalData):void
 		{
+			if (_justEnded) return;
 			if (!isOnLegs(collisionData.collision)) return;
 
 			if (_isClimbing)
@@ -206,13 +213,14 @@ package com.crazy.thugLife.goSystem.components.controller
 
 			rotateBodyToNormal(collisionData.collision);
 
-			if (!_isWalking && !_isJumping)
+			if (!_isWalking)
 			{
 				body.velocity.setxy(0, 0);
 
 				if (!body.isSleeping)
 				{
 					//trace("sleep");
+					trace("handleCollisionBegin")
 					ForcedSleep.sleepBody(body);
 				}
 			}
