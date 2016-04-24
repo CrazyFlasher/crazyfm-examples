@@ -1,7 +1,7 @@
 /**
  * Created by Anton Nefjodov on 24.03.2016.
  */
-package com.crazy.thugLife.goSystem.components.controller
+package com.crazy.thugLife.goSystem.components.controllable
 {
 	import com.crazyfm.core.mvc.event.ISignalEvent;
 	import com.crazyfm.devkit.goSystem.components.physyics.event.PhysObjectSignalData;
@@ -10,14 +10,12 @@ package com.crazy.thugLife.goSystem.components.controller
 	import com.crazyfm.extension.goSystem.GameComponent;
 
 	import nape.callbacks.InteractionCallback;
-	import nape.dynamics.Arbiter;
-	import nape.geom.Vec2;
 	import nape.hacks.ForcedSleep;
 	import nape.phys.Body;
 	import nape.phys.GravMassMode;
 	import nape.shape.Shape;
 
-	public class Controllable extends GameComponent implements IControllable
+	public class Controllable2 extends GameComponent implements IControllable
 	{
 		private var body:Body;
 		private var physObj:IPhysBodyObjectModel;
@@ -34,9 +32,11 @@ package com.crazy.thugLife.goSystem.components.controller
 		private var jumpSpeed:Number;
 		private var climbSpeed:Number;
 		private var rotateToPath:Boolean;
-		private var _justEnded:Boolean;
 
-		public function Controllable(walkSpeed:Number, jumpSpeed:Number, climbSpeed:Number, rotateToPath:Boolean = true)
+		//need to prevent nape lib bug, after putting object manually to sleep.
+		private var _collisionJustEnded:Boolean;
+
+		public function Controllable2(walkSpeed:Number, jumpSpeed:Number, climbSpeed:Number, rotateToPath:Boolean = true)
 		{
 			this.walkSpeed = walkSpeed;
 			this.jumpSpeed = jumpSpeed;
@@ -131,7 +131,7 @@ package com.crazy.thugLife.goSystem.components.controller
 				}
 			}
 
-			_justEnded = false;
+			_collisionJustEnded = false;
 		}
 
 		private function handleSensorEnd(collisionData:PhysObjectSignalData):void
@@ -196,14 +196,12 @@ package com.crazy.thugLife.goSystem.components.controller
 		private function handleCollisionEnd(collisionData:PhysObjectSignalData):void
 		{
 			_isInAir = true;
-			//TODO
-			_justEnded = true;
-			trace("handleCollisionEnd")
+
+			_collisionJustEnded = true;
 		}
 
 		private function handleCollisionBegin(collisionData:PhysObjectSignalData):void
 		{
-			if (_justEnded) return;
 			if (!isOnLegs(collisionData.collision)) return;
 
 			if (_isClimbing)
@@ -217,10 +215,8 @@ package com.crazy.thugLife.goSystem.components.controller
 			{
 				body.velocity.setxy(0, 0);
 
-				if (!body.isSleeping)
+				if (!body.isSleeping && !_collisionJustEnded)
 				{
-					//trace("sleep");
-					trace("handleCollisionBegin")
 					ForcedSleep.sleepBody(body);
 				}
 			}

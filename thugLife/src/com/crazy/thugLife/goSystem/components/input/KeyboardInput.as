@@ -1,8 +1,9 @@
 /**
  * Created by Anton Nefjodov on 24.03.2016.
  */
-package com.crazy.thugLife.goSystem.components.controller
+package com.crazy.thugLife.goSystem.components.input
 {
+	import com.crazy.thugLife.goSystem.components.controllable.IControllable;
 	import com.crazyfm.extension.goSystem.GameComponent;
 
 	import flash.ui.Keyboard;

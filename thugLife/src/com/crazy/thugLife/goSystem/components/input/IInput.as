@@ -1,7 +1,7 @@
 /**
  * Created by Anton Nefjodov on 13.04.2016.
  */
-package com.crazy.thugLife.goSystem.components.controller
+package com.crazy.thugLife.goSystem.components.input
 {
 	import com.crazyfm.extension.goSystem.IGameComponent;
 
