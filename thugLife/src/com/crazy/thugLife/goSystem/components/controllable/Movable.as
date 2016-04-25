@@ -19,12 +19,17 @@ package com.crazy.thugLife.goSystem.components.controllable
 		//need to prevent nape lib bug, after putting object manually to sleep.
 		private var _collisionJustEnded:Boolean;
 
+		private var currentMovementType:MovementType;
+		private var currentWalkSpeed:Number;
+
 		public function Movable(walkSpeed:Number, rotateToPath:Boolean = true)
 		{
 			super();
 
 			this.walkSpeed = walkSpeed;
 			this.rotateToPath = rotateToPath;
+
+			currentWalkSpeed = walkSpeed;
 		}
 
 		override public function interact(timePassed:Number):void
@@ -41,18 +46,47 @@ package com.crazy.thugLife.goSystem.components.controllable
 			body.allowRotation = false;
 		}
 
-		public function moveLeft():void
+		public function moveLeft(type:MovementType):void
 		{
 			_isMoving = true;
 
-			body.velocity.x = -walkSpeed;
+			updateSpeed(type);
+
+			body.velocity.x = -currentWalkSpeed;
 		}
 
-		public function moveRight():void
+		public function moveRight(type:MovementType):void
 		{
 			_isMoving = true;
 
-			body.velocity.x = walkSpeed;
+			updateSpeed(type);
+
+			body.velocity.x = currentWalkSpeed;
+		}
+
+		private function updateSpeed(type:MovementType):void
+		{
+			if (currentMovementType != type)
+			{
+				currentMovementType = type;
+
+				if (type == MovementType.WALK)
+				{
+					currentWalkSpeed = walkSpeed;
+				}else
+				if (type == MovementType.RUN)
+				{
+					currentWalkSpeed = walkSpeed * 2;
+				}
+				if (type == MovementType.SNEAK)
+				{
+					currentWalkSpeed = walkSpeed / 1.5;
+				}
+				if (type == MovementType.CRAWL)
+				{
+					currentWalkSpeed = walkSpeed / 2;
+				}
+			}
 		}
 
 		public function moveUp():void
@@ -65,11 +99,17 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 		}
 
-		public function stop():void
+		public function stopHorizontal():void
 		{
 			_isMoving = false;
 
 			body.velocity.x = 0;
+
+			tryToSleep();
+		}
+
+		public function stopVertical():void
+		{
 		}
 
 		private function computeIsOnLegs(collision:InteractionCallback):Boolean
@@ -108,10 +148,15 @@ package com.crazy.thugLife.goSystem.components.controllable
 			{
 				body.velocity.setxy(0, 0);
 
-				if (!body.isSleeping && !_collisionJustEnded)
-				{
-					ForcedSleep.sleepBody(body);
-				}
+				tryToSleep();
+			}
+		}
+
+		protected function tryToSleep():void
+		{
+			if (!body.isSleeping && !_collisionJustEnded)
+			{
+				ForcedSleep.sleepBody(body);
 			}
 		}
 

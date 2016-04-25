@@ -4,6 +4,7 @@
 package com.crazy.thugLife.goSystem.components.input
 {
 	import com.crazy.thugLife.goSystem.components.controllable.IControllable;
+	import com.crazy.thugLife.goSystem.components.controllable.MovementType;
 	import com.crazyfm.extension.goSystem.GameComponent;
 
 	import flash.ui.Keyboard;
@@ -21,6 +22,9 @@ package com.crazy.thugLife.goSystem.components.input
 		private var _inputUp:Boolean;
 		private var _inputDown:Boolean;
 
+		private var shiftIsDown:Boolean;
+		private var toggleShift:Boolean;
+
 		public function KeyboardInput(stage:Stage)
 		{
 			super();
@@ -33,6 +37,14 @@ package com.crazy.thugLife.goSystem.components.input
 
 		private function keyUp(event:KeyboardEvent, keyCode:uint):void
 		{
+			if (keyCode == Keyboard.CAPS_LOCK)
+			{
+				toggleShift = !toggleShift;
+			}
+			if (keyCode == Keyboard.SHIFT)
+			{
+				shiftIsDown = false;
+			}
 			if (keyCode == Keyboard.RIGHT)
 			{
 				outputRight();
@@ -53,6 +65,11 @@ package com.crazy.thugLife.goSystem.components.input
 
 		private function keyDown(event:KeyboardEvent, keyCode:uint):void
 		{
+			if (keyCode == Keyboard.SHIFT)
+			{
+				shiftIsDown = true;
+			}
+
 			if (keyCode == Keyboard.RIGHT)
 			{
 				inputRight();
@@ -92,37 +109,42 @@ package com.crazy.thugLife.goSystem.components.input
 				controllableObject = gameObject.getComponentByType(IControllable) as IControllable;
 			}
 
-			var moving:Boolean;
+			var movingHorizontal:Boolean;
+			var movingVertical:Boolean;
 
 			if (_inputLeft)
 			{
-				moving = true;
+				movingHorizontal = true;
 
-				controllableObject.moveLeft();
+				controllableObject.moveLeft((shiftIsDown && !toggleShift || !shiftIsDown && toggleShift) ? MovementType.RUN : MovementType.WALK);
 			}else
 			if (_inputRight)
 			{
-				moving = true;
+				movingHorizontal = true;
 
-				controllableObject.moveRight();
+				controllableObject.moveRight((shiftIsDown && !toggleShift || !shiftIsDown && toggleShift) ? MovementType.RUN : MovementType.WALK);
 			}
 
 			if (_inputUp)
 			{
-				moving = true;
+				movingVertical = true;
 
 				controllableObject.moveUp();
 			}else
 			if (_inputDown)
 			{
-				moving = true;
+				movingVertical = true;
 
 				controllableObject.moveDown();
 			}
 
-			if (!moving)
+			if (!movingHorizontal)
 			{
-				controllableObject.stop();
+				controllableObject.stopHorizontal();
+			}
+			if (!movingVertical)
+			{
+				controllableObject.stopVertical();
 			}
 		}
 

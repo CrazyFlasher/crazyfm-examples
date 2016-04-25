@@ -53,6 +53,20 @@ package com.crazy.thugLife.goSystem.components.controllable
 				super.moveUp();
 			}
 		}
+		override public function moveDown():void
+		{
+			if (_canClimb)
+			{
+				startClimbing();
+			}
+			if (_isClimbing)
+			{
+				body.velocity.y = climbSpeed;
+			}else
+			{
+				super.moveDown();
+			}
+		}
 
 		override protected function handleCollisionBegin(collisionData:PhysObjectSignalData):void
 		{
@@ -109,9 +123,9 @@ package com.crazy.thugLife.goSystem.components.controllable
 			return shape.userData.id.search("ladder") != -1;
 		}
 
-		override public function stop():void
+		override public function stopVertical():void
 		{
-			super.stop();
+			super.stopVertical();
 
 			if (_isClimbing)
 			{
@@ -124,6 +138,15 @@ package com.crazy.thugLife.goSystem.components.controllable
 			super.initializePhysObject();
 
 			gravityMass = body.gravMass;
+		}
+
+
+		override protected function tryToSleep():void
+		{
+			if (!_isClimbing)
+			{
+				super.tryToSleep();
+			}
 		}
 	}
 }

@@ -67,5 +67,13 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 			rotate(0);
 		}
+
+		override protected function tryToSleep():void
+		{
+			if (!_isJumping && !_isInAir)
+			{
+				super.tryToSleep();
+			}
+		}
 	}
 }

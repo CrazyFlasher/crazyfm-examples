@@ -6,7 +6,6 @@ package com.crazy.thugLife
 	import com.crazy.thugLife.goSystem.components.camera.Camera;
 	import com.crazy.thugLife.goSystem.components.camera.ICamera;
 	import com.crazy.thugLife.goSystem.components.controllable.Climbable;
-	import com.crazy.thugLife.goSystem.components.controllable.Controllable2;
 	import com.crazy.thugLife.goSystem.components.input.KeyboardInput;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysBodyObjectModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysWorldModel;
@@ -80,7 +79,7 @@ package com.crazy.thugLife
 							.addComponent(camera = new Camera(mainViewContainer)))
 					.addGameObject(user = new GameObject()
 							.addComponent(new PhysBodyObjectModel(userBody))
-							.addComponent(new Climbable(150, 300, 150))
+							.addComponent(new Climbable(75, 225, 75))
 							.addComponent(new KeyboardInput(stage))
 							.addComponent(userSkin = new PhysBodyObjectFromDataView(mainViewContainer, worldDataObject.bodyObjectById("user").data.shapeDataList, 0x00CC00)))
 					.addGameObject(floor = new GameObject()
