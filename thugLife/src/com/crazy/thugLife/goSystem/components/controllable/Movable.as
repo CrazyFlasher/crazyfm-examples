@@ -14,10 +14,6 @@ package com.crazy.thugLife.goSystem.components.controllable
 		protected var rotateToPath:Boolean;
 
 		private var _isMoving:Boolean;
-		private var _isOnLegs:Boolean;
-
-		//need to prevent nape lib bug, after putting object manually to sleep.
-		private var _collisionJustEnded:Boolean;
 
 		private var currentMovementType:MovementType;
 		private var currentWalkSpeed:Number;
@@ -30,13 +26,6 @@ package com.crazy.thugLife.goSystem.components.controllable
 			this.rotateToPath = rotateToPath;
 
 			currentWalkSpeed = walkSpeed;
-		}
-
-		override public function interact(timePassed:Number):void
-		{
-			super.interact(timePassed);
-
-			_collisionJustEnded = false;
 		}
 
 		override protected function initializePhysObject():void
@@ -112,33 +101,9 @@ package com.crazy.thugLife.goSystem.components.controllable
 		{
 		}
 
-		private function computeIsOnLegs(collision:InteractionCallback):Boolean
-		{
-			if (collision.arbiters.length == 0) return false;
-
-			for (var i:int = 0; i < collision.arbiters.length; i++)
-			{
-				if (body.worldVectorToLocal(collision.arbiters.at(i).collisionArbiter.normal).y < 0.3)
-				{
-					return false;
-				}
-			}
-
-			return true;
-		}
-
-		override protected function handleCollisionEnd(collisionData:PhysObjectSignalData):void
-		{
-			super.handleCollisionEnd(collisionData);
-
-			_collisionJustEnded = true;
-		}
-
 		override protected function handleCollisionBegin(collisionData:PhysObjectSignalData):void
 		{
 			super.handleCollisionBegin(collisionData);
-
-			_isOnLegs = computeIsOnLegs(collisionData.collision);
 
 			if (!isOnLegs) return;
 
@@ -150,19 +115,6 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 				tryToSleep();
 			}
-		}
-
-		protected function tryToSleep():void
-		{
-			if (!body.isSleeping && !_collisionJustEnded)
-			{
-				ForcedSleep.sleepBody(body);
-			}
-		}
-
-		protected function get isOnLegs():Boolean
-		{
-			return _isOnLegs;
 		}
 	}
 }

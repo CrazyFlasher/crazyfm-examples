@@ -10,12 +10,18 @@ package com.crazy.thugLife.goSystem.components.controllable
 	import com.crazyfm.extension.goSystem.GameComponent;
 
 	import nape.callbacks.InteractionCallback;
+	import nape.hacks.ForcedSleep;
 	import nape.phys.Body;
 
 	public class AbstractControllable extends GameComponent
 	{
 		protected var body:Body;
 		protected var physObj:IPhysBodyObjectModel;
+
+		private var _isOnLegs:Boolean;
+
+		//need to prevent nape lib bug, after putting object manually to sleep.
+		private var _collisionJustEnded:Boolean;
 
 		public function AbstractControllable()
 		{
@@ -30,6 +36,8 @@ package com.crazy.thugLife.goSystem.components.controllable
 			{
 				initializePhysObject();
 			}
+
+			_collisionJustEnded = false;
 		}
 
 		protected function initializePhysObject():void
@@ -70,10 +78,12 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 		protected function handleCollisionEnd(collisionData:PhysObjectSignalData):void
 		{
+			_collisionJustEnded = true;
 		}
 
 		protected function handleCollisionBegin(collisionData:PhysObjectSignalData):void
 		{
+			_isOnLegs = computeIsOnLegs(collisionData.collision);
 		}
 
 		protected function handleSensorBegin(collisionData:PhysObjectSignalData):void
@@ -116,6 +126,34 @@ package com.crazy.thugLife.goSystem.components.controllable
 					rotate(0);
 				}
 			}
+		}
+
+		protected function tryToSleep():void
+		{
+			if (!body.isSleeping && !_collisionJustEnded)
+			{
+				ForcedSleep.sleepBody(body);
+			}
+		}
+
+		protected function get isOnLegs():Boolean
+		{
+			return _isOnLegs;
+		}
+
+		private function computeIsOnLegs(collision:InteractionCallback):Boolean
+		{
+			if (collision.arbiters.length == 0) return false;
+
+			for (var i:int = 0; i < collision.arbiters.length; i++)
+			{
+				if (body.worldVectorToLocal(collision.arbiters.at(i).collisionArbiter.normal).y < 0.3)
+				{
+					return false;
+				}
+			}
+
+			return true;
 		}
 	}
 }
