@@ -3,6 +3,7 @@
  */
 package com.crazy.thugLife.goSystem.components.controllable2
 {
+	import com.crazy.thugLife.goSystem.components.controllable2.events.CPMSignalEnum;
 	import com.crazy.thugLife.goSystem.components.input.InputActionEnum;
 	import com.crazyfm.core.mvc.event.ISignalEvent;
 	import com.crazyfm.devkit.goSystem.components.physyics.event.PhysObjectSignalData;
@@ -18,8 +19,8 @@ package com.crazy.thugLife.goSystem.components.controllable2
 	public class ControllablePluginManager extends GameObject implements IControllablePluginManager
 	{
 		private var _body:Body;
-		private var physObj:IPhysBodyObjectModel;
 
+		private var physObj:IPhysBodyObjectModel;
 		private var _isOnLegs:Boolean;
 
 		//need to prevent nape lib bug, after putting object manually to sleep.
@@ -30,11 +31,10 @@ package com.crazy.thugLife.goSystem.components.controllable2
 			super();
 
 			this.physObj = physObj;
+			_body = physObj.body;
 
 			physObj.addSignalListener(PhysObjectSignalEnum.COLLISION_BEGIN, collisionBegin);
 			physObj.addSignalListener(PhysObjectSignalEnum.COLLISION_END, collisionEnd);
-
-			_body = physObj.body;
 		}
 
 		override public function interact(timePassed:Number):void
@@ -73,8 +73,6 @@ package com.crazy.thugLife.goSystem.components.controllable2
 				handleSensorEnd(collisionData);
 			}
 
-			dispatchSignalToChildren(e.type, e.data);
-
 			collisionJustEnded = true;
 		}
 
@@ -89,28 +87,28 @@ package com.crazy.thugLife.goSystem.components.controllable2
 			{
 				handleSensorBegin(collisionData);
 			}
-
-			dispatchSignalToChildren(e.type, e.data);
-		}
-
-		private function handleCollisionEnd(collisionData:PhysObjectSignalData):void
-		{
-
 		}
 
 		private function handleCollisionBegin(collisionData:PhysObjectSignalData):void
 		{
 			_isOnLegs = computeIsOnLegs(collisionData.collision);
+
+			dispatchSignal(CPMSignalEnum.COLLISION_BEGIN, collisionData);
+		}
+
+		private function handleCollisionEnd(collisionData:PhysObjectSignalData):void
+		{
+			dispatchSignal(CPMSignalEnum.COLLISION_END, collisionData);
 		}
 
 		private function handleSensorBegin(collisionData:PhysObjectSignalData):void
 		{
-
+			dispatchSignal(CPMSignalEnum.SENSOR_BEGIN, collisionData);
 		}
 
 		private function handleSensorEnd(collisionData:PhysObjectSignalData):void
 		{
-
+			dispatchSignal(CPMSignalEnum.SENSOR_END, collisionData);
 		}
 
 		override public function dispose():void

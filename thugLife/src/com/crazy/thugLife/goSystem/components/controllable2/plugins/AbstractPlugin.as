@@ -5,6 +5,7 @@ package com.crazy.thugLife.goSystem.components.controllable2.plugins
 {
 	import com.crazy.thugLife.goSystem.components.controllable2.ControllablePluginManager;
 	import com.crazy.thugLife.goSystem.components.controllable2.IControllablePlugin;
+	import com.crazy.thugLife.goSystem.components.controllable2.events.CPMSignalEnum;
 	import com.crazy.thugLife.goSystem.components.controllable2.ns_controllable;
 	import com.crazy.thugLife.goSystem.components.input.InputActionEnum;
 	import com.crazyfm.extension.goSystem.GameComponent;
@@ -30,7 +31,32 @@ package com.crazy.thugLife.goSystem.components.controllable2.plugins
 			if (!manager)
 			{
 				manager = parent as ControllablePluginManager;
+
+				manager.addSignalListener(CPMSignalEnum.COLLISION_BEGIN, handleCollisionBegin);
+				manager.addSignalListener(CPMSignalEnum.COLLISION_END, handleCollisionEnd);
+				manager.addSignalListener(CPMSignalEnum.SENSOR_BEGIN, handleSensorBegin);
+				manager.addSignalListener(CPMSignalEnum.SENSOR_END, handleSensorEnd);
 			}
+		}
+
+		protected function handleCollisionBegin(collisionData:CPMSignalEnum):void
+		{
+
+		}
+
+		protected function handleCollisionEnd(collisionData:CPMSignalEnum):void
+		{
+
+		}
+
+		protected function handleSensorBegin(collisionData:CPMSignalEnum):void
+		{
+
+		}
+
+		protected function handleSensorEnd(collisionData:CPMSignalEnum):void
+		{
+
 		}
 
 		protected final function rotate(angle:Number):void
@@ -54,24 +80,36 @@ package com.crazy.thugLife.goSystem.components.controllable2.plugins
 			}
 		}
 
+		protected final function get body():Body
+		{
+			return manager.body;
+		}
+
+		protected final function tryToSleep():void
+		{
+			manager.tryToSleep();
+		}
+
+		protected final function get isOnLegs():Boolean
+		{
+			return manager.isOnLegs;
+		}
+
 		public function inputAction(action:InputActionEnum):IControllablePlugin
 		{
 			return this;
 		}
 
-		protected function get body():Body
+		override public function dispose():void
 		{
-			return manager.body;
-		}
+			manager.removeSignalListener(CPMSignalEnum.COLLISION_BEGIN);
+			manager.removeSignalListener(CPMSignalEnum.COLLISION_END);
+			manager.removeSignalListener(CPMSignalEnum.SENSOR_BEGIN);
+			manager.removeSignalListener(CPMSignalEnum.SENSOR_END);
 
-		protected function tryToSleep():void
-		{
-			manager.tryToSleep();
-		}
+			manager = null;
 
-		protected function get isOnLegs():Boolean
-		{
-			return manager.isOnLegs;
+			super.dispose();
 		}
 	}
 }
