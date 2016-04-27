@@ -5,13 +5,9 @@ package com.crazy.thugLife
 {
 	import com.crazy.thugLife.goSystem.components.camera.Camera;
 	import com.crazy.thugLife.goSystem.components.camera.ICamera;
-	import com.crazy.thugLife.goSystem.components.controllable.Climbable;
-	import com.crazy.thugLife.goSystem.components.controllable2.ControllablePluginManager;
 	import com.crazy.thugLife.goSystem.components.controllable2.IControllablePluginManager;
-	import com.crazy.thugLife.goSystem.components.controllable2.plugins.MovePlugin;
-	import com.crazy.thugLife.goSystem.components.input.KeyboardInput;
-	import com.crazy.thugLife.goSystem.components.input.KeyboardInput2;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.IPhysBodyObjectModel;
+	import com.crazyfm.devkit.goSystem.components.physyics.model.InteractivePhysObjectModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysBodyObjectModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysWorldModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.view.IPhysBodyObjectView;
@@ -86,13 +82,14 @@ package com.crazy.thugLife
 //							.addComponent(new PhysDebugView(space, debugViewSprite))
 							.addComponent(camera = new Camera(mainViewContainer)))
 					.addGameObject(user = new GameObject()
-							.addComponent(userBodyObj = new PhysBodyObjectModel(userBody))
+//							.addComponent(userBodyObj = new PhysBodyObjectModel(userBody))
+							.addComponent(new InteractivePhysObjectModel(userBody))
 //							.addComponent(new Climbable(75, 225, 75))
 //							.addComponent(new KeyboardInput(stage))
 							.addComponent(userSkin = new PhysBodyObjectFromDataView(mainViewContainer, worldDataObject.bodyObjectById("user").data.shapeDataList, 0x00CC00)))
-					.addGameObject(controllableManager = new ControllablePluginManager(userBodyObj)
-							.addPlugin(new MovePlugin(75, true)))
-					.addGameObject(new KeyboardInput2(stage, controllableManager))
+//					.addGameObject(controllableManager = new ControllablePluginManager(userBodyObj)
+//							.addPlugin(new MovePlugin(75, true)))
+//					.addGameObject(new KeyboardInput2(stage, controllableManager))
 					.addGameObject(floor = new GameObject()
 							.addComponent(new PhysBodyObjectModel(floorBody))
 							.addComponent(new PhysBodyObjectFromDataView(mainViewContainer, worldDataObject.bodyObjectById("ground").data.shapeDataList, 0xFFCC00))
