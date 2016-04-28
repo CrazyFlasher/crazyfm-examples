@@ -6,6 +6,7 @@ package com.crazy.thugLife
 	import com.crazy.thugLife.goSystem.components.controllable.plugins.Climbable;
 	import com.crazy.thugLife.goSystem.components.controllable.plugins.Jumpable;
 	import com.crazy.thugLife.goSystem.components.controllable.plugins.Moveable;
+	import com.crazy.thugLife.goSystem.components.input.InputActionEnum;
 	import com.crazy.thugLife.goSystem.components.input.KeyboardInput;
 	import com.crazyfm.devkit.goSystem.components.camera.Camera;
 	import com.crazyfm.devkit.goSystem.components.camera.ICamera;
@@ -25,7 +26,9 @@ package com.crazy.thugLife
 
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
+	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
+	import flash.utils.Dictionary;
 
 	import nape.phys.Body;
 	import nape.space.Space;
@@ -75,6 +78,12 @@ package com.crazy.thugLife
 			var mainViewContainer:Sprite = new Sprite();
 			addChild(mainViewContainer);
 
+			var keyToActionMapping:Dictionary = new Dictionary();
+			keyToActionMapping[Keyboard.LEFT] = InputActionEnum.MOVE_LEFT;
+			keyToActionMapping[Keyboard.RIGHT] = InputActionEnum.MOVE_RIGHT;
+			keyToActionMapping[Keyboard.UP] = InputActionEnum.MOVE_UP;
+			keyToActionMapping[Keyboard.DOWN] = InputActionEnum.MOVE_DOWN;
+
 			goSystem = new GOSystem(new StarlingEnterFrameMechanism(1 / Starling.current.nativeStage.frameRate))
 					.addGameObject(main = new GameObject()
 							.addComponent(new PhysWorldModel(space))
@@ -85,7 +94,7 @@ package com.crazy.thugLife
 							.addComponent(new Jumpable(300))
 							.addComponent(new Climbable(100))
 							.addComponent(new Moveable(75))
-							.addComponent(new KeyboardInput(stage))
+							.addComponent(new KeyboardInput(stage, keyToActionMapping))
 							.addComponent(userSkin = new PhysBodyObjectFromDataView(mainViewContainer, worldDataObject.bodyObjectById("user").data.shapeDataList, 0x00CC00)))
 					.addGameObject(floor = new GameObject()
 							.addComponent(new PhysBodyObjectModel(floorBody))
