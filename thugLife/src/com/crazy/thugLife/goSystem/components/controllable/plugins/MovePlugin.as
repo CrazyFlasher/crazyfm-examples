@@ -62,8 +62,6 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 			_isMoving = false;
 
 			body.velocity.x = 0;
-
-			intPhysObject.tryToSleep();
 		}
 
 		override protected function handleCollisionBegin(e:ISignalEvent):void
@@ -77,8 +75,6 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 			if (!_isMoving)
 			{
 				body.velocity.setxy(0, 0);
-
-				intPhysObject.tryToSleep();
 			}
 		}
 	}

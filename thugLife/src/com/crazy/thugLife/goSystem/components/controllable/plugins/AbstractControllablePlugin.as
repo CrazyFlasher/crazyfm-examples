@@ -3,8 +3,6 @@
  */
 package com.crazy.thugLife.goSystem.components.controllable.plugins
 {
-	import com.crazy.thugLife.goSystem.components.controllable2.IControllablePlugin;
-	import com.crazy.thugLife.goSystem.components.controllable2.ns_controllable;
 	import com.crazy.thugLife.goSystem.components.input.InputActionEnum;
 	import com.crazyfm.core.mvc.event.ISignalEvent;
 	import com.crazyfm.devkit.goSystem.components.physyics.event.PhysObjectSignalEnum;
@@ -12,8 +10,6 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 	import com.crazyfm.extension.goSystem.GameComponent;
 
 	import nape.phys.Body;
-
-	use namespace ns_controllable;
 
 	public class AbstractControllablePlugin extends GameComponent implements IControllablePlugin
 	{

@@ -3,8 +3,7 @@
  */
 package com.crazy.thugLife.goSystem.components.input
 {
-	import com.crazy.thugLife.goSystem.components.controllable.IControllable;
-	import com.crazy.thugLife.goSystem.components.controllable.MovementType;
+	import com.crazy.thugLife.goSystem.components.controllable.plugins.IControllablePlugin;
 	import com.crazyfm.extension.goSystem.GameComponent;
 
 	import flash.ui.Keyboard;
@@ -15,7 +14,7 @@ package com.crazy.thugLife.goSystem.components.input
 	public class KeyboardInput extends GameComponent implements IInput
 	{
 		private var stage:Stage;
-		private var controllableObject:IControllable;
+		private var controllablePlugins:Array/*IControllablePlugin*/
 
 		private var _inputLeft:Boolean;
 		private var _inputRight:Boolean;
@@ -95,7 +94,7 @@ package com.crazy.thugLife.goSystem.components.input
 			stage.removeEventListener(KeyboardEvent.KEY_UP, keyUp);
 
 			stage = null;
-			controllableObject = null;
+			controllablePlugins = null;
 
 			super.dispose();
 		}
@@ -104,9 +103,9 @@ package com.crazy.thugLife.goSystem.components.input
 		{
 			super.interact(timePassed);
 
-			if (!controllableObject)
+			if (!controllablePlugins)
 			{
-				controllableObject = gameObject.getComponentByType(IControllable) as IControllable;
+				controllablePlugins = gameObject.getComponentsByType(IControllablePlugin);
 			}
 
 			var movingHorizontal:Boolean;
@@ -116,35 +115,53 @@ package com.crazy.thugLife.goSystem.components.input
 			{
 				movingHorizontal = true;
 
-				controllableObject.moveLeft((shiftIsDown && !toggleShift || !shiftIsDown && toggleShift) ? MovementType.RUN : MovementType.WALK);
+				controllablePlugins.forEach(function(plugin:IControllablePlugin, index:Number, arr:Array):void
+				{
+					plugin.inputAction((shiftIsDown && !toggleShift || !shiftIsDown && toggleShift) ? InputActionEnum.MOVE_LEFT : InputActionEnum.MOVE_LEFT);
+				});
 			}else
 			if (_inputRight)
 			{
 				movingHorizontal = true;
 
-				controllableObject.moveRight((shiftIsDown && !toggleShift || !shiftIsDown && toggleShift) ? MovementType.RUN : MovementType.WALK);
+				controllablePlugins.forEach(function(plugin:IControllablePlugin, index:Number, arr:Array):void
+				{
+					plugin.inputAction((shiftIsDown && !toggleShift || !shiftIsDown && toggleShift) ? InputActionEnum.MOVE_RIGHT : InputActionEnum.MOVE_RIGHT);
+				});
 			}
 
 			if (_inputUp)
 			{
 				movingVertical = true;
 
-				controllableObject.moveUp();
+				controllablePlugins.forEach(function(plugin:IControllablePlugin, index:Number, arr:Array):void
+				{
+					plugin.inputAction(InputActionEnum.MOVE_UP);
+				});
 			}else
 			if (_inputDown)
 			{
 				movingVertical = true;
 
-				controllableObject.moveDown();
+				controllablePlugins.forEach(function(plugin:IControllablePlugin, index:Number, arr:Array):void
+				{
+					plugin.inputAction(InputActionEnum.MOVE_DOWN);
+				});
 			}
 
 			if (!movingHorizontal)
 			{
-				controllableObject.stopHorizontal();
+				controllablePlugins.forEach(function(plugin:IControllablePlugin, index:Number, arr:Array):void
+				{
+					plugin.inputAction(InputActionEnum.STOP_HORIZONTAL);
+				});
 			}
 			if (!movingVertical)
 			{
-				controllableObject.stopVertical();
+				controllablePlugins.forEach(function(plugin:IControllablePlugin, index:Number, arr:Array):void
+				{
+					plugin.inputAction(InputActionEnum.STOP_VERTICAL);
+				});
 			}
 		}
 
