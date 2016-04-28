@@ -5,11 +5,10 @@ package com.crazy.thugLife
 {
 	import com.crazy.thugLife.goSystem.components.camera.Camera;
 	import com.crazy.thugLife.goSystem.components.camera.ICamera;
+	import com.crazy.thugLife.goSystem.components.controllable.plugins.ClimbPlugin;
 	import com.crazy.thugLife.goSystem.components.controllable.plugins.JumpPlugin;
 	import com.crazy.thugLife.goSystem.components.controllable.plugins.MovePlugin;
-	import com.crazy.thugLife.goSystem.components.controllable2.IControllablePluginManager;
 	import com.crazy.thugLife.goSystem.components.input.KeyboardInput;
-	import com.crazyfm.devkit.goSystem.components.physyics.model.IPhysBodyObjectModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.InteractivePhysObjectModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysBodyObjectModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysWorldModel;
@@ -76,9 +75,6 @@ package com.crazy.thugLife
 			var mainViewContainer:Sprite = new Sprite();
 			addChild(mainViewContainer);
 
-			var userBodyObj:IPhysBodyObjectModel;
-			var controllableManager:IControllablePluginManager;
-
 			goSystem = new GOSystem(new StarlingEnterFrameMechanism(1 / Starling.current.nativeStage.frameRate))
 					.addGameObject(main = new GameObject()
 							.addComponent(new PhysWorldModel(space))
@@ -86,8 +82,9 @@ package com.crazy.thugLife
 							.addComponent(camera = new Camera(mainViewContainer)))
 					.addGameObject(user = new GameObject()
 							.addComponent(new InteractivePhysObjectModel(userBody))
-							.addComponent(new MovePlugin(75))
 							.addComponent(new JumpPlugin(225))
+							.addComponent(new ClimbPlugin(100))
+							.addComponent(new MovePlugin(75))
 							.addComponent(new KeyboardInput(stage))
 							.addComponent(userSkin = new PhysBodyObjectFromDataView(mainViewContainer, worldDataObject.bodyObjectById("user").data.shapeDataList, 0x00CC00)))
 					.addGameObject(floor = new GameObject()

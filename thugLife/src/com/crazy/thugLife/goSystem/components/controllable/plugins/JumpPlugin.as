@@ -5,6 +5,7 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 {
 	import com.crazy.thugLife.goSystem.components.input.InputActionEnum;
 	import com.crazyfm.core.mvc.event.ISignalEvent;
+	import com.crazyfm.devkit.goSystem.components.physyics.model.vo.LatestCollisionDataVo;
 	import com.crazyfm.devkit.goSystem.components.physyics.utils.BodyUtils;
 
 	public class JumpPlugin extends AbstractControllablePlugin
@@ -12,6 +13,7 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 		private var jumpSpeed:Number;
 
 		private var _isJumping:Boolean;
+//		private var _isTouchingLadder:Boolean;
 
 		public function JumpPlugin(jumpSpeed:Number)
 		{
@@ -24,7 +26,7 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 		{
 			super.interact(timePassed);
 
-			if (!_isJumping && !intPhysObject.isOnLegs)
+			if (!_isJumping && !intPhysObject.isOnLegs && !intPhysObject.zeroGravity)
 			{
 				if (Math.abs(body.velocity.y) > jumpSpeed / 6)
 				{
@@ -32,6 +34,24 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 				}
 			}
 		}
+
+		/*override protected function handleSensorBegin(e:ISignalEvent):void
+		{
+			super.handleSensorBegin(e);
+
+			if (!isLadder((e.data as LatestCollisionDataVo).otherShape)) return;
+
+			_isTouchingLadder = true;
+		}
+
+		override protected function handleSensorEnd(e:ISignalEvent):void
+		{
+			super.handleSensorEnd(e);
+
+			if (!isLadder((e.data as LatestCollisionDataVo).otherShape)) return;
+
+			_isTouchingLadder = false;
+		}*/
 
 		override protected function handleCollisionBegin(e:ISignalEvent):void
 		{
@@ -56,16 +76,15 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 
 		private function moveUp():void
 		{
-			if (!_isJumping)
+			if (!_isJumping && /*!_isTouchingLadder && */!intPhysObject.zeroGravity)
 			{
-				setJumpState();
-
 				body.velocity.y = -jumpSpeed;
 			}
 		}
 
 		private function setJumpState():void
 		{
+			trace("setJumpState")
 			_isJumping = true;
 
 			BodyUtils.rotate(body, 0);

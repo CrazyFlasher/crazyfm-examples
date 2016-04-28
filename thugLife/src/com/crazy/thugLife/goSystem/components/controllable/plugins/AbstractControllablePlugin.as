@@ -10,6 +10,7 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 	import com.crazyfm.extension.goSystem.GameComponent;
 
 	import nape.phys.Body;
+	import nape.shape.Shape;
 
 	public class AbstractControllablePlugin extends GameComponent implements IControllablePlugin
 	{
@@ -27,25 +28,37 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 
 			if (!intPhysObject)
 			{
-				intPhysObject = gameObject.getComponentByType(IInteractivePhysObjectModel) as IInteractivePhysObjectModel;
-
-				intPhysObject.addSignalListener(PhysObjectSignalEnum.COLLISION_BEGIN, handleCollisionBegin);
-				intPhysObject.addSignalListener(PhysObjectSignalEnum.COLLISION_END, handleCollisionEnd);
-				intPhysObject.addSignalListener(PhysObjectSignalEnum.SENSOR_BEGIN, handleSensorBegin);
-				intPhysObject.addSignalListener(PhysObjectSignalEnum.SENSOR_END, handleSensorEnd);
-
-				body = intPhysObject.body;
+				initialize();
 			}
+		}
+
+		protected function initialize():void
+		{
+			intPhysObject = gameObject.getComponentByType(IInteractivePhysObjectModel) as IInteractivePhysObjectModel;
+
+			intPhysObject.addSignalListener(PhysObjectSignalEnum.COLLISION_BEGIN, handleCollisionBegin);
+			intPhysObject.addSignalListener(PhysObjectSignalEnum.COLLISION_ONGOING, handleCollisionOngoing);
+			intPhysObject.addSignalListener(PhysObjectSignalEnum.COLLISION_END, handleCollisionEnd);
+
+			intPhysObject.addSignalListener(PhysObjectSignalEnum.SENSOR_BEGIN, handleSensorBegin);
+			intPhysObject.addSignalListener(PhysObjectSignalEnum.SENSOR_END, handleSensorEnd);
+
+			body = intPhysObject.body;
+		}
+
+		protected function handleCollisionOngoing(e:ISignalEvent):void
+		{
+			trace("handleCollisionOngoing")
 		}
 
 		protected function handleCollisionBegin(e:ISignalEvent):void
 		{
-
+			trace("handleCollisionBegin")
 		}
 
 		protected function handleCollisionEnd(e:ISignalEvent):void
 		{
-
+			trace("handleCollisionEnd")
 		}
 
 		protected function handleSensorBegin(e:ISignalEvent):void
@@ -66,7 +79,9 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 		override public function dispose():void
 		{
 			intPhysObject.removeSignalListener(PhysObjectSignalEnum.COLLISION_BEGIN, handleCollisionBegin);
+			intPhysObject.removeSignalListener(PhysObjectSignalEnum.COLLISION_ONGOING, handleCollisionOngoing);
 			intPhysObject.removeSignalListener(PhysObjectSignalEnum.COLLISION_END, handleCollisionEnd);
+
 			intPhysObject.removeSignalListener(PhysObjectSignalEnum.SENSOR_BEGIN, handleSensorBegin);
 			intPhysObject.removeSignalListener(PhysObjectSignalEnum.SENSOR_END, handleSensorEnd);
 
@@ -74,6 +89,12 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 			body = null;
 
 			super.dispose();
+		}
+
+		//TODO: do other way!
+		protected final function isLadder(shape:Shape):Boolean
+		{
+			return shape.userData.id.search("ladder") != -1;
 		}
 	}
 }

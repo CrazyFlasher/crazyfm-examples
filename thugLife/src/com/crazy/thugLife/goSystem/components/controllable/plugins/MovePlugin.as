@@ -8,6 +8,8 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 	import com.crazyfm.devkit.goSystem.components.physyics.model.vo.LatestCollisionDataVo;
 	import com.crazyfm.devkit.goSystem.components.physyics.utils.BodyUtils;
 
+	import nape.callbacks.InteractionCallback;
+
 	public class MovePlugin extends AbstractControllablePlugin
 	{
 		private var walkSpeed:Number;
@@ -68,14 +70,23 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 		{
 			super.handleCollisionBegin(e);
 
+			rotateBodyToPath((e.data as LatestCollisionDataVo).collision);
+		}
+
+		override protected function handleCollisionOngoing(e:ISignalEvent):void
+		{
+			super.handleCollisionOngoing(e);
+
+			rotateBodyToPath((e.data as LatestCollisionDataVo).collision);
+		}
+
+		private function rotateBodyToPath(collision:InteractionCallback):void
+		{
+			if (!rotateToPath) return;
 			if (!intPhysObject.isOnLegs) return;
+			if (intPhysObject.zeroGravity) return;
 
-			BodyUtils.rotateBodyToInteractionCallbackNormal(body, (e.data as LatestCollisionDataVo).collision);
-
-			if (!_isMoving)
-			{
-				body.velocity.setxy(0, 0);
-			}
+			BodyUtils.rotateBodyToInteractionCallbackNormal(body, collision);
 		}
 	}
 }
