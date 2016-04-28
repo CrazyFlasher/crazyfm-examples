@@ -5,27 +5,34 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 {
 	import com.crazy.thugLife.goSystem.components.input.InputActionEnum;
 	import com.crazyfm.core.mvc.event.ISignalEvent;
+	import com.crazyfm.devkit.goSystem.components.controllable.AbstractPhysControllable;
+	import com.crazyfm.devkit.goSystem.components.controllable.IControllable;
+	import com.crazyfm.devkit.goSystem.components.input.AbstractInputActionEnum;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.vo.LatestCollisionDataVo;
 	import com.crazyfm.devkit.goSystem.components.physyics.utils.BodyUtils;
 
 	import nape.callbacks.InteractionCallback;
 
-	public class MovePlugin extends AbstractControllablePlugin
+	public class Moveable extends AbstractPhysControllable
 	{
 		private var walkSpeed:Number;
+		private var runSpeed:Number;
+
 		private var rotateToPath:Boolean;
 
 		private var _isMoving:Boolean;
 
-		public function MovePlugin(walkSpeed:Number, rotateToPath:Boolean = true)
+		public function Moveable(walkSpeed:Number, rotateToPath:Boolean = true)
 		{
 			super();
 
 			this.walkSpeed = walkSpeed;
 			this.rotateToPath = rotateToPath;
+
+			runSpeed = walkSpeed * 1.5;
 		}
 
-		override public function inputAction(action:InputActionEnum):IControllablePlugin
+		override public function inputAction(action:AbstractInputActionEnum):IControllable
 		{
 			super.inputAction(action);
 
@@ -37,12 +44,34 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 			{
 				moveRight();
 			}else
+			if (action == InputActionEnum.RUN_LEFT)
+			{
+				runLeft();
+			}else
+			if (action == InputActionEnum.RUN_RIGHT)
+			{
+				runRight();
+			}else
 			if (action == InputActionEnum.STOP_HORIZONTAL)
 			{
 				stopHorizontal();
 			}
 
 			return this;
+		}
+
+		private function runRight():void
+		{
+			_isMoving = true;
+
+			body.velocity.x = runSpeed;
+		}
+
+		private function runLeft():void
+		{
+			_isMoving = true;
+
+			body.velocity.x = -runSpeed;
 		}
 
 		private function moveLeft():void

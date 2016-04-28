@@ -3,12 +3,14 @@
  */
 package com.crazy.thugLife.goSystem.components.input
 {
-	import com.crazyfm.core.common.Enum;
+	import com.crazyfm.devkit.goSystem.components.input.AbstractInputActionEnum;
 
-	public class InputActionEnum extends Enum
+	public class InputActionEnum extends AbstractInputActionEnum
 	{
 		public static const MOVE_LEFT:InputActionEnum = new InputActionEnum("MOVE_LEFT");
 		public static const MOVE_RIGHT:InputActionEnum = new InputActionEnum("MOVE_RIGHT");
+		public static const RUN_LEFT:InputActionEnum = new InputActionEnum("RUN_LEFT");
+		public static const RUN_RIGHT:InputActionEnum = new InputActionEnum("RUN_RIGHT");
 		public static const MOVE_UP:InputActionEnum = new InputActionEnum("MOVE_UP");
 		public static const MOVE_DOWN:InputActionEnum = new InputActionEnum("MOVE_DOWN");
 		public static const STOP_HORIZONTAL:InputActionEnum = new InputActionEnum("STOP_HORIZONTAL");

@@ -3,7 +3,7 @@
  */
 package com.crazy.thugLife.goSystem.components.input
 {
-	import com.crazy.thugLife.goSystem.components.controllable.plugins.IControllablePlugin;
+	import com.crazyfm.devkit.goSystem.components.controllable.IControllable;
 	import com.crazyfm.extension.goSystem.GameComponent;
 
 	import flash.ui.Keyboard;
@@ -64,6 +64,8 @@ package com.crazy.thugLife.goSystem.components.input
 
 		private function keyDown(event:KeyboardEvent, keyCode:uint):void
 		{
+			var inputAction:InputActionEnum;
+
 			if (keyCode == Keyboard.SHIFT)
 			{
 				shiftIsDown = true;
@@ -105,7 +107,7 @@ package com.crazy.thugLife.goSystem.components.input
 
 			if (!controllablePlugins)
 			{
-				controllablePlugins = gameObject.getComponentsByType(IControllablePlugin);
+				controllablePlugins = gameObject.getComponentsByType(IControllable);
 			}
 
 			var movingHorizontal:Boolean;
@@ -115,18 +117,18 @@ package com.crazy.thugLife.goSystem.components.input
 			{
 				movingHorizontal = true;
 
-				controllablePlugins.forEach(function(plugin:IControllablePlugin, index:Number, arr:Array):void
+				controllablePlugins.forEach(function(plugin:IControllable, index:Number, arr:Array):void
 				{
-					plugin.inputAction((shiftIsDown && !toggleShift || !shiftIsDown && toggleShift) ? InputActionEnum.MOVE_LEFT : InputActionEnum.MOVE_LEFT);
+					plugin.inputAction((shiftIsDown && !toggleShift || !shiftIsDown && toggleShift) ? InputActionEnum.RUN_LEFT : InputActionEnum.MOVE_LEFT);
 				});
 			}else
 			if (_inputRight)
 			{
 				movingHorizontal = true;
 
-				controllablePlugins.forEach(function(plugin:IControllablePlugin, index:Number, arr:Array):void
+				controllablePlugins.forEach(function(plugin:IControllable, index:Number, arr:Array):void
 				{
-					plugin.inputAction((shiftIsDown && !toggleShift || !shiftIsDown && toggleShift) ? InputActionEnum.MOVE_RIGHT : InputActionEnum.MOVE_RIGHT);
+					plugin.inputAction((shiftIsDown && !toggleShift || !shiftIsDown && toggleShift) ? InputActionEnum.RUN_RIGHT : InputActionEnum.MOVE_RIGHT);
 				});
 			}
 
@@ -134,7 +136,7 @@ package com.crazy.thugLife.goSystem.components.input
 			{
 				movingVertical = true;
 
-				controllablePlugins.forEach(function(plugin:IControllablePlugin, index:Number, arr:Array):void
+				controllablePlugins.forEach(function(plugin:IControllable, index:Number, arr:Array):void
 				{
 					plugin.inputAction(InputActionEnum.MOVE_UP);
 				});
@@ -143,7 +145,7 @@ package com.crazy.thugLife.goSystem.components.input
 			{
 				movingVertical = true;
 
-				controllablePlugins.forEach(function(plugin:IControllablePlugin, index:Number, arr:Array):void
+				controllablePlugins.forEach(function(plugin:IControllable, index:Number, arr:Array):void
 				{
 					plugin.inputAction(InputActionEnum.MOVE_DOWN);
 				});
@@ -151,14 +153,14 @@ package com.crazy.thugLife.goSystem.components.input
 
 			if (!movingHorizontal)
 			{
-				controllablePlugins.forEach(function(plugin:IControllablePlugin, index:Number, arr:Array):void
+				controllablePlugins.forEach(function(plugin:IControllable, index:Number, arr:Array):void
 				{
 					plugin.inputAction(InputActionEnum.STOP_HORIZONTAL);
 				});
 			}
 			if (!movingVertical)
 			{
-				controllablePlugins.forEach(function(plugin:IControllablePlugin, index:Number, arr:Array):void
+				controllablePlugins.forEach(function(plugin:IControllable, index:Number, arr:Array):void
 				{
 					plugin.inputAction(InputActionEnum.STOP_VERTICAL);
 				});

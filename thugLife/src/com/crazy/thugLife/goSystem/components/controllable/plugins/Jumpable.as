@@ -5,17 +5,19 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 {
 	import com.crazy.thugLife.goSystem.components.input.InputActionEnum;
 	import com.crazyfm.core.mvc.event.ISignalEvent;
-	import com.crazyfm.devkit.goSystem.components.physyics.model.vo.LatestCollisionDataVo;
+	import com.crazyfm.devkit.goSystem.components.controllable.AbstractPhysControllable;
+	import com.crazyfm.devkit.goSystem.components.controllable.IControllable;
+	import com.crazyfm.devkit.goSystem.components.input.AbstractInputActionEnum;
 	import com.crazyfm.devkit.goSystem.components.physyics.utils.BodyUtils;
 
-	public class JumpPlugin extends AbstractControllablePlugin
+	public class Jumpable extends AbstractPhysControllable
 	{
 		private var jumpSpeed:Number;
 
 		private var _isJumping:Boolean;
 //		private var _isTouchingLadder:Boolean;
 
-		public function JumpPlugin(jumpSpeed:Number)
+		public function Jumpable(jumpSpeed:Number)
 		{
 			super();
 
@@ -62,7 +64,7 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 			_isJumping = false;
 		}
 
-		override public function inputAction(action:InputActionEnum):IControllablePlugin
+		override public function inputAction(action:AbstractInputActionEnum):IControllable
 		{
 			super.inputAction(action);
 
