@@ -4,6 +4,7 @@
 package com.crazy.thugLife.goSystem.components.input
 {
 	import com.crazyfm.devkit.goSystem.components.controllable.IControllable;
+	import com.crazyfm.devkit.goSystem.components.input.AbstractInputActionEnum;
 	import com.crazyfm.extension.goSystem.GameComponent;
 
 	import flash.ui.Keyboard;
@@ -14,7 +15,7 @@ package com.crazy.thugLife.goSystem.components.input
 	public class KeyboardInput extends GameComponent implements IInput
 	{
 		private var stage:Stage;
-		private var controllablePlugins:Array/*IControllablePlugin*/
+		private var controllableComponents:Array/*IControllable*/
 
 		private var _inputLeft:Boolean;
 		private var _inputRight:Boolean;
@@ -46,19 +47,19 @@ package com.crazy.thugLife.goSystem.components.input
 			}
 			if (keyCode == Keyboard.RIGHT)
 			{
-				outputRight();
+				_inputRight = false;
 			}
 			if (keyCode == Keyboard.LEFT)
 			{
-				outputLeft();
+				_inputLeft = false;
 			}
 			if (keyCode == Keyboard.UP)
 			{
-				outputUp();
+				_inputUp = false;
 			}
 			if (keyCode == Keyboard.DOWN)
 			{
-				outputDown();
+				_inputDown = false;
 			}
 		}
 
@@ -73,20 +74,20 @@ package com.crazy.thugLife.goSystem.components.input
 
 			if (keyCode == Keyboard.RIGHT)
 			{
-				inputRight();
+				_inputRight = true;
 			}else
 			if (keyCode == Keyboard.LEFT)
 			{
-				inputLeft();
+				_inputLeft = true;
 			}
 
 			if (keyCode == Keyboard.UP)
 			{
-				inputUp();
+				_inputUp = true;
 			}else
 			if (keyCode == Keyboard.DOWN)
 			{
-				inputDown();
+				_inputDown = true;
 			}
 		}
 
@@ -96,7 +97,7 @@ package com.crazy.thugLife.goSystem.components.input
 			stage.removeEventListener(KeyboardEvent.KEY_UP, keyUp);
 
 			stage = null;
-			controllablePlugins = null;
+			controllableComponents = null;
 
 			super.dispose();
 		}
@@ -105,9 +106,9 @@ package com.crazy.thugLife.goSystem.components.input
 		{
 			super.interact(timePassed);
 
-			if (!controllablePlugins)
+			if (!controllableComponents)
 			{
-				controllablePlugins = gameObject.getComponentsByType(IControllable);
+				controllableComponents = gameObject.getComponentsByType(IControllable);
 			}
 
 			var movingHorizontal:Boolean;
@@ -117,108 +118,44 @@ package com.crazy.thugLife.goSystem.components.input
 			{
 				movingHorizontal = true;
 
-				controllablePlugins.forEach(function(plugin:IControllable, index:Number, arr:Array):void
-				{
-					plugin.inputAction((shiftIsDown && !toggleShift || !shiftIsDown && toggleShift) ? InputActionEnum.RUN_LEFT : InputActionEnum.MOVE_LEFT);
-				});
+				sendActionToControllables((shiftIsDown && !toggleShift || !shiftIsDown && toggleShift) ? InputActionEnum.RUN_LEFT : InputActionEnum.MOVE_LEFT);
 			}else
 			if (_inputRight)
 			{
 				movingHorizontal = true;
 
-				controllablePlugins.forEach(function(plugin:IControllable, index:Number, arr:Array):void
-				{
-					plugin.inputAction((shiftIsDown && !toggleShift || !shiftIsDown && toggleShift) ? InputActionEnum.RUN_RIGHT : InputActionEnum.MOVE_RIGHT);
-				});
+				sendActionToControllables((shiftIsDown && !toggleShift || !shiftIsDown && toggleShift) ? InputActionEnum.RUN_RIGHT : InputActionEnum.MOVE_RIGHT);
 			}
 
 			if (_inputUp)
 			{
 				movingVertical = true;
 
-				controllablePlugins.forEach(function(plugin:IControllable, index:Number, arr:Array):void
-				{
-					plugin.inputAction(InputActionEnum.MOVE_UP);
-				});
+				sendActionToControllables(InputActionEnum.MOVE_UP);
 			}else
 			if (_inputDown)
 			{
 				movingVertical = true;
 
-				controllablePlugins.forEach(function(plugin:IControllable, index:Number, arr:Array):void
-				{
-					plugin.inputAction(InputActionEnum.MOVE_DOWN);
-				});
+				sendActionToControllables(InputActionEnum.MOVE_DOWN);
 			}
 
 			if (!movingHorizontal)
 			{
-				controllablePlugins.forEach(function(plugin:IControllable, index:Number, arr:Array):void
-				{
-					plugin.inputAction(InputActionEnum.STOP_HORIZONTAL);
-				});
+				sendActionToControllables(InputActionEnum.STOP_HORIZONTAL);
 			}
 			if (!movingVertical)
 			{
-				controllablePlugins.forEach(function(plugin:IControllable, index:Number, arr:Array):void
-				{
-					plugin.inputAction(InputActionEnum.STOP_VERTICAL);
-				});
+				sendActionToControllables(InputActionEnum.STOP_VERTICAL);
 			}
 		}
 
-		public function inputRight():IInput
+		public function sendActionToControllables(action:AbstractInputActionEnum):IInput
 		{
-			_inputRight = true;
-
-			return this;
-		}
-
-		public function inputLeft():IInput
-		{
-			_inputLeft = true;
-
-			return this;
-		}
-
-		public function inputUp():IInput
-		{
-			_inputUp = true;
-
-			return this;
-		}
-
-		public function inputDown():IInput
-		{
-			_inputDown = true;
-
-			return this;
-		}
-
-		public function outputRight():IInput
-		{
-			_inputRight = false;
-
-			return this;
-		}
-
-		public function outputLeft():IInput
-		{
-			_inputLeft = false;
-
-			return this;
-		}
-
-		public function outputUp():IInput
-		{
-			_inputUp = false;
-
-			return this;
-		}
-
-		public function outputDown():IInput
-		{
-			_inputDown = false;
+			for each (var controllable:IControllable in arguments)
+			{
+				controllable.inputAction(action);
+			}
 
 			return this;
 		}

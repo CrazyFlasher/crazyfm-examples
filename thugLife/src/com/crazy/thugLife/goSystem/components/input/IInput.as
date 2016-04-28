@@ -3,18 +3,11 @@
  */
 package com.crazy.thugLife.goSystem.components.input
 {
+	import com.crazyfm.devkit.goSystem.components.input.AbstractInputActionEnum;
 	import com.crazyfm.extension.goSystem.IGameComponent;
 
 	public interface IInput extends IGameComponent
 	{
-		function inputRight():IInput;
-		function inputLeft():IInput;
-		function inputUp():IInput;
-		function inputDown():IInput;
-
-		function outputRight():IInput;
-		function outputLeft():IInput;
-		function outputUp():IInput;
-		function outputDown():IInput;
+		function sendActionToControllables(action:AbstractInputActionEnum):IInput;
 	}
 }
