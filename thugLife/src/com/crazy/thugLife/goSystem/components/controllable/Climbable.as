@@ -1,7 +1,7 @@
 /**
  * Created by Anton Nefjodov on 28.04.2016.
  */
-package com.crazy.thugLife.goSystem.components.controllable.plugins
+package com.crazy.thugLife.goSystem.components.controllable
 {
 	import com.crazy.thugLife.goSystem.components.input.InputActionEnum;
 	import com.crazyfm.core.mvc.event.ISignalEvent;
@@ -9,7 +9,7 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 	import com.crazyfm.devkit.goSystem.components.controllable.IControllable;
 	import com.crazyfm.devkit.goSystem.components.input.AbstractInputActionEnum;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.vo.LatestCollisionDataVo;
-	import com.crazyfm.devkit.goSystem.components.physyics.utils.BodyUtils;
+	import com.crazyfm.devkit.goSystem.components.physyics.utils.PhysObjectModelUtils;
 
 	public class Climbable extends AbstractPhysControllable
 	{
@@ -53,7 +53,7 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 			}else
 			if (_isClimbing)
 			{
-				body.velocity.y = -climbSpeed;
+				intPhysObject.velocity.y = -climbSpeed;
 			}
 		}
 
@@ -65,7 +65,7 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 			}
 			if (_isClimbing)
 			{
-				body.velocity.y = climbSpeed;
+				intPhysObject.velocity.y = climbSpeed;
 			}
 		}
 
@@ -73,7 +73,7 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 		{
 			if (_isClimbing)
 			{
-				body.velocity.y = 0;
+				intPhysObject.velocity.y = 0;
 			}
 		}
 
@@ -81,14 +81,12 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 		{
 			if (!_isClimbing)
 			{
-				trace("startClimbing")
-
 				_canClimb = false;
 				_isClimbing = true;
 
-				body.velocity.setxy(0, 0);
+				intPhysObject.velocity.setxy(0, 0);
 
-				BodyUtils.rotate(body, 0);
+				PhysObjectModelUtils.rotate(intPhysObject, 0);
 
 				intPhysObject.setZeroGravity(true);
 			}
@@ -98,8 +96,6 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 		{
 			if (_isClimbing)
 			{
-				trace("stopClimbing")
-
 				_canClimb = false;
 				_isClimbing = false;
 

@@ -1,7 +1,7 @@
 /**
  * Created by Anton Nefjodov on 27.04.2016.
  */
-package com.crazy.thugLife.goSystem.components.controllable.plugins
+package com.crazy.thugLife.goSystem.components.controllable
 {
 	import com.crazy.thugLife.goSystem.components.input.InputActionEnum;
 	import com.crazyfm.core.mvc.event.ISignalEvent;
@@ -9,11 +9,11 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 	import com.crazyfm.devkit.goSystem.components.controllable.IControllable;
 	import com.crazyfm.devkit.goSystem.components.input.AbstractInputActionEnum;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.vo.LatestCollisionDataVo;
-	import com.crazyfm.devkit.goSystem.components.physyics.utils.BodyUtils;
+	import com.crazyfm.devkit.goSystem.components.physyics.utils.PhysObjectModelUtils;
 
 	import nape.callbacks.InteractionCallback;
 
-	public class Moveable extends AbstractPhysControllable
+	public class Movable extends AbstractPhysControllable
 	{
 		private var walkSpeed:Number;
 		private var runSpeed:Number;
@@ -21,15 +21,16 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 		private var rotateToPath:Boolean;
 
 		private var _isMoving:Boolean;
+		private var _toggleRun:Boolean;
 
-		public function Moveable(walkSpeed:Number, rotateToPath:Boolean = true)
+		public function Movable(walkSpeed:Number, rotateToPath:Boolean = true)
 		{
 			super();
 
 			this.walkSpeed = walkSpeed;
 			this.rotateToPath = rotateToPath;
 
-			runSpeed = walkSpeed * 1.5;
+			runSpeed = walkSpeed * 4;
 		}
 
 		override public function inputAction(action:AbstractInputActionEnum):IControllable
@@ -55,49 +56,63 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 			if (action == InputActionEnum.STOP_HORIZONTAL)
 			{
 				stopHorizontal();
+			}else
+			if (action == InputActionEnum.TOGGLE_RUN)
+			{
+				toggleRun();
 			}
 
 			return this;
+		}
+
+		private function toggleRun():void
+		{
+			_toggleRun = !_toggleRun;
 		}
 
 		private function runRight():void
 		{
 			_isMoving = true;
 
-			body.velocity.x = runSpeed;
+			intPhysObject.velocity.x = !_toggleRun ? runSpeed : walkSpeed;
 		}
 
 		private function runLeft():void
 		{
 			_isMoving = true;
 
-			body.velocity.x = -runSpeed;
+			intPhysObject.velocity.x = !_toggleRun ? -runSpeed : -walkSpeed;
 		}
 
 		private function moveLeft():void
 		{
 			_isMoving = true;
 
-			body.velocity.x = -walkSpeed;
+			intPhysObject.velocity.x = !_toggleRun ? -walkSpeed : -runSpeed;
 		}
 
 		private function moveRight():void
 		{
 			_isMoving = true;
 
-			body.velocity.x = walkSpeed;
+			intPhysObject.velocity.x = !_toggleRun ? walkSpeed : runSpeed;
 		}
 
 		private function stopHorizontal():void
 		{
 			_isMoving = false;
 
-			body.velocity.x = 0;
+			intPhysObject.velocity.x = 0;
 		}
 
 		override protected function handleCollisionBegin(e:ISignalEvent):void
 		{
 			super.handleCollisionBegin(e);
+
+			if (intPhysObject.isOnLegs && !_isMoving)
+			{
+				intPhysObject.velocity.setxy(0, 0);
+			}
 
 			rotateBodyToPath((e.data as LatestCollisionDataVo).collision);
 		}
@@ -115,7 +130,7 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 			if (!intPhysObject.isOnLegs) return;
 			if (intPhysObject.zeroGravity) return;
 
-			BodyUtils.rotateBodyToInteractionCallbackNormal(body, collision);
+			PhysObjectModelUtils.rotateBodyToInteractionCallbackNormal(intPhysObject, collision);
 		}
 	}
 }

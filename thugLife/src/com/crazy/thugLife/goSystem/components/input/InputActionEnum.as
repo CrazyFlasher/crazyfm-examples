@@ -15,6 +15,7 @@ package com.crazy.thugLife.goSystem.components.input
 		public static const MOVE_DOWN:InputActionEnum = new InputActionEnum("MOVE_DOWN");
 		public static const STOP_HORIZONTAL:InputActionEnum = new InputActionEnum("STOP_HORIZONTAL");
 		public static const STOP_VERTICAL:InputActionEnum = new InputActionEnum("STOP_VERTICAL");
+		public static const TOGGLE_RUN:InputActionEnum = new InputActionEnum("TOGGLE_RUN");
 
 		public function InputActionEnum(name:String)
 		{

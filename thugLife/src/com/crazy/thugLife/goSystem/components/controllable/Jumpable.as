@@ -1,14 +1,14 @@
 /**
  * Created by Anton Nefjodov on 28.04.2016.
  */
-package com.crazy.thugLife.goSystem.components.controllable.plugins
+package com.crazy.thugLife.goSystem.components.controllable
 {
 	import com.crazy.thugLife.goSystem.components.input.InputActionEnum;
 	import com.crazyfm.core.mvc.event.ISignalEvent;
 	import com.crazyfm.devkit.goSystem.components.controllable.AbstractPhysControllable;
 	import com.crazyfm.devkit.goSystem.components.controllable.IControllable;
 	import com.crazyfm.devkit.goSystem.components.input.AbstractInputActionEnum;
-	import com.crazyfm.devkit.goSystem.components.physyics.utils.BodyUtils;
+	import com.crazyfm.devkit.goSystem.components.physyics.utils.PhysObjectModelUtils;
 
 	public class Jumpable extends AbstractPhysControllable
 	{
@@ -30,7 +30,7 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 
 			if (!_isJumping && !intPhysObject.isOnLegs && !intPhysObject.zeroGravity)
 			{
-				if (Math.abs(body.velocity.y) > jumpSpeed / 6)
+				if (Math.abs(intPhysObject.velocity.y) > jumpSpeed / 6)
 				{
 					setJumpState();
 				}
@@ -80,7 +80,7 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 		{
 			if (!_isJumping && /*!_isTouchingLadder && */!intPhysObject.zeroGravity)
 			{
-				body.velocity.y = -jumpSpeed;
+				intPhysObject.velocity.y = -jumpSpeed;
 			}
 		}
 
@@ -89,7 +89,7 @@ package com.crazy.thugLife.goSystem.components.controllable.plugins
 			trace("setJumpState")
 			_isJumping = true;
 
-			BodyUtils.rotate(body, 0);
+			PhysObjectModelUtils.rotate(intPhysObject, 0);
 		}
 	}
 }

@@ -3,13 +3,14 @@
  */
 package com.crazy.thugLife
 {
-	import com.crazy.thugLife.goSystem.components.controllable.plugins.Climbable;
-	import com.crazy.thugLife.goSystem.components.controllable.plugins.Jumpable;
-	import com.crazy.thugLife.goSystem.components.controllable.plugins.Moveable;
+	import com.crazy.thugLife.goSystem.components.controllable.Climbable;
+	import com.crazy.thugLife.goSystem.components.controllable.Jumpable;
+	import com.crazy.thugLife.goSystem.components.controllable.Movable;
 	import com.crazy.thugLife.goSystem.components.input.InputActionEnum;
-	import com.crazy.thugLife.goSystem.components.input.KeyboardInput;
 	import com.crazyfm.devkit.goSystem.components.camera.Camera;
 	import com.crazyfm.devkit.goSystem.components.camera.ICamera;
+	import com.crazyfm.devkit.goSystem.components.input.KeyboardInput;
+	import com.crazyfm.devkit.goSystem.components.input.KeysToActionVo;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.InteractivePhysObjectModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysBodyObjectModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysWorldModel;
@@ -20,6 +21,7 @@ package com.crazy.thugLife
 	import com.crazyfm.extension.goSystem.GameObject;
 	import com.crazyfm.extension.goSystem.IGOSystem;
 	import com.crazyfm.extension.goSystem.IGameObject;
+	import com.crazyfm.extensions.physics.IBodyObject;
 	import com.crazyfm.extensions.physics.IWorldObject;
 	import com.crazyfm.extensions.physics.WorldObject;
 	import com.crazyfm.extensions.physics.utils.PhysicsParser;
@@ -28,9 +30,7 @@ package com.crazy.thugLife
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
-	import flash.utils.Dictionary;
 
-	import nape.phys.Body;
 	import nape.space.Space;
 
 	import starling.core.Starling;
@@ -68,8 +68,8 @@ package com.crazy.thugLife
 		private function added():void
 		{
 			var space:Space = worldDataObject.space;
-			var floorBody:Body = worldDataObject.bodyObjectById("ground").body;
-			var userBody:Body = worldDataObject.bodyObjectById("user").body;
+			var floorBodyObject:IBodyObject = worldDataObject.bodyObjectById("ground");
+			var userBodyObject:IBodyObject = worldDataObject.bodyObjectById("user");
 
 			var debugViewSprite:flash.display.Sprite = new flash.display.Sprite();
 			debugViewSprite.alpha = 0.5;
@@ -78,27 +78,32 @@ package com.crazy.thugLife
 			var mainViewContainer:Sprite = new Sprite();
 			addChild(mainViewContainer);
 
-			var keyToActionMapping:Dictionary = new Dictionary();
-			keyToActionMapping[Keyboard.LEFT] = InputActionEnum.MOVE_LEFT;
-			keyToActionMapping[Keyboard.RIGHT] = InputActionEnum.MOVE_RIGHT;
-			keyToActionMapping[Keyboard.UP] = InputActionEnum.MOVE_UP;
-			keyToActionMapping[Keyboard.DOWN] = InputActionEnum.MOVE_DOWN;
+			var keysToAction:Vector.<KeysToActionVo> = new <KeysToActionVo>[
+				new KeysToActionVo(InputActionEnum.MOVE_LEFT, new <uint>[Keyboard.LEFT]),
+				new KeysToActionVo(InputActionEnum.RUN_LEFT, new <uint>[Keyboard.LEFT, Keyboard.SHIFT]),
+				new KeysToActionVo(InputActionEnum.MOVE_RIGHT, new <uint>[Keyboard.RIGHT]),
+				new KeysToActionVo(InputActionEnum.RUN_RIGHT, new <uint>[Keyboard.RIGHT, Keyboard.SHIFT]),
+				new KeysToActionVo(InputActionEnum.MOVE_UP, new <uint>[Keyboard.UP]),
+				new KeysToActionVo(InputActionEnum.MOVE_DOWN, new <uint>[Keyboard.DOWN]),
+				new KeysToActionVo(InputActionEnum.STOP_HORIZONTAL, null, new <uint>[Keyboard.LEFT, Keyboard.RIGHT]),
+				new KeysToActionVo(InputActionEnum.STOP_VERTICAL, null, new <uint>[Keyboard.UP, Keyboard.DOWN]),
+				new KeysToActionVo(InputActionEnum.TOGGLE_RUN, null, new <uint>[Keyboard.CAPS_LOCK])
+			];
 
 			goSystem = new GOSystem(new StarlingEnterFrameMechanism(1 / Starling.current.nativeStage.frameRate))
 					.addGameObject(main = new GameObject()
 							.addComponent(new PhysWorldModel(space))
-//							.addComponent(new PhysDebugView(space, debugViewSprite))
 							.addComponent(camera = new Camera(mainViewContainer)))
 					.addGameObject(user = new GameObject()
-							.addComponent(new InteractivePhysObjectModel(userBody))
+							.addComponent(new InteractivePhysObjectModel(userBodyObject.body))
 							.addComponent(new Jumpable(300))
 							.addComponent(new Climbable(100))
-							.addComponent(new Moveable(75))
-							.addComponent(new KeyboardInput(stage, keyToActionMapping))
-							.addComponent(userSkin = new PhysBodyObjectFromDataView(mainViewContainer, worldDataObject.bodyObjectById("user").data.shapeDataList, 0x00CC00)))
+							.addComponent(new Movable(75))
+							.addComponent(new KeyboardInput(stage, keysToAction))
+							.addComponent(userSkin = new PhysBodyObjectFromDataView(mainViewContainer, userBodyObject.data.shapeDataList, 0x00CC00)))
 					.addGameObject(floor = new GameObject()
-							.addComponent(new PhysBodyObjectModel(floorBody))
-							.addComponent(new PhysBodyObjectFromDataView(mainViewContainer, worldDataObject.bodyObjectById("ground").data.shapeDataList, 0xFFCC00))
+							.addComponent(new PhysBodyObjectModel(floorBodyObject.body))
+							.addComponent(new PhysBodyObjectFromDataView(mainViewContainer, floorBodyObject.data.shapeDataList, 0xFFCC00))
 					);
 
 			goSystem.updateNow();
