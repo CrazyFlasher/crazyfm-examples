@@ -3,15 +3,15 @@
  */
 package com.crazy.thugLife.goSystem.components.controllable
 {
-	import com.crazy.thugLife.goSystem.components.input.InputActionEnum;
+	import com.crazy.thugLife.goSystem.components.input.GameInputActionEnum;
 	import com.crazyfm.core.mvc.event.ISignalEvent;
 	import com.crazyfm.devkit.goSystem.components.controllable.AbstractPhysControllable;
 	import com.crazyfm.devkit.goSystem.components.controllable.IControllable;
-	import com.crazyfm.devkit.goSystem.components.input.AbstractInputActionEnum;
+	import com.crazyfm.devkit.goSystem.components.input.AbstractInputActionVo;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.vo.LatestCollisionDataVo;
 	import com.crazyfm.devkit.goSystem.components.physyics.utils.PhysObjectModelUtils;
 
-	public class Climbable extends AbstractPhysControllable
+	public class Climbable extends AbstractPhysControllable implements IClimbable
 	{
 		private var climbSpeed:Number;
 
@@ -25,19 +25,19 @@ package com.crazy.thugLife.goSystem.components.controllable
 			this.climbSpeed = climbSpeed;
 		}
 
-		override public function inputAction(action:AbstractInputActionEnum):IControllable
+		override public function inputAction(actionVo:AbstractInputActionVo):IControllable
 		{
-			super.inputAction(action);
+			super.inputAction(actionVo);
 
-			if (action == InputActionEnum.MOVE_UP)
+			if (actionVo.action == GameInputActionEnum.MOVE_UP)
 			{
 				moveUp();
 			}else
-			if (action == InputActionEnum.MOVE_DOWN)
+			if (actionVo.action == GameInputActionEnum.MOVE_DOWN)
 			{
 				moveDown();
 			}else
-			if (action == InputActionEnum.STOP_VERTICAL)
+			if (actionVo.action == GameInputActionEnum.STOP_VERTICAL)
 			{
 				stopVertical();
 			}
@@ -135,5 +135,9 @@ package com.crazy.thugLife.goSystem.components.controllable
 			stopClimbing();
 		}
 
+		public function get isClimbing():Boolean
+		{
+			return _isClimbing;
+		}
 	}
 }

@@ -3,17 +3,17 @@
  */
 package com.crazy.thugLife.goSystem.components.controllable
 {
-	import com.crazy.thugLife.goSystem.components.input.InputActionEnum;
+	import com.crazy.thugLife.goSystem.components.input.GameInputActionEnum;
 	import com.crazyfm.core.mvc.event.ISignalEvent;
 	import com.crazyfm.devkit.goSystem.components.controllable.AbstractPhysControllable;
 	import com.crazyfm.devkit.goSystem.components.controllable.IControllable;
-	import com.crazyfm.devkit.goSystem.components.input.AbstractInputActionEnum;
+	import com.crazyfm.devkit.goSystem.components.input.AbstractInputActionVo;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.vo.LatestCollisionDataVo;
 	import com.crazyfm.devkit.goSystem.components.physyics.utils.PhysObjectModelUtils;
 
 	import nape.callbacks.InteractionCallback;
 
-	public class Movable extends AbstractPhysControllable
+	public class Movable extends AbstractPhysControllable implements IMovable
 	{
 		private var walkSpeed:Number;
 		private var runSpeed:Number;
@@ -30,34 +30,34 @@ package com.crazy.thugLife.goSystem.components.controllable
 			this.walkSpeed = walkSpeed;
 			this.rotateToPath = rotateToPath;
 
-			runSpeed = walkSpeed * 4;
+			runSpeed = walkSpeed * 2;
 		}
 
-		override public function inputAction(action:AbstractInputActionEnum):IControllable
+		override public function inputAction(actionVo:AbstractInputActionVo):IControllable
 		{
-			super.inputAction(action);
+			super.inputAction(actionVo);
 
-			if (action == InputActionEnum.MOVE_LEFT)
+			if (actionVo.action == GameInputActionEnum.MOVE_LEFT)
 			{
 				moveLeft();
 			}else
-			if (action == InputActionEnum.MOVE_RIGHT)
+			if (actionVo.action == GameInputActionEnum.MOVE_RIGHT)
 			{
 				moveRight();
 			}else
-			if (action == InputActionEnum.RUN_LEFT)
+			if (actionVo.action == GameInputActionEnum.RUN_LEFT)
 			{
 				runLeft();
 			}else
-			if (action == InputActionEnum.RUN_RIGHT)
+			if (actionVo.action == GameInputActionEnum.RUN_RIGHT)
 			{
 				runRight();
 			}else
-			if (action == InputActionEnum.STOP_HORIZONTAL)
+			if (actionVo.action == GameInputActionEnum.STOP_HORIZONTAL)
 			{
 				stopHorizontal();
 			}else
-			if (action == InputActionEnum.TOGGLE_RUN)
+			if (actionVo.action == GameInputActionEnum.TOGGLE_RUN)
 			{
 				toggleRun();
 			}
@@ -131,6 +131,16 @@ package com.crazy.thugLife.goSystem.components.controllable
 			if (intPhysObject.zeroGravity) return;
 
 			PhysObjectModelUtils.rotateBodyToInteractionCallbackNormal(intPhysObject, collision);
+		}
+
+		public function get isMoving():Boolean
+		{
+			return Math.abs(intPhysObject.velocity.x) >= walkSpeed;
+		}
+
+		public function get isRunning():Boolean
+		{
+			return Math.abs(intPhysObject.velocity.x) >= runSpeed;
 		}
 	}
 }

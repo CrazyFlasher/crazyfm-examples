@@ -3,14 +3,14 @@
  */
 package com.crazy.thugLife.goSystem.components.controllable
 {
-	import com.crazy.thugLife.goSystem.components.input.InputActionEnum;
+	import com.crazy.thugLife.goSystem.components.input.GameInputActionEnum;
 	import com.crazyfm.core.mvc.event.ISignalEvent;
 	import com.crazyfm.devkit.goSystem.components.controllable.AbstractPhysControllable;
 	import com.crazyfm.devkit.goSystem.components.controllable.IControllable;
-	import com.crazyfm.devkit.goSystem.components.input.AbstractInputActionEnum;
+	import com.crazyfm.devkit.goSystem.components.input.AbstractInputActionVo;
 	import com.crazyfm.devkit.goSystem.components.physyics.utils.PhysObjectModelUtils;
 
-	public class Jumpable extends AbstractPhysControllable
+	public class Jumpable extends AbstractPhysControllable implements IJumpable
 	{
 		private var jumpSpeed:Number;
 
@@ -64,11 +64,11 @@ package com.crazy.thugLife.goSystem.components.controllable
 			_isJumping = false;
 		}
 
-		override public function inputAction(action:AbstractInputActionEnum):IControllable
+		override public function inputAction(actionVo:AbstractInputActionVo):IControllable
 		{
-			super.inputAction(action);
+			super.inputAction(actionVo);
 
-			if (action == InputActionEnum.MOVE_UP)
+			if (actionVo.action == GameInputActionEnum.MOVE_UP)
 			{
 				moveUp();
 			}
@@ -90,6 +90,11 @@ package com.crazy.thugLife.goSystem.components.controllable
 			_isJumping = true;
 
 			PhysObjectModelUtils.rotate(intPhysObject, 0);
+		}
+
+		public function get isJumping():Boolean
+		{
+			return _isJumping;
 		}
 	}
 }

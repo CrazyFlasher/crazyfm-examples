@@ -3,14 +3,17 @@
  */
 package com.crazy.thugLife
 {
+	import com.crazy.thugLife.goSystem.components.controllable.Aimable;
 	import com.crazy.thugLife.goSystem.components.controllable.Climbable;
 	import com.crazy.thugLife.goSystem.components.controllable.Jumpable;
 	import com.crazy.thugLife.goSystem.components.controllable.Movable;
-	import com.crazy.thugLife.goSystem.components.input.InputActionEnum;
+	import com.crazy.thugLife.goSystem.components.input.GameInputActionEnum;
 	import com.crazyfm.devkit.goSystem.components.camera.Camera;
 	import com.crazyfm.devkit.goSystem.components.camera.ICamera;
-	import com.crazyfm.devkit.goSystem.components.input.KeyboardInput;
-	import com.crazyfm.devkit.goSystem.components.input.KeysToActionVo;
+	import com.crazyfm.devkit.goSystem.components.input.keyboard.KeyboardInput;
+	import com.crazyfm.devkit.goSystem.components.input.keyboard.KeysToActionMapping;
+	import com.crazyfm.devkit.goSystem.components.input.mouse.MouseInput;
+	import com.crazyfm.devkit.goSystem.components.input.mouse.MouseToActionMapping;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.InteractivePhysObjectModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysBodyObjectModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysWorldModel;
@@ -78,16 +81,20 @@ package com.crazy.thugLife
 			var mainViewContainer:Sprite = new Sprite();
 			addChild(mainViewContainer);
 
-			var keysToAction:Vector.<KeysToActionVo> = new <KeysToActionVo>[
-				new KeysToActionVo(InputActionEnum.MOVE_LEFT, new <uint>[Keyboard.LEFT]),
-				new KeysToActionVo(InputActionEnum.RUN_LEFT, new <uint>[Keyboard.LEFT, Keyboard.SHIFT]),
-				new KeysToActionVo(InputActionEnum.MOVE_RIGHT, new <uint>[Keyboard.RIGHT]),
-				new KeysToActionVo(InputActionEnum.RUN_RIGHT, new <uint>[Keyboard.RIGHT, Keyboard.SHIFT]),
-				new KeysToActionVo(InputActionEnum.MOVE_UP, new <uint>[Keyboard.UP]),
-				new KeysToActionVo(InputActionEnum.MOVE_DOWN, new <uint>[Keyboard.DOWN]),
-				new KeysToActionVo(InputActionEnum.STOP_HORIZONTAL, null, new <uint>[Keyboard.LEFT, Keyboard.RIGHT]),
-				new KeysToActionVo(InputActionEnum.STOP_VERTICAL, null, new <uint>[Keyboard.UP, Keyboard.DOWN]),
-				new KeysToActionVo(InputActionEnum.TOGGLE_RUN, null, new <uint>[Keyboard.CAPS_LOCK])
+			var keysToAction:Vector.<KeysToActionMapping> = new <KeysToActionMapping>[
+				new KeysToActionMapping(GameInputActionEnum.MOVE_LEFT, new <uint>[Keyboard.LEFT]),
+				new KeysToActionMapping(GameInputActionEnum.RUN_LEFT, new <uint>[Keyboard.LEFT, Keyboard.SHIFT]),
+				new KeysToActionMapping(GameInputActionEnum.MOVE_RIGHT, new <uint>[Keyboard.RIGHT]),
+				new KeysToActionMapping(GameInputActionEnum.RUN_RIGHT, new <uint>[Keyboard.RIGHT, Keyboard.SHIFT]),
+				new KeysToActionMapping(GameInputActionEnum.MOVE_UP, new <uint>[Keyboard.UP]),
+				new KeysToActionMapping(GameInputActionEnum.MOVE_DOWN, new <uint>[Keyboard.DOWN]),
+				new KeysToActionMapping(GameInputActionEnum.STOP_HORIZONTAL, null, new <uint>[Keyboard.LEFT, Keyboard.RIGHT]),
+				new KeysToActionMapping(GameInputActionEnum.STOP_VERTICAL, null, new <uint>[Keyboard.UP, Keyboard.DOWN]),
+				new KeysToActionMapping(GameInputActionEnum.TOGGLE_RUN, null, new <uint>[Keyboard.CAPS_LOCK])
+			];
+
+			var mouseToAction:Vector.<MouseToActionMapping> = new <MouseToActionMapping>[
+					new MouseToActionMapping(GameInputActionEnum.AIM, false, false, true)
 			];
 
 			goSystem = new GOSystem(new StarlingEnterFrameMechanism(1 / Starling.current.nativeStage.frameRate))
@@ -99,6 +106,8 @@ package com.crazy.thugLife
 							.addComponent(new Jumpable(300))
 							.addComponent(new Climbable(100))
 							.addComponent(new Movable(75))
+							.addComponent(new Aimable())
+							.addComponent(new MouseInput(stage, mouseToAction))
 							.addComponent(new KeyboardInput(stage, keysToAction))
 							.addComponent(userSkin = new PhysBodyObjectFromDataView(mainViewContainer, userBodyObject.data.shapeDataList, 0x00CC00)))
 					.addGameObject(floor = new GameObject()
