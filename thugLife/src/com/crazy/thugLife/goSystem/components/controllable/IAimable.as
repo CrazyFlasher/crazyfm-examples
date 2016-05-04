@@ -3,9 +3,11 @@
  */
 package com.crazy.thugLife.goSystem.components.controllable
 {
+	import com.crazyfm.extension.goSystem.IGameComponent;
+
 	import flash.geom.Point;
 
-	public interface IAimable
+	public interface IAimable extends IGameComponent
 	{
 		function get aimPosition():Point;
 	}

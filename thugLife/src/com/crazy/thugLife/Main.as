@@ -3,11 +3,19 @@
  */
 package com.crazy.thugLife
 {
+	import com.catalystapps.gaf.core.ZipToGAFAssetConverter;
+	import com.catalystapps.gaf.data.GAFBundle;
+	import com.catalystapps.gaf.display.GAFMovieClip;
 	import com.crazy.thugLife.goSystem.components.controllable.Aimable;
 	import com.crazy.thugLife.goSystem.components.controllable.Climbable;
+	import com.crazy.thugLife.goSystem.components.controllable.IAimable;
+	import com.crazy.thugLife.goSystem.components.controllable.IClimbable;
+	import com.crazy.thugLife.goSystem.components.controllable.IJumpable;
+	import com.crazy.thugLife.goSystem.components.controllable.IMovable;
 	import com.crazy.thugLife.goSystem.components.controllable.Jumpable;
 	import com.crazy.thugLife.goSystem.components.controllable.Movable;
 	import com.crazy.thugLife.goSystem.components.input.GameInputActionEnum;
+	import com.crazy.thugLife.goSystem.components.view.GameCharacterView;
 	import com.crazyfm.devkit.goSystem.components.camera.Camera;
 	import com.crazyfm.devkit.goSystem.components.camera.ICamera;
 	import com.crazyfm.devkit.goSystem.components.input.keyboard.KeyboardInput;
@@ -45,6 +53,9 @@ package com.crazy.thugLife
 		[Embed(source="../../../../resources/test.json", mimeType="application/octet-stream")]
 		private var WorldClass:Class;
 
+		[Embed(source="../../../../resources/test_assets.zip", mimeType="application/octet-stream")]
+		private const BundleZip:Class;
+
 		private var worldDataObject:IWorldObject;
 
 		private var goSystem:IGOSystem;
@@ -55,6 +66,8 @@ package com.crazy.thugLife
 
 		private var camera:ICamera;
 		private var userSkin:IPhysBodyObjectView;
+
+		private var gafBundle:GAFBundle;
 
 		public function Main()
 		{
@@ -69,6 +82,26 @@ package com.crazy.thugLife
 		}
 
 		private function added():void
+		{
+			initGafAssets();
+		}
+
+		private function initGafAssets():void
+		{
+			var zip:ByteArray = new BundleZip();
+			var converter:ZipToGAFAssetConverter = new ZipToGAFAssetConverter();
+			converter.addEventListener("complete", onConverted);
+			converter.convert(zip);
+		}
+
+		private function onConverted(event:*):void
+		{
+			gafBundle = (event.target as ZipToGAFAssetConverter).gafBundle;
+
+			start();
+		}
+
+		private function start():void
 		{
 			var space:Space = worldDataObject.space;
 			var floorBodyObject:IBodyObject = worldDataObject.bodyObjectById("ground");
@@ -94,8 +127,13 @@ package com.crazy.thugLife
 			];
 
 			var mouseToAction:Vector.<MouseToActionMapping> = new <MouseToActionMapping>[
-					new MouseToActionMapping(GameInputActionEnum.AIM, false, false, true)
+				new MouseToActionMapping(GameInputActionEnum.AIM, false, false, true)
 			];
+
+			var movable:IMovable;
+			var jumpable:IJumpable;
+			var climbable:IClimbable;
+			var aimable:IAimable;
 
 			goSystem = new GOSystem(new StarlingEnterFrameMechanism(1 / Starling.current.nativeStage.frameRate))
 					.addGameObject(main = new GameObject()
@@ -103,13 +141,15 @@ package com.crazy.thugLife
 							.addComponent(camera = new Camera(mainViewContainer)))
 					.addGameObject(user = new GameObject()
 							.addComponent(new InteractivePhysObjectModel(userBodyObject.body))
-							.addComponent(new Jumpable(300))
-							.addComponent(new Climbable(100))
-							.addComponent(new Movable(75))
-							.addComponent(new Aimable())
+							.addComponent(jumpable = new Jumpable(300))
+							.addComponent(climbable = new Climbable(100))
+							.addComponent(movable = new Movable(75))
+							.addComponent(aimable = new Aimable())
 							.addComponent(new MouseInput(stage, mouseToAction))
 							.addComponent(new KeyboardInput(stage, keysToAction))
-							.addComponent(userSkin = new PhysBodyObjectFromDataView(mainViewContainer, userBodyObject.data.shapeDataList, 0x00CC00)))
+							.addComponent(new PhysBodyObjectFromDataView(mainViewContainer, userBodyObject.data.shapeDataList, 0x00CC00))
+							.addComponent(userSkin = new GameCharacterView(mainViewContainer,
+									new GAFMovieClip(gafBundle.getGAFTimeline("test_assets", "human")), movable, jumpable, climbable, aimable)))
 					.addGameObject(floor = new GameObject()
 							.addComponent(new PhysBodyObjectModel(floorBodyObject.body))
 							.addComponent(new PhysBodyObjectFromDataView(mainViewContainer, floorBodyObject.data.shapeDataList, 0xFFCC00))
