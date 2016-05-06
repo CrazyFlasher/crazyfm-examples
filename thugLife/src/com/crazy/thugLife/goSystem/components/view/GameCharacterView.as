@@ -12,6 +12,8 @@ package com.crazy.thugLife.goSystem.components.view
 
 	import flash.geom.Point;
 
+	import nape.geom.Vec2;
+
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 
@@ -51,8 +53,8 @@ package com.crazy.thugLife.goSystem.components.view
 		{
 			super.interact(timePassed);
 
-			var isJumping:Boolean = jumpable && jumpable.isJumping;
 			var isClimbing:Boolean = climbable && climbable.isClimbing;
+			var isJumping:Boolean = jumpable && jumpable.isJumping && !isClimbing;
 			var isWalking:Boolean = movable && movable.isMoving && !movable.isRunning && !isJumping && !isClimbing;
 			var isRunning:Boolean = movable && movable.isRunning && !isJumping && !isClimbing;
 			var isStaying:Boolean = !isWalking && !isRunning && !isJumping && !isClimbing;
@@ -60,20 +62,24 @@ package com.crazy.thugLife.goSystem.components.view
 			if (isWalking)
 			{
 				playAnimation(WALK_ANIMATION);
-			} else if (isRunning)
+			} else
+			if (isRunning)
 			{
 				playAnimation(RUN_ANIMATION);
-			} else if (isJumping)
+			} else
+			if (isJumping)
 			{
 				playAnimation(JUMP_ANIMATION);
-			} else if (isClimbing)
+			} else
+			if (isClimbing)
 			{
 				playAnimation(CLIMB_ANIMATION);
 				if (model.velocity.length < 10)
 				{
 					gafSkin.stop(true);
 				}
-			} else if (isStaying)
+			} else
+			if (isStaying)
 			{
 				playAnimation(STAY_ANIMATION);
 			}
@@ -91,7 +97,10 @@ package com.crazy.thugLife.goSystem.components.view
 				armCurrentPosition.x = gunArm.x;
 				armCurrentPosition.y = gunArm.y;
 
-				gunArm.rotation = getAngle(gafSkin.localToGlobal(armCurrentPosition, armGlobalPosition), aimable.aimPosition);
+				gafSkin.localToGlobal(armCurrentPosition, armGlobalPosition);
+				viewContainer.globalToLocal(armGlobalPosition, armGlobalPosition);
+
+				gunArm.rotation = getAngle(armGlobalPosition, aimable.aimPosition);
 			}
 		}
 
@@ -107,7 +116,7 @@ package com.crazy.thugLife.goSystem.components.view
 			}
 		}
 
-		private function getAngle(p1:Point, p2:Point):Number
+		private function getAngle(p1:Point, p2:Vec2):Number
 		{
 			var dx:Number = p1.x - p2.x;
 			var dy:Number = p1.y - p2.y;

@@ -5,7 +5,6 @@ package com.crazy.thugLife
 {
 	import com.catalystapps.gaf.core.ZipToGAFAssetConverter;
 	import com.catalystapps.gaf.data.GAFBundle;
-	import com.catalystapps.gaf.display.GAFMovieClip;
 	import com.crazy.thugLife.goSystem.components.controllable.Aimable;
 	import com.crazy.thugLife.goSystem.components.controllable.Climbable;
 	import com.crazy.thugLife.goSystem.components.controllable.IAimable;
@@ -15,7 +14,7 @@ package com.crazy.thugLife
 	import com.crazy.thugLife.goSystem.components.controllable.Jumpable;
 	import com.crazy.thugLife.goSystem.components.controllable.Movable;
 	import com.crazy.thugLife.goSystem.components.input.GameInputActionEnum;
-	import com.crazy.thugLife.goSystem.components.view.GameCharacterView;
+	import com.crazy.thugLife.goSystem.components.view.RayView;
 	import com.crazyfm.devkit.goSystem.components.camera.Camera;
 	import com.crazyfm.devkit.goSystem.components.camera.ICamera;
 	import com.crazyfm.devkit.goSystem.components.input.keyboard.KeyboardInput;
@@ -38,6 +37,7 @@ package com.crazy.thugLife
 	import com.crazyfm.extensions.physics.utils.PhysicsParser;
 
 	import flash.display.Sprite;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
@@ -144,12 +144,14 @@ package com.crazy.thugLife
 							.addComponent(jumpable = new Jumpable(300))
 							.addComponent(climbable = new Climbable(100))
 							.addComponent(movable = new Movable(75))
-							.addComponent(aimable = new Aimable())
-							.addComponent(new MouseInput(stage, mouseToAction))
+							.addComponent(aimable = new Aimable(new Point(0, -10), 30))
+							.addComponent(new MouseInput(mainViewContainer, mouseToAction))
 							.addComponent(new KeyboardInput(stage, keysToAction))
-							.addComponent(new PhysBodyObjectFromDataView(mainViewContainer, userBodyObject.data.shapeDataList, 0x00CC00))
-							.addComponent(userSkin = new GameCharacterView(mainViewContainer,
-									new GAFMovieClip(gafBundle.getGAFTimeline("test_assets", "human")), movable, jumpable, climbable, aimable)))
+							.addComponent(userSkin = new PhysBodyObjectFromDataView(mainViewContainer, userBodyObject.data.shapeDataList, 0x00CC00))
+							.addComponent(new RayView(mainViewContainer, aimable)))
+							//.addComponent(userSkin = new GameCharacterView(mainViewContainer,
+							//		new GAFMovieClip(gafBundle.getGAFTimeline("test_assets", "human")), movable, jumpable, climbable,
+							// aimable)))
 					.addGameObject(floor = new GameObject()
 							.addComponent(new PhysBodyObjectModel(floorBodyObject.body))
 							.addComponent(new PhysBodyObjectFromDataView(mainViewContainer, floorBodyObject.data.shapeDataList, 0xFFCC00))
