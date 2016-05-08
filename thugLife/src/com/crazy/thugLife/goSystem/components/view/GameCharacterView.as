@@ -3,6 +3,7 @@
  */
 package com.crazy.thugLife.goSystem.components.view
 {
+	import com.catalystapps.gaf.display.GAFImage;
 	import com.catalystapps.gaf.display.GAFMovieClip;
 	import com.crazy.thugLife.goSystem.components.controllable.IAimable;
 	import com.crazy.thugLife.goSystem.components.controllable.IClimbable;
@@ -74,10 +75,14 @@ package com.crazy.thugLife.goSystem.components.view
 			if (isClimbing)
 			{
 				playAnimation(CLIMB_ANIMATION);
-				if (model.velocity.length < 10)
+				/*if (model.velocity.length < 10)
 				{
 					gafSkin.stop(true);
-				}
+				}else
+				{
+					gafSkin.play(true);
+					gafSkin.stop(false);
+				}*/
 			} else
 			if (isStaying)
 			{
@@ -106,14 +111,18 @@ package com.crazy.thugLife.goSystem.components.view
 
 		private function playAnimation(animationId:String):void
 		{
-			gafSkin.gotoAndStop(animationId);
-			gafSkin.play(true);
-			gafSkin.stop(false);
+//			if (gafSkin.currentSequence != animationId)
+//			{
+				gafSkin.gotoAndStop(animationId);
+				gafSkin.play(true);
+				gafSkin.stop(false);
 
-			if (!gunArm)
-			{
-				gunArm = (gafSkin.getChildAt(0) as DisplayObjectContainer).getChildByName("gunArm");
-			}
+				gunArm = ((gafSkin.getChildByName(animationId) as DisplayObjectContainer)
+								.getChildByName("body") as DisplayObjectContainer)
+								.getChildByName("gunArm");
+
+
+//			}
 		}
 
 		private function getAngle(p1:Point, p2:Vec2):Number

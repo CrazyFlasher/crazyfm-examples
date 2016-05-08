@@ -5,6 +5,7 @@ package com.crazy.thugLife
 {
 	import com.catalystapps.gaf.core.ZipToGAFAssetConverter;
 	import com.catalystapps.gaf.data.GAFBundle;
+	import com.catalystapps.gaf.display.GAFMovieClip;
 	import com.crazy.thugLife.goSystem.components.controllable.Aimable;
 	import com.crazy.thugLife.goSystem.components.controllable.Climbable;
 	import com.crazy.thugLife.goSystem.components.controllable.IAimable;
@@ -14,6 +15,7 @@ package com.crazy.thugLife
 	import com.crazy.thugLife.goSystem.components.controllable.Jumpable;
 	import com.crazy.thugLife.goSystem.components.controllable.Movable;
 	import com.crazy.thugLife.goSystem.components.input.GameInputActionEnum;
+	import com.crazy.thugLife.goSystem.components.view.GameCharacterView;
 	import com.crazy.thugLife.goSystem.components.view.RayView;
 	import com.crazyfm.devkit.goSystem.components.camera.Camera;
 	import com.crazyfm.devkit.goSystem.components.camera.ICamera;
@@ -27,6 +29,7 @@ package com.crazy.thugLife
 	import com.crazyfm.devkit.goSystem.components.physyics.view.IPhysBodyObjectView;
 	import com.crazyfm.devkit.goSystem.components.physyics.view.starling.PhysBodyObjectFromDataView;
 	import com.crazyfm.devkit.goSystem.mechanisms.StarlingEnterFrameMechanism;
+	import com.crazyfm.devkit.goSystem.mechanisms.StarlingJugglerMechanism;
 	import com.crazyfm.extension.goSystem.GOSystem;
 	import com.crazyfm.extension.goSystem.GameObject;
 	import com.crazyfm.extension.goSystem.IGOSystem;
@@ -127,7 +130,7 @@ package com.crazy.thugLife
 			];
 
 			var mouseToAction:Vector.<MouseToActionMapping> = new <MouseToActionMapping>[
-				new MouseToActionMapping(GameInputActionEnum.AIM, false, false, true)
+				new MouseToActionMapping(GameInputActionEnum.AIM, false, false, false, true)
 			];
 
 			var movable:IMovable;
@@ -136,6 +139,7 @@ package com.crazy.thugLife
 			var aimable:IAimable;
 
 			goSystem = new GOSystem(new StarlingEnterFrameMechanism(1 / Starling.current.nativeStage.frameRate))
+//			goSystem = new GOSystem(new StarlingJugglerMechanism(Starling.juggler))
 					.addGameObject(main = new GameObject()
 							.addComponent(new PhysWorldModel(space))
 							.addComponent(camera = new Camera(mainViewContainer)))
@@ -148,10 +152,10 @@ package com.crazy.thugLife
 							.addComponent(new MouseInput(mainViewContainer, mouseToAction))
 							.addComponent(new KeyboardInput(stage, keysToAction))
 							.addComponent(userSkin = new PhysBodyObjectFromDataView(mainViewContainer, userBodyObject.data.shapeDataList, 0x00CC00))
-							.addComponent(new RayView(mainViewContainer, aimable)))
-							//.addComponent(userSkin = new GameCharacterView(mainViewContainer,
-							//		new GAFMovieClip(gafBundle.getGAFTimeline("test_assets", "human")), movable, jumpable, climbable,
-							// aimable)))
+							.addComponent(new RayView(mainViewContainer, aimable))
+							.addComponent(userSkin = new GameCharacterView(mainViewContainer,
+									new GAFMovieClip(gafBundle.getGAFTimeline("test_assets", "human")), movable, jumpable, climbable,
+							 aimable)))
 					.addGameObject(floor = new GameObject()
 							.addComponent(new PhysBodyObjectModel(floorBodyObject.body))
 							.addComponent(new PhysBodyObjectFromDataView(mainViewContainer, floorBodyObject.data.shapeDataList, 0xFFCC00))

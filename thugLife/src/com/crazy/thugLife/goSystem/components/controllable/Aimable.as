@@ -40,7 +40,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 		{
 			var dx:Number = p1.x - p2.x;
 			var dy:Number = p1.y - p2.y;
-			return Math.atan2(dy, dx) + Math.PI - intPhysObject.rotation;
+			return Math.atan2(dy, dx) + Math.PI;
 		}
 
 		override public function inputAction(actionVo:AbstractInputActionVo):IControllable
