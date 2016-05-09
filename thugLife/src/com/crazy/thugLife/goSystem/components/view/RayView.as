@@ -41,7 +41,7 @@ package com.crazy.thugLife.goSystem.components.view
 			var pt:Vec2 = aimable.aimRay.at(Math.min(aimable.aimRay.maxDistance, 1000));
 
 			rayGfx.graphics.clear();
-			rayGfx.graphics.lineStyle(3, 0xFF0000);
+			rayGfx.graphics.lineStyle(1, 0xFF0000);
 			rayGfx.graphics.moveTo(aimable.aimRay.origin.x, aimable.aimRay.origin.y);
 			rayGfx.graphics.lineTo(pt.x, pt.y);
 		}
