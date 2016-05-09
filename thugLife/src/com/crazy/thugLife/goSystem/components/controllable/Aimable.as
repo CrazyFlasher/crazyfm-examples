@@ -64,7 +64,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 			if (!_aimRay)
 			{
 				_aimRay = new Ray(rayOrigin, Vec2.fromPolar(1, getAngle(rayOrigin, _aimPosition)));
-				_aimRay.maxDistance = 300;
+				_aimRay.maxDistance = 1000;
 			}else
 			{
 				_aimRay.origin = rayOrigin;

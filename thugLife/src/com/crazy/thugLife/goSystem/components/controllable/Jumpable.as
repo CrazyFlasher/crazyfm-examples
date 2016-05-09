@@ -15,7 +15,6 @@ package com.crazy.thugLife.goSystem.components.controllable
 		private var jumpSpeed:Number;
 
 		private var _isJumping:Boolean;
-//		private var _isTouchingLadder:Boolean;
 
 		public function Jumpable(jumpSpeed:Number)
 		{
@@ -30,30 +29,12 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 			if (!_isJumping && !intPhysObject.isOnLegs && !intPhysObject.zeroGravity)
 			{
-				if (Math.abs(intPhysObject.velocity.y) > jumpSpeed / 6)
+				if (Math.abs(intPhysObject.velocity.y) > jumpSpeed / 4)
 				{
 					setJumpState();
 				}
 			}
 		}
-
-		/*override protected function handleSensorBegin(e:ISignalEvent):void
-		{
-			super.handleSensorBegin(e);
-
-			if (!isLadder((e.data as LatestCollisionDataVo).otherShape)) return;
-
-			_isTouchingLadder = true;
-		}
-
-		override protected function handleSensorEnd(e:ISignalEvent):void
-		{
-			super.handleSensorEnd(e);
-
-			if (!isLadder((e.data as LatestCollisionDataVo).otherShape)) return;
-
-			_isTouchingLadder = false;
-		}*/
 
 		override protected function handleCollisionBegin(e:ISignalEvent):void
 		{
@@ -78,7 +59,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 		private function moveUp():void
 		{
-			if (!_isJumping && /*!_isTouchingLadder && */!intPhysObject.zeroGravity)
+			if (!_isJumping && !intPhysObject.zeroGravity)
 			{
 				intPhysObject.velocity.y = -jumpSpeed;
 			}

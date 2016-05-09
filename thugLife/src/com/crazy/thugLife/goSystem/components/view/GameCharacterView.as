@@ -15,6 +15,10 @@ package com.crazy.thugLife.goSystem.components.view
 
 	import nape.geom.Vec2;
 
+	import starling.animation.Tween;
+
+	import starling.core.Starling;
+
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 
@@ -36,6 +40,8 @@ package com.crazy.thugLife.goSystem.components.view
 
 		private var armGlobalPosition:Point = new Point();
 		private var armCurrentPosition:Point = new Point();
+
+		private var tween:Tween;
 
 		public function GameCharacterView(viewContainer:DisplayObjectContainer, gafSkin:GAFMovieClip,
 										  movable:IMovable = null,
@@ -145,6 +151,8 @@ package com.crazy.thugLife.goSystem.components.view
 								.getChildByName("body") as DisplayObjectContainer)
 								.getChildByName("gunArm");
 
+				gunArm.pivotY = -25;
+				gunArm.pivotX = -10;
 			}
 		}
 
@@ -165,6 +173,33 @@ package com.crazy.thugLife.goSystem.components.view
 			}
 
 			return finalAngle;
+		}
+
+		override protected function setRotation(value:Number):void
+		{
+			//super.setRotation(value);
+			//return;
+
+			if (!tween)
+			{
+				tween = new Tween(_skin, 0.1);
+			}else
+			{
+				tween.reset(_skin, 0.1);
+			}
+
+			tween.rotateTo(value);
+			Starling.juggler.add(tween);
+		}
+
+		override public function dispose():void
+		{
+			if (tween) {
+				Starling.juggler.remove(tween);
+				tween = null;
+			}
+
+			super.dispose();
 		}
 	}
 }
