@@ -3,12 +3,12 @@
  */
 package com.crazy.thugLife.goSystem.components.view
 {
-	import com.catalystapps.gaf.display.GAFImage;
 	import com.catalystapps.gaf.display.GAFMovieClip;
 	import com.crazy.thugLife.goSystem.components.controllable.IAimable;
 	import com.crazy.thugLife.goSystem.components.controllable.IClimbable;
 	import com.crazy.thugLife.goSystem.components.controllable.IJumpable;
 	import com.crazy.thugLife.goSystem.components.controllable.IMovable;
+	import com.crazy.thugLife.goSystem.components.controllable.IRotatable;
 	import com.crazyfm.devkit.goSystem.components.physyics.view.starling.gaf.GAFPhysObjectView;
 
 	import flash.geom.Point;
@@ -30,6 +30,7 @@ package com.crazy.thugLife.goSystem.components.view
 		private var jumpable:IJumpable;
 		private var climbable:IClimbable;
 		private var aimable:IAimable;
+		private var rotatable:IRotatable;
 
 		private var gunArm:DisplayObject;
 
@@ -40,7 +41,8 @@ package com.crazy.thugLife.goSystem.components.view
 										  movable:IMovable = null,
 										  jumpable:IJumpable = null,
 										  climbable:IClimbable = null,
-										  aimable:IAimable = null)
+										  aimable:IAimable = null,
+										  rotatable:IRotatable = null)
 		{
 			super(viewContainer, gafSkin);
 
@@ -48,6 +50,7 @@ package com.crazy.thugLife.goSystem.components.view
 			this.jumpable = jumpable;
 			this.climbable = climbable;
 			this.aimable = aimable;
+			this.rotatable = rotatable;
 		}
 
 		override public function interact(timePassed:Number):void
@@ -92,6 +95,22 @@ package com.crazy.thugLife.goSystem.components.view
 			if (aimable)
 			{
 				updateAimingView();
+			}
+			if (rotatable)
+			{
+				updateDirection();
+			}
+		}
+
+		private function updateDirection():void
+		{
+			if (rotatable.isRotatedLeft && gafSkin.scaleX > 0)
+			{
+				gafSkin.scaleX = -1;
+			}else
+			if (!rotatable.isRotatedLeft && gafSkin.scaleX < 0)
+			{
+				gafSkin.scaleX = 1;
 			}
 		}
 
