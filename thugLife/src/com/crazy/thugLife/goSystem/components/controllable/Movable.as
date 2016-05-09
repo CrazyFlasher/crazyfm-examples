@@ -37,6 +37,8 @@ package com.crazy.thugLife.goSystem.components.controllable
 		{
 			super.inputAction(actionVo);
 
+			if (!canMoveHorizontally) return this;
+
 			if (actionVo.action == GameInputActionEnum.MOVE_LEFT)
 			{
 				moveLeft();
@@ -63,6 +65,12 @@ package com.crazy.thugLife.goSystem.components.controllable
 			}
 
 			return this;
+		}
+
+		private function get canMoveHorizontally():Boolean
+		{
+//			return !intPhysObject.zeroGravity;
+			return true;
 		}
 
 		private function toggleRun():void

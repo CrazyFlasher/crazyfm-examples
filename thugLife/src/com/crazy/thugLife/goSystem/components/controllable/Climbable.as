@@ -17,6 +17,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 		private var _isClimbing:Boolean;
 		private var _canClimb:Boolean;
+		private var _totalSensors:int;
 
 		public function Climbable(climbSpeed:Number)
 		{
@@ -122,6 +123,8 @@ package com.crazy.thugLife.goSystem.components.controllable
 			if (!isLadder((e.data as LatestCollisionDataVo).otherShape)) return;
 
 			_canClimb = true;
+
+			_totalSensors++;
 		}
 
 		override protected function handleSensorEnd(e:ISignalEvent):void
@@ -130,9 +133,13 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 			if (!isLadder((e.data as LatestCollisionDataVo).otherShape)) return;
 
-			_canClimb = false;
+			_totalSensors--;
 
-			stopClimbing();
+			if (_totalSensors == 0)
+			{
+				_canClimb = false;
+				stopClimbing();
+			}
 		}
 
 		public function get isClimbing():Boolean

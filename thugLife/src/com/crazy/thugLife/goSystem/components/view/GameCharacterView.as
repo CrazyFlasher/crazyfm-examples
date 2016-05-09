@@ -51,6 +51,11 @@ package com.crazy.thugLife.goSystem.components.view
 			this.climbable = climbable;
 			this.aimable = aimable;
 			this.rotatable = rotatable;
+
+			gafSkin.pivotX = 10;
+			gafSkin.pivotY = 50;
+
+			playAnimation(STAY_ANIMATION, true);
 		}
 
 		override public function interact(timePassed:Number):void
@@ -78,14 +83,14 @@ package com.crazy.thugLife.goSystem.components.view
 			if (isClimbing)
 			{
 				playAnimation(CLIMB_ANIMATION);
-				/*if (model.velocity.length < 10)
+				if (model.velocity.length < 10)
 				{
 					gafSkin.stop(true);
 				}else
 				{
 					gafSkin.play(true);
 					gafSkin.stop(false);
-				}*/
+				}
 			} else
 			if (isStaying)
 			{
@@ -124,14 +129,14 @@ package com.crazy.thugLife.goSystem.components.view
 				gafSkin.localToGlobal(armCurrentPosition, armGlobalPosition);
 				viewContainer.globalToLocal(armGlobalPosition, armGlobalPosition);
 
-				gunArm.rotation = getAngle(armGlobalPosition, aimable.aimPosition);
+				gunArm.rotation = getGunArmAngle(armGlobalPosition, aimable.aimPosition);
 			}
 		}
 
-		private function playAnimation(animationId:String):void
+		private function playAnimation(animationId:String, force:Boolean = false):void
 		{
-//			if (gafSkin.currentSequence != animationId)
-//			{
+			if (gafSkin.currentSequence != animationId || force)
+			{
 				gafSkin.gotoAndStop(animationId);
 				gafSkin.play(true);
 				gafSkin.stop(false);
@@ -140,15 +145,26 @@ package com.crazy.thugLife.goSystem.components.view
 								.getChildByName("body") as DisplayObjectContainer)
 								.getChildByName("gunArm");
 
-
-//			}
+			}
 		}
 
-		private function getAngle(p1:Point, p2:Vec2):Number
+		private function getGunArmAngle(p1:Point, p2:Vec2):Number
 		{
 			var dx:Number = p1.x - p2.x;
 			var dy:Number = p1.y - p2.y;
-			return Math.atan2(dy, dx) + Math.PI - _skin.rotation;
+
+			var angleFromTan:Number =  Math.atan2(dy, dx);
+			var finalAngle:Number;
+
+			if (rotatable && rotatable.isRotatedLeft)
+			{
+				finalAngle = angleFromTan * -1 + _skin.rotation;
+			}else
+			{
+				finalAngle = angleFromTan + Math.PI - _skin.rotation;
+			}
+
+			return finalAngle;
 		}
 	}
 }

@@ -86,7 +86,6 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 		private function setJumpState():void
 		{
-			trace("setJumpState")
 			_isJumping = true;
 
 			PhysObjectModelUtils.rotate(intPhysObject, 0);
