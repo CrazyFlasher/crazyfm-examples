@@ -17,7 +17,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 	public class Aimable extends AbstractPhysControllable implements IAimable
 	{
 		private var _aimPosition:Vec2 = new Vec2();
-		private var _aimRay:Ray;
+		private var _aimRay:Ray = new Ray(Vec2.get(), Vec2.get(1, 1));
 
 		private var rayOrigin:Vec2 = new Vec2();
 
@@ -34,6 +34,8 @@ package com.crazy.thugLife.goSystem.components.controllable
 			{
 				this.aimRayOriginOffset = aimRayOriginOffset;
 			}
+
+			_aimRay.maxDistance = 1000;
 		}
 
 		private function getAngle(p1:Vec2, p2:Vec2):Number
@@ -61,17 +63,10 @@ package com.crazy.thugLife.goSystem.components.controllable
 			rayOrigin.x = intPhysObject.worldCenterOfMass.x + aimRayOriginOffset.x;
 			rayOrigin.y = intPhysObject.worldCenterOfMass.y + aimRayOriginOffset.y;
 
-			if (!_aimRay)
-			{
-				_aimRay = new Ray(rayOrigin, Vec2.fromPolar(1, getAngle(rayOrigin, _aimPosition)));
-				_aimRay.maxDistance = 1000;
-			}else
-			{
-				_aimRay.origin = rayOrigin;
-				_aimRay.direction = Vec2.fromPolar(1, getAngle(rayOrigin, _aimPosition));
-			}
+			_aimRay.origin = rayOrigin;
+			_aimRay.direction = Vec2.fromPolar(1, getAngle(rayOrigin, _aimPosition));
 
-			//_aimRay.origin = _aimRay.at(rayOffset);
+			_aimRay.origin = _aimRay.at(rayOffset);
 		}
 
 		public function get aimPosition():Vec2

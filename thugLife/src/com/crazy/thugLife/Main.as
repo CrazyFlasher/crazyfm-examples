@@ -7,6 +7,7 @@ package com.crazy.thugLife
 	import com.catalystapps.gaf.data.GAFBundle;
 	import com.crazy.thugLife.goSystem.components.input.GameInputActionEnum;
 	import com.crazy.thugLife.goSystem.gameObjects.HumanGameObject;
+	import com.crazy.thugLife.goSystem.gameObjects.IHumanGameObject;
 	import com.crazyfm.devkit.goSystem.components.camera.Camera;
 	import com.crazyfm.devkit.goSystem.components.camera.ICamera;
 	import com.crazyfm.devkit.goSystem.components.input.keyboard.KeyboardInput;
@@ -20,6 +21,7 @@ package com.crazy.thugLife
 	import com.crazyfm.extension.goSystem.GOSystem;
 	import com.crazyfm.extension.goSystem.GOSystemObject;
 	import com.crazyfm.extension.goSystem.IGOSystem;
+	import com.crazyfm.extension.goSystem.IGOSystemObject;
 	import com.crazyfm.extensions.physics.IBodyObject;
 	import com.crazyfm.extensions.physics.IWorldObject;
 	import com.crazyfm.extensions.physics.WorldObject;
@@ -48,7 +50,7 @@ package com.crazy.thugLife
 
 		private var worldDataObject:IWorldObject;
 
-		private var user:HumanGameObject;
+		private var user:IHumanGameObject;
 
 		private var gafBundle:GAFBundle;
 
@@ -116,8 +118,8 @@ package com.crazy.thugLife
 							.addComponent(new PhysWorldModel(space))
 							.addComponent(camera = new Camera(mainViewContainer)))
 					.addGameObject(user = new HumanGameObject(userBodyObject, gafBundle, mainViewContainer)
-							.addComponent(new MouseInput(mainViewContainer, mouseToAction))
-							.addComponent(new KeyboardInput(mainViewContainer.stage, keysToAction)))
+							.addInput(new MouseInput(mainViewContainer, mouseToAction))
+							.addInput(new KeyboardInput(stage, keysToAction)))
 					.addGameObject(new GOSystemObject()
 							.addComponent(new PhysBodyObjectModel(floorBodyObject.body))
 							.addComponent(new PhysBodyObjectFromDataView(mainViewContainer, floorBodyObject.data.shapeDataList, 0xFFCC00))

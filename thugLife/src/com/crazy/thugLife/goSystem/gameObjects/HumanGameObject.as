@@ -17,9 +17,11 @@ package com.crazy.thugLife.goSystem.gameObjects
 	import com.crazy.thugLife.goSystem.components.controllable.Rotatable;
 	import com.crazy.thugLife.goSystem.components.view.GameCharacterView;
 	import com.crazy.thugLife.goSystem.components.view.RayView;
+	import com.crazyfm.devkit.goSystem.components.input.IInput;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.InteractivePhysObjectModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.view.IPhysBodyObjectView;
 	import com.crazyfm.extension.goSystem.GOSystemObject;
+	import com.crazyfm.extension.goSystem.IGOSystemObject;
 	import com.crazyfm.extensions.physics.IBodyObject;
 
 	import flash.geom.Point;
@@ -27,7 +29,7 @@ package com.crazy.thugLife.goSystem.gameObjects
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 
-	public class HumanGameObject extends GOSystemObject
+	public class HumanGameObject extends GOSystemObject implements IHumanGameObject
 	{
 		private var bodyObject:IBodyObject;
 		private var gafBundle:GAFBundle;
@@ -70,6 +72,13 @@ package com.crazy.thugLife.goSystem.gameObjects
 		public function get skin():DisplayObject
 		{
 			return userSkin.skin;
+		}
+
+		public function addInput(value:IInput):IHumanGameObject
+		{
+			addComponent(value, 0);
+
+			return this;
 		}
 	}
 }
