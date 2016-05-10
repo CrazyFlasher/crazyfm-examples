@@ -3,12 +3,12 @@
  */
 package com.crazy.thugLife.goSystem.components.controllable
 {
-	import com.crazyfm.extension.goSystem.IGameComponent;
+	import com.crazyfm.extension.goSystem.IGOSystemComponent;
 
 	import nape.geom.Ray;
 	import nape.geom.Vec2;
 
-	public interface IAimable extends IGameComponent
+	public interface IAimable extends IGOSystemComponent
 	{
 		function get aimPosition():Vec2;
 		function get aimRay():Ray;

@@ -71,7 +71,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 				_aimRay.direction = Vec2.fromPolar(1, getAngle(rayOrigin, _aimPosition));
 			}
 
-			_aimRay.origin = _aimRay.at(rayOffset);
+			//_aimRay.origin = _aimRay.at(rayOffset);
 		}
 
 		public function get aimPosition():Vec2

@@ -3,9 +3,9 @@
  */
 package com.crazy.thugLife.goSystem.components.controllable
 {
-	import com.crazyfm.extension.goSystem.IGameComponent;
+	import com.crazyfm.extension.goSystem.IGOSystemComponent;
 
-	public interface IMovable extends IGameComponent
+	public interface IMovable extends IGOSystemComponent
 	{
 		function get isMoving():Boolean;
 		function get isRunning():Boolean;

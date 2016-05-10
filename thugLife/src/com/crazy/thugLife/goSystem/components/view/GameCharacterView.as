@@ -16,9 +16,7 @@ package com.crazy.thugLife.goSystem.components.view
 	import nape.geom.Vec2;
 
 	import starling.animation.Tween;
-
 	import starling.core.Starling;
-
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 
@@ -57,9 +55,6 @@ package com.crazy.thugLife.goSystem.components.view
 			this.climbable = climbable;
 			this.aimable = aimable;
 			this.rotatable = rotatable;
-
-			gafSkin.pivotX = 10;
-			gafSkin.pivotY = 50;
 
 			playAnimation(STAY_ANIMATION, true);
 		}
@@ -132,10 +127,10 @@ package com.crazy.thugLife.goSystem.components.view
 				armCurrentPosition.x = gunArm.x;
 				armCurrentPosition.y = gunArm.y;
 
-				gafSkin.localToGlobal(armCurrentPosition, armGlobalPosition);
+				gafSkin.getChildByName(gafSkin.currentSequence).localToGlobal(armCurrentPosition, armGlobalPosition);
 				viewContainer.globalToLocal(armGlobalPosition, armGlobalPosition);
 
-				gunArm.rotation = getGunArmAngle(armGlobalPosition, aimable.aimPosition);
+				gunArm.rotation = getGunArmAngle(armGlobalPosition, aimable.aimRay.at(100));
 			}
 		}
 
@@ -151,8 +146,8 @@ package com.crazy.thugLife.goSystem.components.view
 								.getChildByName("body") as DisplayObjectContainer)
 								.getChildByName("gunArm");
 
-				gunArm.pivotY = -25;
-				gunArm.pivotX = -10;
+				//gunArm.pivotY = -25;
+				//gunArm.pivotX = -10;
 			}
 		}
 
@@ -166,10 +161,10 @@ package com.crazy.thugLife.goSystem.components.view
 
 			if (rotatable && rotatable.isRotatedLeft)
 			{
-				finalAngle = angleFromTan * -1 + _skin.rotation;
+				finalAngle = angleFromTan * -1 + model.rotation;
 			}else
 			{
-				finalAngle = angleFromTan + Math.PI - _skin.rotation;
+				finalAngle = angleFromTan + Math.PI - model.rotation;
 			}
 
 			return finalAngle;

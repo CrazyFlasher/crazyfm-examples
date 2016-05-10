@@ -3,9 +3,9 @@
  */
 package com.crazy.thugLife.goSystem.components.controllable
 {
-	import com.crazyfm.extension.goSystem.IGameComponent;
+	import com.crazyfm.extension.goSystem.IGOSystemComponent;
 
-	public interface IClimbable extends IGameComponent
+	public interface IClimbable extends IGOSystemComponent
 	{
 		function get isClimbing():Boolean;
 	}
