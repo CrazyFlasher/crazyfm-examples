@@ -33,7 +33,7 @@ package com.crazy.thugLife.goSystem.gameObjects
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 
-	public class Human extends GOSystemObject
+	public class HumanGameObject extends GOSystemObject
 	{
 		private var bodyObject:IBodyObject;
 		private var gafBundle:GAFBundle;
@@ -41,7 +41,7 @@ package com.crazy.thugLife.goSystem.gameObjects
 
 		private var userSkin:IPhysBodyObjectView;
 
-		public function Human(bodyObject:IBodyObject, gafBundle:GAFBundle, mainViewContainer:DisplayObjectContainer)
+		public function HumanGameObject(bodyObject:IBodyObject, gafBundle:GAFBundle, mainViewContainer:DisplayObjectContainer)
 		{
 			super();
 

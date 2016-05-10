@@ -5,7 +5,7 @@ package com.crazy.thugLife
 {
 	import com.catalystapps.gaf.core.ZipToGAFAssetConverter;
 	import com.catalystapps.gaf.data.GAFBundle;
-	import com.crazy.thugLife.goSystem.gameObjects.Human;
+	import com.crazy.thugLife.goSystem.gameObjects.HumanGameObject;
 	import com.crazyfm.devkit.goSystem.components.camera.Camera;
 	import com.crazyfm.devkit.goSystem.components.camera.ICamera;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysBodyObjectModel;
@@ -43,7 +43,7 @@ package com.crazy.thugLife
 
 		private var worldDataObject:IWorldObject;
 
-		private var user:Human;
+		private var user:HumanGameObject;
 
 		private var gafBundle:GAFBundle;
 
@@ -98,7 +98,7 @@ package com.crazy.thugLife
 					.addGameObject(new GOSystemObject()
 							.addComponent(new PhysWorldModel(space))
 							.addComponent(camera = new Camera(mainViewContainer)))
-					.addGameObject(user = new Human(userBodyObject, gafBundle, mainViewContainer))
+					.addGameObject(user = new HumanGameObject(userBodyObject, gafBundle, mainViewContainer))
 					.addGameObject(new GOSystemObject()
 							.addComponent(new PhysBodyObjectModel(floorBodyObject.body))
 							.addComponent(new PhysBodyObjectFromDataView(mainViewContainer, floorBodyObject.data.shapeDataList, 0xFFCC00))
