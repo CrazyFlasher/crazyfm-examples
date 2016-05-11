@@ -24,7 +24,9 @@ package com.crazy.thugLife.goSystem.components.view
 	{
 		private const STAY_ANIMATION:String = "stay";
 		private const WALK_ANIMATION:String = "walk";
+		private const WALK_BACK_ANIMATION:String = "walkBack";
 		private const RUN_ANIMATION:String = "run";
+		private const RUN_BACK_ANIMATION:String = "runBack";
 		private const JUMP_ANIMATION:String = "jump";
 		private const CLIMB_ANIMATION:String = "climb";
 
@@ -41,11 +43,16 @@ package com.crazy.thugLife.goSystem.components.view
 
 		private var tween:Tween;
 
+		private var currentAnim:GAFMovieClip;
+		private var currentAnimId:String;
+
+		private var _directionLeft:Boolean = false;
+
 		public function GameCharacterView(viewContainer:DisplayObjectContainer, gafSkin:GAFMovieClip)
 		{
 			super(viewContainer, gafSkin);
 
-			playAnimation(STAY_ANIMATION, true);
+//			playAnimation(STAY_ANIMATION, true);
 		}
 
 		override public function interact(timePassed:Number):void
@@ -62,11 +69,11 @@ package com.crazy.thugLife.goSystem.components.view
 
 			if (isWalking)
 			{
-				playAnimation(WALK_ANIMATION);
+				playAnimation(_directionLeft ? WALK_BACK_ANIMATION : WALK_ANIMATION);
 			} else
 			if (isRunning)
 			{
-				playAnimation(RUN_ANIMATION);
+				playAnimation(_directionLeft ? RUN_BACK_ANIMATION : RUN_ANIMATION);
 			} else
 			if (isJumping)
 			{
@@ -127,12 +134,19 @@ package com.crazy.thugLife.goSystem.components.view
 		{
 			if (rotatable.isRotatedLeft && gafSkin.scaleX > 0)
 			{
-				gafSkin.scaleX = -1;
+				directionLeft = true;
 			}else
 			if (!rotatable.isRotatedLeft && gafSkin.scaleX < 0)
 			{
-				gafSkin.scaleX = 1;
+				directionLeft = false;
 			}
+		}
+
+		private function set directionLeft(value:Boolean):void
+		{
+			_directionLeft = value;
+
+			gafSkin.scaleX = _directionLeft ? -1 : 1;
 		}
 
 		private function updateAimingView():void
@@ -151,14 +165,19 @@ package com.crazy.thugLife.goSystem.components.view
 
 		private function playAnimation(animationId:String, force:Boolean = false):void
 		{
-			if (gafSkin.currentSequence != animationId || force)
+			if (currentAnimId != animationId || force)
 			{
+				currentAnimId = animationId;
+				currentAnim = gafSkin.getChildByName(animationId) as GAFMovieClip;
+
 				gafSkin.gotoAndStop(animationId);
+
+				currentAnim.gotoAndStop(1);
+
 				gafSkin.play(true);
 				gafSkin.stop(false);
 
-				gunArm = ((gafSkin.getChildByName(animationId) as DisplayObjectContainer)
-								.getChildByName("body") as DisplayObjectContainer)
+				gunArm = (currentAnim.getChildByName("body") as DisplayObjectContainer)
 								.getChildByName("gunArm");
 
 				//gunArm.pivotY = -25;
