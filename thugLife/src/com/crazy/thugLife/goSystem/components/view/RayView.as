@@ -17,11 +17,9 @@ package com.crazy.thugLife.goSystem.components.view
 
 		private var rayGfx:Shape;
 
-		public function RayView(viewContainer:DisplayObjectContainer, aimable:IAimable)
+		public function RayView(viewContainer:DisplayObjectContainer)
 		{
 			super(viewContainer);
-
-			this.aimable = aimable;
 
 			init();
 		}
@@ -36,7 +34,10 @@ package com.crazy.thugLife.goSystem.components.view
 		{
 			super.interact(timePassed);
 
-			if (!aimable.aimRay) return;
+			if (!aimable)
+			{
+				aimable = gameObject.getComponentByType(IAimable) as IAimable;
+			}
 
 			var pt:Vec2 = aimable.aimRay.at(Math.min(aimable.aimRay.maxDistance, 1000));
 

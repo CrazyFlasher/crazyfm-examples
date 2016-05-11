@@ -143,8 +143,6 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 		public function get isMoving():Boolean
 		{
-			var t:Number = Math.abs(intPhysObject.velocity.x);
-			trace(t, walkSpeed)
 			return Math.abs(intPhysObject.velocity.x) >= walkSpeed;
 		}
 

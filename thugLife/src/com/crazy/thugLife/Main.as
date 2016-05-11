@@ -21,11 +21,9 @@ package com.crazy.thugLife
 	import com.crazyfm.extension.goSystem.GOSystem;
 	import com.crazyfm.extension.goSystem.GOSystemObject;
 	import com.crazyfm.extension.goSystem.IGOSystem;
-	import com.crazyfm.extension.goSystem.IGOSystemObject;
 	import com.crazyfm.extensions.physics.IBodyObject;
 	import com.crazyfm.extensions.physics.IWorldObject;
 	import com.crazyfm.extensions.physics.WorldObject;
-	import com.crazyfm.extensions.physics.ns_ext_physics;
 	import com.crazyfm.extensions.physics.utils.PhysicsParser;
 
 	import flash.geom.Rectangle;
@@ -38,8 +36,6 @@ package com.crazy.thugLife
 	import starling.display.Sprite;
 	import starling.events.Event;
 
-	use namespace ns_ext_physics;
-
 	public class Main extends Sprite
 	{
 		[Embed(source="../../../../resources/test.json", mimeType="application/octet-stream")]
@@ -48,9 +44,10 @@ package com.crazy.thugLife
 		[Embed(source="../../../../resources/test_assets.zip", mimeType="application/octet-stream")]
 		private const BundleZip:Class;
 
-		private var worldDataObject:IWorldObject;
+		private var worldObject:IWorldObject;
 
 		private var user:IHumanGameObject;
+		private var enemy:IHumanGameObject;
 
 		private var gafBundle:GAFBundle;
 
@@ -60,8 +57,7 @@ package com.crazy.thugLife
 
 			Starling.current.showStats = true;
 
-			worldDataObject = new WorldObject()
-				.setData(PhysicsParser.parseWorld(JSON.parse((new WorldClass() as ByteArray).toString())));
+			worldObject = new WorldObject(PhysicsParser.parseWorld(JSON.parse((new WorldClass() as ByteArray).toString())));
 
 			addEventListener(Event.ADDED_TO_STAGE, added);
 		}
@@ -104,9 +100,10 @@ package com.crazy.thugLife
 				new MouseToActionMapping(GameInputActionEnum.AIM, false, false, false, true)
 			];
 
-			var space:Space = worldDataObject.space;
-			var floorBodyObject:IBodyObject = worldDataObject.bodyObjectById("ground");
-			var userBodyObject:IBodyObject = worldDataObject.bodyObjectById("user");
+			var space:Space = worldObject.space;
+			var floorBodyObject:IBodyObject = worldObject.bodyObjectById("ground");
+			var userBodyObject:IBodyObject = worldObject.bodyObjectById("user");
+			var enemyBodyObject:IBodyObject = worldObject.bodyObjectById("enemy_1");
 
 			var mainViewContainer:Sprite = new Sprite();
 			addChild(mainViewContainer);
@@ -120,6 +117,7 @@ package com.crazy.thugLife
 					.addGameObject(user = new HumanGameObject(userBodyObject, gafBundle, mainViewContainer)
 							.addInput(new MouseInput(mainViewContainer, mouseToAction))
 							.addInput(new KeyboardInput(stage, keysToAction)))
+					.addGameObject(enemy = new HumanGameObject(enemyBodyObject, gafBundle, mainViewContainer))
 					.addGameObject(new GOSystemObject()
 							.addComponent(new PhysBodyObjectModel(floorBodyObject.body))
 							.addComponent(new PhysBodyObjectFromDataView(mainViewContainer, floorBodyObject.data.shapeDataList, 0xFFCC00))

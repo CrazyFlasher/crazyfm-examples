@@ -41,20 +41,9 @@ package com.crazy.thugLife.goSystem.components.view
 
 		private var tween:Tween;
 
-		public function GameCharacterView(viewContainer:DisplayObjectContainer, gafSkin:GAFMovieClip,
-										  movable:IMovable = null,
-										  jumpable:IJumpable = null,
-										  climbable:IClimbable = null,
-										  aimable:IAimable = null,
-										  rotatable:IRotatable = null)
+		public function GameCharacterView(viewContainer:DisplayObjectContainer, gafSkin:GAFMovieClip)
 		{
 			super(viewContainer, gafSkin);
-
-			this.movable = movable;
-			this.jumpable = jumpable;
-			this.climbable = climbable;
-			this.aimable = aimable;
-			this.rotatable = rotatable;
 
 			playAnimation(STAY_ANIMATION, true);
 		}
@@ -62,6 +51,8 @@ package com.crazy.thugLife.goSystem.components.view
 		override public function interact(timePassed:Number):void
 		{
 			super.interact(timePassed);
+
+			fetchControllableModels();
 
 			var isClimbing:Boolean = climbable && climbable.isClimbing;
 			var isJumping:Boolean = jumpable && jumpable.isJumping && !isClimbing;
@@ -105,6 +96,30 @@ package com.crazy.thugLife.goSystem.components.view
 			if (rotatable)
 			{
 				updateDirection();
+			}
+		}
+
+		private function fetchControllableModels():void
+		{
+			if (!movable)
+			{
+				movable = gameObject.getComponentByType(IMovable) as IMovable;
+			}
+			if (!jumpable)
+			{
+				jumpable = gameObject.getComponentByType(IJumpable) as IJumpable;
+			}
+			if (!climbable)
+			{
+				climbable = gameObject.getComponentByType(IClimbable) as IClimbable;
+			}
+			if (!aimable)
+			{
+				aimable = gameObject.getComponentByType(IAimable) as IAimable;
+			}
+			if (!rotatable)
+			{
+				rotatable = gameObject.getComponentByType(IRotatable) as IRotatable;
 			}
 		}
 
@@ -172,9 +187,6 @@ package com.crazy.thugLife.goSystem.components.view
 
 		override protected function setRotation(value:Number):void
 		{
-			//super.setRotation(value);
-			//return;
-
 			if (!tween)
 			{
 				tween = new Tween(_skin, 0.1);
