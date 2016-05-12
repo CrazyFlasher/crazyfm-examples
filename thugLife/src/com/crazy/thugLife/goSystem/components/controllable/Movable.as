@@ -150,5 +150,10 @@ package com.crazy.thugLife.goSystem.components.controllable
 		{
 			return Math.abs(intPhysObject.velocity.x) >= runSpeed;
 		}
+
+		public function get isLeftDirection():Boolean
+		{
+			return isMoving && intPhysObject.velocity.x < 0;
+		}
 	}
 }

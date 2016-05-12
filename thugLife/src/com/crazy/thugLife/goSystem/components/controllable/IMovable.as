@@ -9,5 +9,6 @@ package com.crazy.thugLife.goSystem.components.controllable
 	{
 		function get isMoving():Boolean;
 		function get isRunning():Boolean;
+		function get isLeftDirection():Boolean;
 	}
 }

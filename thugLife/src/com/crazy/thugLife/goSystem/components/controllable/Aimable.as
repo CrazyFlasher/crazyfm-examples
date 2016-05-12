@@ -93,5 +93,10 @@ package com.crazy.thugLife.goSystem.components.controllable
 				updateRay();
 			}
 		}
+
+		public function get isAimingLeft():Boolean
+		{
+			return _aimPosition.x < intPhysObject.worldCenterOfMass.x;
+		}
 	}
 }

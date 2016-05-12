@@ -12,5 +12,6 @@ package com.crazy.thugLife.goSystem.components.controllable
 	{
 		function get aimPosition():Vec2;
 		function get aimRay():Ray;
+		function get isAimingLeft():Boolean;
 	}
 }

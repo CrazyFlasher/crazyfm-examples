@@ -46,8 +46,6 @@ package com.crazy.thugLife.goSystem.components.view
 		private var currentAnim:GAFMovieClip;
 		private var currentAnimId:String;
 
-		private var _directionLeft:Boolean = false;
-
 		public function GameCharacterView(viewContainer:DisplayObjectContainer, gafSkin:GAFMovieClip)
 		{
 			super(viewContainer, gafSkin);
@@ -67,13 +65,18 @@ package com.crazy.thugLife.goSystem.components.view
 			var isRunning:Boolean = movable && movable.isRunning && !isJumping && !isClimbing;
 			var isStaying:Boolean = !isWalking && !isRunning && !isJumping && !isClimbing;
 
+			var isLeftDirection:Boolean = movable && movable.isLeftDirection;
+			var isAimingLeft:Boolean = aimable && aimable.isAimingLeft;
+
+			var playBackwardAnim:Boolean = isLeftDirection != isAimingLeft;
+
 			if (isWalking)
 			{
-				playAnimation(_directionLeft ? WALK_BACK_ANIMATION : WALK_ANIMATION);
+				playAnimation(playBackwardAnim ? WALK_BACK_ANIMATION : WALK_ANIMATION);
 			} else
 			if (isRunning)
 			{
-				playAnimation(_directionLeft ? RUN_BACK_ANIMATION : RUN_ANIMATION);
+				playAnimation(playBackwardAnim ? RUN_BACK_ANIMATION : RUN_ANIMATION);
 			} else
 			if (isJumping)
 			{
@@ -134,19 +137,12 @@ package com.crazy.thugLife.goSystem.components.view
 		{
 			if (rotatable.isRotatedLeft && gafSkin.scaleX > 0)
 			{
-				directionLeft = true;
+				gafSkin.scaleX = -1;
 			}else
 			if (!rotatable.isRotatedLeft && gafSkin.scaleX < 0)
 			{
-				directionLeft = false;
+				gafSkin.scaleX = 1;
 			}
-		}
-
-		private function set directionLeft(value:Boolean):void
-		{
-			_directionLeft = value;
-
-			gafSkin.scaleX = _directionLeft ? -1 : 1;
 		}
 
 		private function updateAimingView():void
