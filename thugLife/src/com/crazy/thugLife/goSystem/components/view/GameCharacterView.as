@@ -191,13 +191,24 @@ package com.crazy.thugLife.goSystem.components.view
 
 			if (rotatable && rotatable.isRotatedLeft)
 			{
-				finalAngle = angleFromTan * -1 + model.rotation;
+				finalAngle = angleFromTan * -1 + additionalRotation;
 			}else
 			{
-				finalAngle = angleFromTan + Math.PI - model.rotation;
+				finalAngle = angleFromTan + Math.PI - additionalRotation;
 			}
 
 			return finalAngle;
+		}
+
+		private function get additionalRotation():Number
+		{
+			var bodyRotation:Number = currentAnim.getChildByName("body").rotation;
+			if (rotatable && rotatable.isRotatedLeft)
+			{
+				bodyRotation *= -1;
+			}
+
+			return _skin.rotation + bodyRotation;
 		}
 
 		override protected function setRotation(value:Number):void
