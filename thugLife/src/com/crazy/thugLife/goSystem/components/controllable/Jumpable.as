@@ -43,6 +43,8 @@ package com.crazy.thugLife.goSystem.components.controllable
 			if (!intPhysObject.isOnLegs) return;
 
 			_isJumping = false;
+
+			trace(intPhysObject.velocity.y);
 		}
 
 		override public function inputAction(actionVo:AbstractInputActionVo):IControllable
