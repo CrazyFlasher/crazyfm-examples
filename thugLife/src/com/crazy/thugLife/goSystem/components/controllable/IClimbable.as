@@ -8,5 +8,6 @@ package com.crazy.thugLife.goSystem.components.controllable
 	public interface IClimbable extends IGOSystemComponent
 	{
 		function get isClimbing():Boolean;
+		function get isLeavingLadder():Boolean;
 	}
 }

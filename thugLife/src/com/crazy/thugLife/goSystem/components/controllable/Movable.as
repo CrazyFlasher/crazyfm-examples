@@ -80,6 +80,8 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 		private function runRight():void
 		{
+			cancelZeroGravity();
+
 			_isMoving = true;
 
 			intPhysObject.velocity.x = !_toggleRun ? runSpeed : walkSpeed;
@@ -87,6 +89,8 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 		private function runLeft():void
 		{
+			cancelZeroGravity();
+
 			_isMoving = true;
 
 			intPhysObject.velocity.x = !_toggleRun ? -runSpeed : -walkSpeed;
@@ -94,6 +98,8 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 		private function moveLeft():void
 		{
+			cancelZeroGravity();
+
 			_isMoving = true;
 
 			intPhysObject.velocity.x = !_toggleRun ? -walkSpeed : -runSpeed;
@@ -101,6 +107,8 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 		private function moveRight():void
 		{
+			cancelZeroGravity();
+
 			_isMoving = true;
 
 			intPhysObject.velocity.x = !_toggleRun ? walkSpeed : runSpeed;
@@ -139,6 +147,14 @@ package com.crazy.thugLife.goSystem.components.controllable
 			if (intPhysObject.zeroGravity) return;
 
 			PhysObjectModelUtils.rotateBodyToInteractionCallbackNormal(intPhysObject, collision);
+		}
+
+		private function cancelZeroGravity():void
+		{
+//			if (intPhysObject.zeroGravity)
+//			{
+//				intPhysObject.setZeroGravity(false);
+//			}
 		}
 
 		public function get isMoving():Boolean

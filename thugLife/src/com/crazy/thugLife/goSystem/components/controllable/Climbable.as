@@ -13,17 +13,35 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 	public class Climbable extends AbstractPhysControllable implements IClimbable
 	{
+		private const MAX_TO_ALLOW_CLIMB_X:int = 10;
+
 		private var climbSpeed:Number;
 
 		private var _isClimbing:Boolean;
-		private var _canClimb:Boolean;
+		private var _inLadderArea:Boolean;
 		private var _totalSensors:int;
+
+		private var ladderPositionX:Number;
+		private var _isLeavingLadder:Boolean;
 
 		public function Climbable(climbSpeed:Number)
 		{
 			super();
 
 			this.climbSpeed = climbSpeed;
+		}
+
+		override public function interact(timePassed:Number):void
+		{
+			super.interact(timePassed);
+
+			if (_isClimbing)
+			{
+				if (intPhysObject.velocity.x > MAX_TO_ALLOW_CLIMB_X)
+				{
+					stopClimbing();
+				}
+			}
 		}
 
 		override public function inputAction(actionVo:AbstractInputActionVo):IControllable
@@ -48,7 +66,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 		private function moveUp():void
 		{
-			if (_canClimb)
+			if (canClimb)
 			{
 				startClimbing();
 			}else
@@ -60,7 +78,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 		private function moveDown():void
 		{
-			if (_canClimb)
+			if (canClimb)
 			{
 				startClimbing();
 			}
@@ -82,7 +100,6 @@ package com.crazy.thugLife.goSystem.components.controllable
 		{
 			if (!_isClimbing)
 			{
-				_canClimb = false;
 				_isClimbing = true;
 
 				intPhysObject.velocity.setxy(0, 0);
@@ -90,6 +107,8 @@ package com.crazy.thugLife.goSystem.components.controllable
 				PhysObjectModelUtils.rotate(intPhysObject, 0);
 
 				intPhysObject.setZeroGravity(true);
+
+				intPhysObject.position.x = ladderPositionX;
 			}
 		}
 
@@ -97,11 +116,15 @@ package com.crazy.thugLife.goSystem.components.controllable
 		{
 			if (_isClimbing)
 			{
-				_canClimb = false;
 				_isClimbing = false;
 
 				intPhysObject.setZeroGravity(false);
 			}
+		}
+
+		private function get canClimb():Boolean
+		{
+			return _inLadderArea && !_isClimbing && intPhysObject.velocity.x <= MAX_TO_ALLOW_CLIMB_X;
 		}
 
 		override protected function handleCollisionBegin(e:ISignalEvent):void
@@ -120,31 +143,53 @@ package com.crazy.thugLife.goSystem.components.controllable
 		{
 			super.handleSensorBegin(e);
 
-			if (!isLadder((e.data as LatestCollisionDataVo).otherShape)) return;
+			ladderPositionX = isLadder((e.data as LatestCollisionDataVo).otherShape);
 
-			_canClimb = true;
+			if (!isNaN(ladderPositionX))
+			{
+				_inLadderArea = true;
 
-			_totalSensors++;
+				_totalSensors++;
+			}
 		}
 
 		override protected function handleSensorEnd(e:ISignalEvent):void
 		{
 			super.handleSensorEnd(e);
 
-			if (!isLadder((e.data as LatestCollisionDataVo).otherShape)) return;
+			if (isNaN(isLadder((e.data as LatestCollisionDataVo).otherShape))) return;
 
 			_totalSensors--;
 
 			if (_totalSensors == 0)
 			{
-				_canClimb = false;
+				_inLadderArea = false;
 				stopClimbing();
+			}
+		}
+
+		override protected function handleSensorOngoing(e:ISignalEvent):void
+		{
+			super.handleSensorOngoing(e);
+
+			if (isNaN(isLadder((e.data as LatestCollisionDataVo).otherShape))) return;
+
+			if (canLeaveLadder((e.data as LatestCollisionDataVo).otherShape))
+			{
+				_isLeavingLadder = true;
 			}
 		}
 
 		public function get isClimbing():Boolean
 		{
 			return _isClimbing;
+		}
+
+		public function get isLeavingLadder():Boolean
+		{
+			var r:Boolean = _isLeavingLadder;
+			_isLeavingLadder = false;
+			return r;
 		}
 	}
 }

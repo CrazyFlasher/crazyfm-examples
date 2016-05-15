@@ -29,6 +29,7 @@ package com.crazy.thugLife.goSystem.components.view
 		private const RUN_BACK_ANIMATION:String = "runBack";
 		private const JUMP_ANIMATION:String = "jump";
 		private const CLIMB_ANIMATION:String = "climb";
+		private const CLIMB_OUT_ANIMATION:String = "climbOut";
 
 		private var movable:IMovable;
 		private var jumpable:IJumpable;
@@ -64,12 +65,17 @@ package com.crazy.thugLife.goSystem.components.view
 			var isWalking:Boolean = movable && movable.isMoving && !movable.isRunning && !isJumping && !isClimbing;
 			var isRunning:Boolean = movable && movable.isRunning && !isJumping && !isClimbing;
 			var isStaying:Boolean = !isWalking && !isRunning && !isJumping && !isClimbing;
+			var isLeavingLadder:Boolean = climbable && climbable.isLeavingLadder;
 
 			var isLeftDirection:Boolean = movable && movable.isLeftDirection;
 			var isAimingLeft:Boolean = aimable && aimable.isAimingLeft;
 
 			var playBackwardAnim:Boolean = isLeftDirection != isAimingLeft;
 
+			if (isLeavingLadder)
+			{
+				playAnimation(CLIMB_OUT_ANIMATION);
+			}else
 			if (isWalking)
 			{
 				playAnimation(playBackwardAnim ? WALK_BACK_ANIMATION : WALK_ANIMATION);
@@ -173,8 +179,13 @@ package com.crazy.thugLife.goSystem.components.view
 				gafSkin.play(true);
 				gafSkin.stop(false);
 
-				gunArm = (currentAnim.getChildByName("body") as DisplayObjectContainer)
-								.getChildByName("gunArm");
+				gunArm = null;
+
+				if (currentAnim.getChildByName("body"))
+				{
+					gunArm = (currentAnim.getChildByName("body") as DisplayObjectContainer)
+							.getChildByName("gunArm");
+				}
 
 				//gunArm.pivotY = -25;
 				//gunArm.pivotX = -10;

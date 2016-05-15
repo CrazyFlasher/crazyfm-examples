@@ -27,7 +27,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 		{
 			if (actionVo.action == GameInputActionEnum.AIM)
 			{
-				_isRotatedLeft = (actionVo as MouseActionVo).position.x < intPhysObject.position.x;
+				_isRotatedLeft = (actionVo as MouseActionVo).position.x < intPhysObject.position.x && !intPhysObject.zeroGravity;
 			}
 
 			return this;
