@@ -9,7 +9,10 @@ package com.crazy.thugLife.goSystem.components.controllable
 	import com.crazyfm.devkit.goSystem.components.controllable.IControllable;
 	import com.crazyfm.devkit.goSystem.components.input.AbstractInputActionVo;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.vo.LatestCollisionDataVo;
+	import com.crazyfm.devkit.goSystem.components.physyics.utils.CFShapeObjectUtils;
 	import com.crazyfm.devkit.goSystem.components.physyics.utils.PhysObjectModelUtils;
+
+	import nape.geom.AABB;
 
 	public class Climbable extends AbstractPhysControllable implements IClimbable
 	{
@@ -21,7 +24,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 		private var _inLadderArea:Boolean;
 		private var _totalSensors:int;
 
-		private var ladderPositionX:Number;
+		private var ladderBounds:AABB;
 		private var _isLeavingLadder:Boolean;
 
 		public function Climbable(climbSpeed:Number)
@@ -108,7 +111,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 				intPhysObject.setZeroGravity(true);
 
-				intPhysObject.position.x = ladderPositionX;
+				intPhysObject.position.x = ladderBounds.min.x;
 			}
 		}
 
@@ -143,9 +146,9 @@ package com.crazy.thugLife.goSystem.components.controllable
 		{
 			super.handleSensorBegin(e);
 
-			ladderPositionX = isLadder((e.data as LatestCollisionDataVo).otherShape);
+			ladderBounds = CFShapeObjectUtils.getLadderBounds((e.data as LatestCollisionDataVo).otherShape);
 
-			if (!isNaN(ladderPositionX))
+			if (ladderBounds)
 			{
 				_inLadderArea = true;
 
@@ -157,7 +160,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 		{
 			super.handleSensorEnd(e);
 
-			if (isNaN(isLadder((e.data as LatestCollisionDataVo).otherShape))) return;
+			if (!CFShapeObjectUtils.isLadder((e.data as LatestCollisionDataVo).otherShape)) return;
 
 			_totalSensors--;
 
@@ -168,7 +171,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 			}
 		}
 
-		override protected function handleSensorOngoing(e:ISignalEvent):void
+		/*override protected function handleSensorOngoing(e:ISignalEvent):void
 		{
 			super.handleSensorOngoing(e);
 
@@ -178,7 +181,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 			{
 				_isLeavingLadder = true;
 			}
-		}
+		}*/
 
 		public function get isClimbing():Boolean
 		{

@@ -18,6 +18,7 @@ package com.crazy.thugLife
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysWorldModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.view.starling.PhysBodyObjectFromDataView;
 	import com.crazyfm.devkit.goSystem.mechanisms.StarlingEnterFrameMechanism;
+	import com.crazyfm.devkit.physics.CFPhysicsFactory;
 	import com.crazyfm.extension.goSystem.GOSystem;
 	import com.crazyfm.extension.goSystem.GOSystemObject;
 	import com.crazyfm.extension.goSystem.IGOSystem;
@@ -32,8 +33,6 @@ package com.crazy.thugLife
 	import flash.utils.ByteArray;
 
 	import nape.space.Space;
-
-	import org.swiftsuspenders.Injector;
 
 	import starling.core.Starling;
 	import starling.display.Sprite;
@@ -54,8 +53,6 @@ package com.crazy.thugLife
 
 		private var gafBundle:GAFBundle;
 
-		private var injector:Injector;
-
 		public function Main()
 		{
 			super();
@@ -64,7 +61,7 @@ package com.crazy.thugLife
 
 			var worldData:WorldDataVo = PhysicsParser.parseWorld(JSON.parse((new WorldClass() as ByteArray).toString()));
 
-			worldObject = new WorldObject(worldData);
+			worldObject = new WorldObject(worldData, new CFPhysicsFactory());
 
 			addEventListener(Event.ADDED_TO_STAGE, added);
 		}

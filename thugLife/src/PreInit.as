@@ -2,6 +2,7 @@
  * Created by Anton Nefjodov on 8.02.2016.
  */
 package {
+	import com.crazy.thugLife.Main;
 	import com.crazyfm.extension.starlingApp.initializer.models.StarlingConfig;
 	import com.crazyfm.extension.starlingApp.initializer.models.StarlingInitializerContext;
 
@@ -35,7 +36,7 @@ package {
 			//Creates IContext, that initializes Starling.
 			//This IContext dispatches StarlingInitializerSignal.STARLING_INITIALIZED signal, when starling is ready
 			//and automatically creates Main object.
-			new StarlingInitializerContext(stage, Test, properties);
+			new StarlingInitializerContext(stage, Main, properties);
 		}
 	}
 }
