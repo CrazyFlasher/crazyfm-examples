@@ -25,12 +25,15 @@ package com.crazy.thugLife
 	import com.crazyfm.extensions.physics.IWorldObject;
 	import com.crazyfm.extensions.physics.WorldObject;
 	import com.crazyfm.extensions.physics.utils.PhysicsParser;
+	import com.crazyfm.extensions.physics.vo.WorldDataVo;
 
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
 
 	import nape.space.Space;
+
+	import org.swiftsuspenders.Injector;
 
 	import starling.core.Starling;
 	import starling.display.Sprite;
@@ -51,13 +54,17 @@ package com.crazy.thugLife
 
 		private var gafBundle:GAFBundle;
 
+		private var injector:Injector;
+
 		public function Main()
 		{
 			super();
 
 			Starling.current.showStats = true;
 
-			worldObject = new WorldObject(PhysicsParser.parseWorld(JSON.parse((new WorldClass() as ByteArray).toString())));
+			var worldData:WorldDataVo = PhysicsParser.parseWorld(JSON.parse((new WorldClass() as ByteArray).toString()));
+
+			worldObject = new WorldObject(worldData);
 
 			addEventListener(Event.ADDED_TO_STAGE, added);
 		}
