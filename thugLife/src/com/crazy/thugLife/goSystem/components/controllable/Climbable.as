@@ -11,6 +11,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 	import com.crazyfm.devkit.goSystem.components.physyics.model.vo.LatestCollisionDataVo;
 	import com.crazyfm.devkit.goSystem.components.physyics.utils.CFShapeObjectUtils;
 	import com.crazyfm.devkit.goSystem.components.physyics.utils.PhysObjectModelUtils;
+	import com.crazyfm.devkit.physics.ICFShapeObject;
 
 	import nape.shape.Shape;
 
@@ -50,6 +51,8 @@ package com.crazy.thugLife.goSystem.components.controllable
 		override public function inputAction(actionVo:AbstractInputActionVo):IControllable
 		{
 			super.inputAction(actionVo);
+
+			if (intPhysObject.isTeleporting) return this;
 
 			if (actionVo.action == GameInputActionEnum.MOVE_UP)
 			{
@@ -147,8 +150,9 @@ package com.crazy.thugLife.goSystem.components.controllable
 			super.handleSensorBegin(e);
 
 			var shape:Shape = (e.data as LatestCollisionDataVo).otherShape;
+			var shapeObject:ICFShapeObject = shape.userData.dataObject as ICFShapeObject;
 
-			if (CFShapeObjectUtils.isLadder(shape))
+			if (shapeObject.isLadder)
 			{
 				_inLadderArea = true;
 
@@ -156,9 +160,12 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 				currentLadderShape = shape;
 			}else
-			if (currentLadderShape && CFShapeObjectUtils.isExitOfLadder(shape, currentLadderShape))
+			if (_isClimbing && shapeObject.isTeleportEntrance)
 			{
-				//get related exit to shape
+				_isLeavingLadder = true;
+
+				intPhysObject.teleportTo(shapeObject.relatedTeleportExit.shapes[0].bounds.min.x,
+											 shapeObject.relatedTeleportExit.shapes[0].bounds.min.y, 1);
 			}
 		}
 
@@ -166,7 +173,10 @@ package com.crazy.thugLife.goSystem.components.controllable
 		{
 			super.handleSensorEnd(e);
 
-			if (!CFShapeObjectUtils.isLadder((e.data as LatestCollisionDataVo).otherShape)) return;
+			var shape:Shape = (e.data as LatestCollisionDataVo).otherShape;
+			var shapeObject:ICFShapeObject = shape.userData.dataObject as ICFShapeObject;
+
+			if (!shapeObject.isLadder) return;
 
 			_totalSensors--;
 
@@ -179,18 +189,6 @@ package com.crazy.thugLife.goSystem.components.controllable
 			}
 		}
 
-		/*override protected function handleSensorOngoing(e:ISignalEvent):void
-		{
-			super.handleSensorOngoing(e);
-
-			if (isNaN(isLadder((e.data as LatestCollisionDataVo).otherShape))) return;
-
-			if (canLeaveLadder((e.data as LatestCollisionDataVo).otherShape))
-			{
-				_isLeavingLadder = true;
-			}
-		}*/
-
 		public function get isClimbing():Boolean
 		{
 			return _isClimbing;
@@ -198,9 +196,9 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 		public function get isLeavingLadder():Boolean
 		{
-			var r:Boolean = _isLeavingLadder;
-			_isLeavingLadder = false;
-			return r;
+			var value:Boolean = _isLeavingLadder;
+			//_isLeavingLadder = false;
+			return value;
 		}
 	}
 }
