@@ -18,15 +18,15 @@ package com.crazy.thugLife
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysWorldModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.view.starling.PhysBodyObjectFromDataView;
 	import com.crazyfm.devkit.goSystem.mechanisms.StarlingEnterFrameMechanism;
-	import com.crazyfm.devkit.physics.CFPhysicsFactory;
+	import com.crazyfm.devkit.physics.factories.CFPhysicsObjectFactory;
+	import com.crazyfm.devkit.physics.factories.CFPhysicsVoFactory;
 	import com.crazyfm.extension.goSystem.GOSystem;
 	import com.crazyfm.extension.goSystem.GOSystemObject;
 	import com.crazyfm.extension.goSystem.IGOSystem;
 	import com.crazyfm.extensions.physics.IBodyObject;
 	import com.crazyfm.extensions.physics.IWorldObject;
 	import com.crazyfm.extensions.physics.WorldObject;
-	import com.crazyfm.extensions.physics.utils.PhysicsParser;
-	import com.crazyfm.extensions.physics.vo.WorldDataVo;
+	import com.crazyfm.extensions.physics.vo.units.WorldDataVo;
 
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
@@ -59,9 +59,9 @@ package com.crazy.thugLife
 
 			Starling.current.showStats = true;
 
-			var worldData:WorldDataVo = PhysicsParser.parseWorld(JSON.parse((new WorldClass() as ByteArray).toString()));
+			var worldData:WorldDataVo = new CFPhysicsVoFactory().parseWorld(JSON.parse((new WorldClass() as ByteArray).toString()));
 
-			worldObject = new WorldObject(worldData, new CFPhysicsFactory());
+			worldObject = new WorldObject(worldData, new CFPhysicsObjectFactory());
 
 			addEventListener(Event.ADDED_TO_STAGE, added);
 		}

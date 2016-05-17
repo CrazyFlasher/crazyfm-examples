@@ -30,7 +30,7 @@ package {
 			var properties:StarlingConfig = new StarlingConfig();
 			properties.stageWidth = stage.stageWidth;
 			properties.stageHeight = stage.stageHeight;
-			properties.context3DProfile = Context3DProfile.BASELINE;
+			properties.context3DProfile = Context3DProfile.BASELINE; //to keep antialiasing
 			properties.antiAliasing = 8;
 
 			//Creates IContext, that initializes Starling.

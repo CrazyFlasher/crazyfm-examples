@@ -12,7 +12,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 	import com.crazyfm.devkit.goSystem.components.physyics.utils.CFShapeObjectUtils;
 	import com.crazyfm.devkit.goSystem.components.physyics.utils.PhysObjectModelUtils;
 
-	import nape.geom.AABB;
+	import nape.shape.Shape;
 
 	public class Climbable extends AbstractPhysControllable implements IClimbable
 	{
@@ -24,7 +24,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 		private var _inLadderArea:Boolean;
 		private var _totalSensors:int;
 
-		private var ladderBounds:AABB;
+		private var currentLadderShape:Shape;
 		private var _isLeavingLadder:Boolean;
 
 		public function Climbable(climbSpeed:Number)
@@ -111,7 +111,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 				intPhysObject.setZeroGravity(true);
 
-				intPhysObject.position.x = ladderBounds.min.x;
+				intPhysObject.position.x = currentLadderShape.bounds.min.x;
 			}
 		}
 
@@ -146,13 +146,19 @@ package com.crazy.thugLife.goSystem.components.controllable
 		{
 			super.handleSensorBegin(e);
 
-			ladderBounds = CFShapeObjectUtils.getLadderBounds((e.data as LatestCollisionDataVo).otherShape);
+			var shape:Shape = (e.data as LatestCollisionDataVo).otherShape;
 
-			if (ladderBounds)
+			if (CFShapeObjectUtils.isLadder(shape))
 			{
 				_inLadderArea = true;
 
 				_totalSensors++;
+
+				currentLadderShape = shape;
+			}else
+			if (currentLadderShape && CFShapeObjectUtils.isExitOfLadder(shape, currentLadderShape))
+			{
+				//get related exit to shape
 			}
 		}
 
@@ -166,7 +172,9 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 			if (_totalSensors == 0)
 			{
+				ladderBounds = null;
 				_inLadderArea = false;
+
 				stopClimbing();
 			}
 		}
