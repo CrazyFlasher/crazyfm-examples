@@ -172,7 +172,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 			if (_totalSensors == 0)
 			{
-				ladderBounds = null;
+				currentLadderShape = null;
 				_inLadderArea = false;
 
 				stopClimbing();
