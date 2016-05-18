@@ -5,9 +5,9 @@ package com.crazy.thugLife
 {
 	import com.catalystapps.gaf.core.ZipToGAFAssetConverter;
 	import com.catalystapps.gaf.data.GAFBundle;
-	import com.crazy.thugLife.goSystem.components.input.GameInputActionEnum;
-	import com.crazy.thugLife.goSystem.gameObjects.HumanGameObject;
-	import com.crazy.thugLife.goSystem.gameObjects.IHumanGameObject;
+	import com.crazy.thugLife.enums.GameInputActionEnum;
+	import com.crazy.thugLife.goSystem.prefabs.HumanPrefab;
+	import com.crazy.thugLife.goSystem.prefabs.IHumanPrefab;
 	import com.crazyfm.devkit.goSystem.components.camera.Camera;
 	import com.crazyfm.devkit.goSystem.components.camera.ICamera;
 	import com.crazyfm.devkit.goSystem.components.input.keyboard.KeyboardInput;
@@ -48,8 +48,8 @@ package com.crazy.thugLife
 
 		private var worldObject:IWorldObject;
 
-		private var user:IHumanGameObject;
-		private var enemy:IHumanGameObject;
+		private var user:IHumanPrefab;
+		private var enemy:IHumanPrefab;
 
 		private var gafBundle:GAFBundle;
 
@@ -117,11 +117,11 @@ package com.crazy.thugLife
 			var goSystem:IGOSystem = new GOSystem(new StarlingEnterFrameMechanism(1 / Starling.current.nativeStage.frameRate))
 					.addGameObject(new GOSystemObject()
 							.addComponent(new PhysWorldModel(space))
-							.addComponent(camera = new Camera(mainViewContainer)))
-					.addGameObject(user = new HumanGameObject(userBodyObject, gafBundle, mainViewContainer)
+							.addComponent(camera = new Camera(mainViewContainer, 0.5)))
+					.addGameObject(user = new HumanPrefab(userBodyObject, gafBundle, mainViewContainer)
 							.addInput(new MouseInput(mainViewContainer, mouseToAction))
 							.addInput(new KeyboardInput(stage, keysToAction)))
-					.addGameObject(enemy = new HumanGameObject(enemyBodyObject, gafBundle, mainViewContainer))
+					.addGameObject(enemy = new HumanPrefab(enemyBodyObject, gafBundle, mainViewContainer))
 					.addGameObject(new GOSystemObject()
 							.addComponent(new PhysBodyObjectModel(floorBodyObject.body))
 							.addComponent(new PhysBodyObjectFromDataView(mainViewContainer, floorBodyObject.data.shapeDataList, 0xFFCC00))

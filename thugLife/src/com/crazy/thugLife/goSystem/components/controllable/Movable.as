@@ -3,10 +3,9 @@
  */
 package com.crazy.thugLife.goSystem.components.controllable
 {
-	import com.crazy.thugLife.goSystem.components.input.GameInputActionEnum;
+	import com.crazy.thugLife.enums.GameInputActionEnum;
 	import com.crazyfm.core.mvc.event.ISignalEvent;
 	import com.crazyfm.devkit.goSystem.components.controllable.AbstractPhysControllable;
-	import com.crazyfm.devkit.goSystem.components.controllable.IControllable;
 	import com.crazyfm.devkit.goSystem.components.input.AbstractInputActionVo;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.vo.LatestCollisionDataVo;
 	import com.crazyfm.devkit.goSystem.components.physyics.utils.PhysObjectModelUtils;
@@ -33,11 +32,11 @@ package com.crazy.thugLife.goSystem.components.controllable
 			runSpeed = walkSpeed * 2;
 		}
 
-		override public function inputAction(actionVo:AbstractInputActionVo):IControllable
+		override protected function handleInputAction(actionVo:AbstractInputActionVo):void
 		{
-			super.inputAction(actionVo);
+			super.handleInputAction(actionVo);
 
-			if (!canMoveHorizontally) return this;
+			if (!canMoveHorizontally) return;
 
 			if (actionVo.action == GameInputActionEnum.MOVE_LEFT)
 			{
@@ -63,8 +62,6 @@ package com.crazy.thugLife.goSystem.components.controllable
 			{
 				toggleRun();
 			}
-
-			return this;
 		}
 
 		private function get canMoveHorizontally():Boolean

@@ -3,13 +3,12 @@
  */
 package com.crazy.thugLife.goSystem.components.controllable
 {
-	import com.crazy.thugLife.goSystem.components.input.GameInputActionEnum;
+	import com.crazy.thugLife.enums.GameInputActionEnum;
 	import com.crazyfm.core.mvc.event.ISignalEvent;
 	import com.crazyfm.devkit.goSystem.components.controllable.AbstractPhysControllable;
-	import com.crazyfm.devkit.goSystem.components.controllable.IControllable;
 	import com.crazyfm.devkit.goSystem.components.input.AbstractInputActionVo;
+	import com.crazyfm.devkit.goSystem.components.physyics.event.InteractivePhysObjectSignalEnum;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.vo.LatestCollisionDataVo;
-	import com.crazyfm.devkit.goSystem.components.physyics.utils.CFShapeObjectUtils;
 	import com.crazyfm.devkit.goSystem.components.physyics.utils.PhysObjectModelUtils;
 	import com.crazyfm.devkit.physics.ICFShapeObject;
 
@@ -17,7 +16,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 	public class Climbable extends AbstractPhysControllable implements IClimbable
 	{
-		private const MAX_TO_ALLOW_CLIMB_X:int = 10;
+		private const MAX_TO_ALLOW_CLIMB_X:Number = 10;
 
 		private var climbSpeed:Number;
 
@@ -41,18 +40,35 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 			if (_isClimbing)
 			{
-				if (intPhysObject.velocity.x > MAX_TO_ALLOW_CLIMB_X)
+				if (Math.abs(intPhysObject.velocity.x) > MAX_TO_ALLOW_CLIMB_X)
 				{
 					stopClimbing();
 				}
 			}
 		}
 
-		override public function inputAction(actionVo:AbstractInputActionVo):IControllable
+		override protected function initialize():void
 		{
-			super.inputAction(actionVo);
+			super.initialize();
 
-			if (intPhysObject.isTeleporting) return this;
+			intPhysObject.addSignalListener(InteractivePhysObjectSignalEnum.TELEPORT_COMPLETE, onTeleportComplete)
+		}
+
+		private function onTeleportComplete(e:ISignalEvent):void
+		{
+			_isLeavingLadder = false;
+		}
+
+		override public function dispose():void
+		{
+			intPhysObject.removeSignalListener(InteractivePhysObjectSignalEnum.TELEPORT_COMPLETE, onTeleportComplete);
+
+			super.dispose();
+		}
+
+		override protected function handleInputAction(actionVo:AbstractInputActionVo):void
+		{
+			super.handleInputAction(actionVo);
 
 			if (actionVo.action == GameInputActionEnum.MOVE_UP)
 			{
@@ -66,8 +82,6 @@ package com.crazy.thugLife.goSystem.components.controllable
 			{
 				stopVertical();
 			}
-
-			return this;
 		}
 
 		private function moveUp():void
@@ -165,7 +179,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 				_isLeavingLadder = true;
 
 				intPhysObject.teleportTo(shapeObject.relatedTeleportExit.shapes[0].bounds.min.x,
-											 shapeObject.relatedTeleportExit.shapes[0].bounds.min.y, 1);
+											 shapeObject.relatedTeleportExit.shapes[0].bounds.min.y, 0.3);
 			}
 		}
 
@@ -196,9 +210,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 		public function get isLeavingLadder():Boolean
 		{
-			var value:Boolean = _isLeavingLadder;
-			//_isLeavingLadder = false;
-			return value;
+			return _isLeavingLadder;
 		}
 	}
 }

@@ -3,9 +3,8 @@
  */
 package com.crazy.thugLife.goSystem.components.controllable
 {
-	import com.crazy.thugLife.goSystem.components.input.GameInputActionEnum;
+	import com.crazy.thugLife.enums.GameInputActionEnum;
 	import com.crazyfm.devkit.goSystem.components.controllable.AbstractPhysControllable;
-	import com.crazyfm.devkit.goSystem.components.controllable.IControllable;
 	import com.crazyfm.devkit.goSystem.components.input.AbstractInputActionVo;
 	import com.crazyfm.devkit.goSystem.components.input.mouse.MouseActionVo;
 
@@ -21,19 +20,12 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 		private var rayOrigin:Vec2 = new Vec2();
 
-		private var aimRayOriginOffset:Point = new Point();
-		private var rayOffset:Number;
+		private var _aimRayOriginOffset:Point = new Point();
+		private var _rayOffset:Number = 0;
 
-		public function Aimable(aimRayOriginOffset:Point = null, rayOffset:Number = 0)
+		public function Aimable()
 		{
 			super();
-
-			this.rayOffset = rayOffset;
-
-			if (aimRayOriginOffset)
-			{
-				this.aimRayOriginOffset = aimRayOriginOffset;
-			}
 		}
 
 		private function getAngle(p1:Vec2, p2:Vec2):Number
@@ -43,8 +35,10 @@ package com.crazy.thugLife.goSystem.components.controllable
 			return Math.atan2(dy, dx) + Math.PI;
 		}
 
-		override public function inputAction(actionVo:AbstractInputActionVo):IControllable
+		override protected function handleInputAction(actionVo:AbstractInputActionVo):void
 		{
+			super.handleInputAction(actionVo);
+
 			if (actionVo.action == GameInputActionEnum.AIM)
 			{
 				_aimPosition.x = (actionVo as MouseActionVo).position.x;
@@ -52,14 +46,12 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 				updateRay();
 			}
-
-			return this;
 		}
 
 		private function updateRay():void
 		{
-			rayOrigin.x = intPhysObject.worldCenterOfMass.x + aimRayOriginOffset.x;
-			rayOrigin.y = intPhysObject.worldCenterOfMass.y + aimRayOriginOffset.y;
+			rayOrigin.x = intPhysObject.worldCenterOfMass.x + _aimRayOriginOffset.x;
+			rayOrigin.y = intPhysObject.worldCenterOfMass.y + _aimRayOriginOffset.y;
 
 			if (!_aimRay)
 			{
@@ -68,7 +60,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 			_aimRay.origin = rayOrigin;
 			_aimRay.direction = Vec2.fromPolar(1, getAngle(rayOrigin, _aimPosition));
 
-			_aimRay.origin = _aimRay.at(rayOffset);
+			_aimRay.origin = _aimRay.at(_rayOffset);
 		}
 
 		public function get aimPosition():Vec2
@@ -97,6 +89,14 @@ package com.crazy.thugLife.goSystem.components.controllable
 		public function get isAimingLeft():Boolean
 		{
 			return _aimPosition.x < intPhysObject.worldCenterOfMass.x;
+		}
+
+		public function setAimBeginPosition(aimRayOriginOffset:Point, rayOffset:Number):IAimable
+		{
+			_rayOffset = rayOffset;
+			_aimRayOriginOffset = aimRayOriginOffset;
+
+			return this;
 		}
 	}
 }

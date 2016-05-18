@@ -3,10 +3,9 @@
  */
 package com.crazy.thugLife.goSystem.components.controllable
 {
-	import com.crazy.thugLife.goSystem.components.input.GameInputActionEnum;
+	import com.crazy.thugLife.enums.GameInputActionEnum;
 	import com.crazyfm.core.mvc.event.ISignalEvent;
 	import com.crazyfm.devkit.goSystem.components.controllable.AbstractPhysControllable;
-	import com.crazyfm.devkit.goSystem.components.controllable.IControllable;
 	import com.crazyfm.devkit.goSystem.components.input.AbstractInputActionVo;
 	import com.crazyfm.devkit.goSystem.components.physyics.utils.PhysObjectModelUtils;
 
@@ -15,6 +14,8 @@ package com.crazy.thugLife.goSystem.components.controllable
 		private var jumpSpeed:Number;
 
 		private var _isJumping:Boolean;
+
+		private var _disabledUntilStopped:Boolean;
 
 		public function Jumpable(jumpSpeed:Number)
 		{
@@ -26,6 +27,11 @@ package com.crazy.thugLife.goSystem.components.controllable
 		override public function interact(timePassed:Number):void
 		{
 			super.interact(timePassed);
+
+			if (!intPhysObject.isEnabledForInteraction && !_disabledUntilStopped)
+			{
+				_disabledUntilStopped = true;
+			}
 
 			if (!_isJumping && !intPhysObject.isOnLegs && !intPhysObject.zeroGravity)
 			{
@@ -43,20 +49,27 @@ package com.crazy.thugLife.goSystem.components.controllable
 			if (!intPhysObject.isOnLegs) return;
 
 			_isJumping = false;
-
-			trace(intPhysObject.velocity.y);
 		}
 
-		override public function inputAction(actionVo:AbstractInputActionVo):IControllable
+		override protected function handleInputAction(actionVo:AbstractInputActionVo):void
 		{
-			super.inputAction(actionVo);
+			super.handleInputAction(actionVo);
+
+			if (_disabledUntilStopped)
+			{
+				if (actionVo.action == GameInputActionEnum.STOP_VERTICAL ||
+					actionVo.action == GameInputActionEnum.STOP_HORIZONTAL)
+				{
+					_disabledUntilStopped = false;
+				}
+			}
+
+			if (_disabledUntilStopped) return;
 
 			if (actionVo.action == GameInputActionEnum.MOVE_UP)
 			{
 				moveUp();
 			}
-
-			return this;
 		}
 
 		private function moveUp():void

@@ -1,7 +1,7 @@
 /**
  * Created by Anton Nefjodov on 26.04.2016.
  */
-package com.crazy.thugLife.goSystem.components.input
+package com.crazy.thugLife.enums
 {
 	import com.crazyfm.core.common.Enum;
 

@@ -5,11 +5,13 @@ package com.crazy.thugLife.goSystem.components.view
 {
 	import com.catalystapps.gaf.display.GAFMovieClip;
 	import com.crazy.thugLife.goSystem.components.controllable.IAimable;
+	import com.crazy.thugLife.goSystem.components.controllable.IArmed;
 	import com.crazy.thugLife.goSystem.components.controllable.IClimbable;
 	import com.crazy.thugLife.goSystem.components.controllable.IJumpable;
 	import com.crazy.thugLife.goSystem.components.controllable.IMovable;
 	import com.crazy.thugLife.goSystem.components.controllable.IRotatable;
 	import com.crazyfm.devkit.goSystem.components.physyics.view.starling.gaf.GAFPhysObjectView;
+	import com.crazyfm.extension.goSystem.IGOSystemComponent;
 
 	import flash.geom.Point;
 
@@ -36,6 +38,7 @@ package com.crazy.thugLife.goSystem.components.view
 		private var climbable:IClimbable;
 		private var aimable:IAimable;
 		private var rotatable:IRotatable;
+		private var armed:IArmed;
 
 		private var gunArm:DisplayObject;
 
@@ -46,6 +49,8 @@ package com.crazy.thugLife.goSystem.components.view
 
 		private var currentAnim:GAFMovieClip;
 		private var currentAnimId:String;
+
+		private var controllableModelsFetched:Boolean;
 
 		public function GameCharacterView(viewContainer:DisplayObjectContainer, gafSkin:GAFMovieClip)
 		{
@@ -60,15 +65,15 @@ package com.crazy.thugLife.goSystem.components.view
 
 			fetchControllableModels();
 
-			var isClimbing:Boolean = climbable && climbable.isClimbing;
-			var isJumping:Boolean = jumpable && jumpable.isJumping && !isClimbing;
-			var isWalking:Boolean = movable && movable.isMoving && !movable.isRunning && !isJumping && !isClimbing;
-			var isRunning:Boolean = movable && movable.isRunning && !isJumping && !isClimbing;
+			var isClimbing:Boolean = isAvailable(climbable) && climbable.isClimbing;
+			var isJumping:Boolean = isAvailable(jumpable) && jumpable.isJumping && !isClimbing;
+			var isWalking:Boolean = isAvailable(movable) && movable.isMoving && !movable.isRunning && !isJumping && !isClimbing;
+			var isRunning:Boolean = isAvailable(movable) && movable.isRunning && !isJumping && !isClimbing;
 			var isStaying:Boolean = !isWalking && !isRunning && !isJumping && !isClimbing;
-			var isLeavingLadder:Boolean = climbable && climbable.isLeavingLadder;
+			var isLeavingLadder:Boolean = isAvailable(climbable) && climbable.isLeavingLadder;
 
-			var isLeftDirection:Boolean = movable && movable.isLeftDirection;
-			var isAimingLeft:Boolean = aimable && aimable.isAimingLeft;
+			var isLeftDirection:Boolean = isAvailable(movable) && movable.isLeftDirection;
+			var isAimingLeft:Boolean = isAvailable(aimable) && aimable.isAimingLeft;
 
 			var playBackwardAnim:Boolean = isLeftDirection != isAimingLeft;
 
@@ -105,37 +110,51 @@ package com.crazy.thugLife.goSystem.components.view
 				playAnimation(STAY_ANIMATION);
 			}
 
-			if (aimable)
+			if (isAvailable(aimable))
 			{
 				updateAimingView();
 			}
-			if (rotatable)
+			if (isAvailable(rotatable))
 			{
 				updateDirection();
 			}
 		}
 
+		private function isAvailable(component:IGOSystemComponent):Boolean
+		{
+			return component && component.isEnabled;
+		}
+
 		private function fetchControllableModels():void
 		{
-			if (!movable)
+			if (!controllableModelsFetched)
 			{
-				movable = gameObject.getComponentByType(IMovable) as IMovable;
-			}
-			if (!jumpable)
-			{
-				jumpable = gameObject.getComponentByType(IJumpable) as IJumpable;
-			}
-			if (!climbable)
-			{
-				climbable = gameObject.getComponentByType(IClimbable) as IClimbable;
-			}
-			if (!aimable)
-			{
-				aimable = gameObject.getComponentByType(IAimable) as IAimable;
-			}
-			if (!rotatable)
-			{
-				rotatable = gameObject.getComponentByType(IRotatable) as IRotatable;
+				if (!movable)
+				{
+					movable = gameObject.getComponentByType(IMovable) as IMovable;
+				}
+				if (!jumpable)
+				{
+					jumpable = gameObject.getComponentByType(IJumpable) as IJumpable;
+				}
+				if (!climbable)
+				{
+					climbable = gameObject.getComponentByType(IClimbable) as IClimbable;
+				}
+				if (!aimable)
+				{
+					aimable = gameObject.getComponentByType(IAimable) as IAimable;
+				}
+				if (!rotatable)
+				{
+					rotatable = gameObject.getComponentByType(IRotatable) as IRotatable;
+				}
+				if (!armed)
+				{
+					armed = gameObject.getComponentByType(IArmed) as IArmed;
+				}
+
+				controllableModelsFetched = true;
 			}
 		}
 
@@ -200,7 +219,7 @@ package com.crazy.thugLife.goSystem.components.view
 			var angleFromTan:Number =  Math.atan2(dy, dx);
 			var finalAngle:Number;
 
-			if (rotatable && rotatable.isRotatedLeft)
+			if (isAvailable(rotatable) && rotatable.isRotatedLeft)
 			{
 				finalAngle = angleFromTan * -1 + additionalRotation;
 			}else
@@ -214,7 +233,7 @@ package com.crazy.thugLife.goSystem.components.view
 		private function get additionalRotation():Number
 		{
 			var bodyRotation:Number = currentAnim.getChildByName("body").rotation;
-			if (rotatable && rotatable.isRotatedLeft)
+			if (isAvailable(rotatable) && rotatable.isRotatedLeft)
 			{
 				bodyRotation *= -1;
 			}
