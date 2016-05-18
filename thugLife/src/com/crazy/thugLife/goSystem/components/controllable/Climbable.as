@@ -27,6 +27,9 @@ package com.crazy.thugLife.goSystem.components.controllable
 		private var currentLadderShape:Shape;
 		private var _isLeavingLadder:Boolean;
 
+		private var _disabledUntilStoppedVerticalOrOnLegs:Boolean;
+		private var _isTryingToMoveVertical:Boolean;
+
 		public function Climbable(climbSpeed:Number)
 		{
 			super();
@@ -43,6 +46,8 @@ package com.crazy.thugLife.goSystem.components.controllable
 				if (Math.abs(intPhysObject.velocity.x) > MAX_TO_ALLOW_CLIMB_X)
 				{
 					stopClimbing();
+
+					_disabledUntilStoppedVerticalOrOnLegs = true;
 				}
 			}
 		}
@@ -72,14 +77,25 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 			if (actionVo.action == GameInputActionEnum.MOVE_UP)
 			{
+				_isTryingToMoveVertical = true;
+
 				moveUp();
 			}else
 			if (actionVo.action == GameInputActionEnum.MOVE_DOWN)
 			{
 				moveDown();
+
+				_isTryingToMoveVertical = true;
 			}else
 			if (actionVo.action == GameInputActionEnum.STOP_VERTICAL)
 			{
+				_isTryingToMoveVertical = false;
+
+				if (_disabledUntilStoppedVerticalOrOnLegs)
+				{
+					_disabledUntilStoppedVerticalOrOnLegs = false;
+				}
+
 				stopVertical();
 			}
 		}
@@ -144,7 +160,8 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 		private function get canClimb():Boolean
 		{
-			return _inLadderArea && !_isClimbing && intPhysObject.velocity.x <= MAX_TO_ALLOW_CLIMB_X;
+			return !_disabledUntilStoppedVerticalOrOnLegs && _inLadderArea &&
+					!_isClimbing && intPhysObject.velocity.x <= MAX_TO_ALLOW_CLIMB_X;
 		}
 
 		override protected function handleCollisionBegin(e:ISignalEvent):void
@@ -173,6 +190,11 @@ package com.crazy.thugLife.goSystem.components.controllable
 				_totalSensors++;
 
 				currentLadderShape = shape;
+
+				if (!intPhysObject.isOnLegs && _isTryingToMoveVertical)
+				{
+					_disabledUntilStoppedVerticalOrOnLegs = true;
+				}
 			}else
 			if (_isClimbing && shapeObject.isTeleportEntrance)
 			{
@@ -196,6 +218,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 			if (_totalSensors == 0)
 			{
+				_disabledUntilStoppedVerticalOrOnLegs = false;
 				currentLadderShape = null;
 				_inLadderArea = false;
 
