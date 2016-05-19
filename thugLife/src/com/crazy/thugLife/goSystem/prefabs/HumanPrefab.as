@@ -8,6 +8,7 @@ package com.crazy.thugLife.goSystem.prefabs
 	import com.crazy.thugLife.enums.WeaponEnum;
 	import com.crazy.thugLife.goSystem.components.controllable.Armed;
 	import com.crazy.thugLife.goSystem.components.controllable.Climbable;
+	import com.crazy.thugLife.goSystem.components.controllable.IArmed;
 	import com.crazy.thugLife.goSystem.components.controllable.Jumpable;
 	import com.crazy.thugLife.goSystem.components.controllable.Movable;
 	import com.crazy.thugLife.goSystem.components.controllable.Rotatable;
@@ -19,6 +20,10 @@ package com.crazy.thugLife.goSystem.prefabs
 	import com.crazyfm.extension.goSystem.GOSystemObject;
 	import com.crazyfm.extensions.physics.IBodyObject;
 
+	import flash.geom.Point;
+
+	import nape.geom.Vec2;
+
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 
@@ -29,6 +34,7 @@ package com.crazy.thugLife.goSystem.prefabs
 		private var mainViewContainer:DisplayObjectContainer;
 
 		private var userSkin:IPhysBodyObjectView;
+		private var armed:IArmed;
 
 		public function HumanPrefab(bodyObject:IBodyObject, gafBundle:GAFBundle, mainViewContainer:DisplayObjectContainer)
 		{
@@ -44,7 +50,7 @@ package com.crazy.thugLife.goSystem.prefabs
 		private function configureComponents():void
 		{
 			addComponent(new InteractivePhysObjectModel(bodyObject.body));
-			addComponent(new Armed()
+			addComponent(armed = new Armed()
 				.setCurrentWeapon(WeaponEnum.HOLSTER));
 			addComponent(new Jumpable(300));
 			addComponent(new Climbable(100));
@@ -63,9 +69,14 @@ package com.crazy.thugLife.goSystem.prefabs
 
 		public function addInput(value:IInput):IHumanPrefab
 		{
-			addComponent(value, 0);
+			addComponent(value/*, 0*/);
 
 			return this;
+		}
+
+		public function get aimPosition():Vec2
+		{
+			return armed.aimPosition;
 		}
 	}
 }

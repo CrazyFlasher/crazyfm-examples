@@ -20,6 +20,16 @@ package com.crazy.thugLife.goSystem.components.controllable
 			super();
 		}
 
+		override public function interact(timePassed:Number):void
+		{
+			if (_isChangingWeapon)
+			{
+				_isChangingWeapon = false;
+			}
+
+			super.interact(timePassed);
+		}
+
 		override protected function handleInputAction(actionVo:AbstractInputActionVo):void
 		{
 			super.handleInputAction(actionVo);
@@ -36,13 +46,6 @@ package com.crazy.thugLife.goSystem.components.controllable
 			}
 		}
 
-		override public function interact(timePassed:Number):void
-		{
-			super.interact(timePassed);
-
-			_isChangingWeapon = false;
-		}
-
 		public function get currentWeapon():WeaponEnum
 		{
 			return _currentWeapon;
@@ -57,14 +60,7 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 			_currentWeapon = value;
 
-			switch (_currentWeapon)
-			{
-				case WeaponEnum.PISTOL:
-					setAimBeginPosition(new Point(0, -18), 30);
-					break;
-				default:
-					setAimBeginPosition(new Point(0, 0), 0);
-			}
+			setAimBeginPosition(_currentWeapon.aimRayOriginOffset, _currentWeapon.rayOffset);
 
 			_isChangingWeapon = true;
 

@@ -8,6 +8,7 @@ package com.crazy.thugLife
 	import com.crazy.thugLife.enums.GameInputActionEnum;
 	import com.crazy.thugLife.goSystem.prefabs.HumanPrefab;
 	import com.crazy.thugLife.goSystem.prefabs.IHumanPrefab;
+	import com.crazyfm.core.mvc.event.ISignalEvent;
 	import com.crazyfm.devkit.goSystem.components.camera.Camera;
 	import com.crazyfm.devkit.goSystem.components.camera.ICamera;
 	import com.crazyfm.devkit.goSystem.components.input.keyboard.KeyboardInput;
@@ -23,6 +24,7 @@ package com.crazy.thugLife
 	import com.crazyfm.extension.goSystem.GOSystem;
 	import com.crazyfm.extension.goSystem.GOSystemObject;
 	import com.crazyfm.extension.goSystem.IGOSystem;
+	import com.crazyfm.extension.goSystem.events.GOSystemSignalEnum;
 	import com.crazyfm.extensions.physics.IBodyObject;
 	import com.crazyfm.extensions.physics.IWorldObject;
 	import com.crazyfm.extensions.physics.WorldObject;
@@ -52,6 +54,8 @@ package com.crazy.thugLife
 		private var enemy:IHumanPrefab;
 
 		private var gafBundle:GAFBundle;
+
+		private var camera:ICamera;
 
 		public function Main()
 		{
@@ -113,8 +117,6 @@ package com.crazy.thugLife
 			var mainViewContainer:Sprite = new Sprite();
 			addChild(mainViewContainer);
 
-			var camera:ICamera;
-
 			var goSystem:IGOSystem = new GOSystem(new StarlingEnterFrameMechanism(1 / Starling.current.nativeStage.frameRate))
 					.addGameObject(new GOSystemObject()
 							.addComponent(new PhysWorldModel(space))
@@ -128,10 +130,17 @@ package com.crazy.thugLife
 							.addComponent(new PhysBodyObjectFromDataView(mainViewContainer, floorBodyObject.data.shapeDataList, 0xFFCC00))
 					);
 
+			goSystem.addSignalListener(GOSystemSignalEnum.STEP, onGOSystemStep);
+
 			goSystem.updateNow();
 
 			camera.setFocusObject(user.skin);
 			camera.setViewport(new Rectangle(0, 0, stage.stageWidth, stage.stageHeight));
+		}
+
+		private function onGOSystemStep(e:ISignalEvent):void
+		{
+			camera.setAimPosition(user.aimPosition.x, user.aimPosition.y);
 		}
 	}
 }
