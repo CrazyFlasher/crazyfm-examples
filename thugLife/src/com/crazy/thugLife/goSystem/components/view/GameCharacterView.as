@@ -4,7 +4,7 @@
 package com.crazy.thugLife.goSystem.components.view
 {
 	import com.catalystapps.gaf.display.GAFMovieClip;
-	import com.crazy.thugLife.goSystem.components.controllable.IAimable;
+	import com.crazy.thugLife.enums.WeaponEnum;
 	import com.crazy.thugLife.goSystem.components.controllable.IArmed;
 	import com.crazy.thugLife.goSystem.components.controllable.IClimbable;
 	import com.crazy.thugLife.goSystem.components.controllable.IJumpable;
@@ -36,11 +36,13 @@ package com.crazy.thugLife.goSystem.components.view
 		private var movable:IMovable;
 		private var jumpable:IJumpable;
 		private var climbable:IClimbable;
-		private var aimable:IAimable;
 		private var rotatable:IRotatable;
 		private var armed:IArmed;
 
-		private var gunArm:DisplayObject;
+		private var body:GAFMovieClip;
+		private var gun:DisplayObject;
+		private var gunArm_1:DisplayObject;
+		private var gunArm_2:DisplayObject;
 
 		private var armGlobalPosition:Point = new Point();
 		private var armCurrentPosition:Point = new Point();
@@ -49,6 +51,8 @@ package com.crazy.thugLife.goSystem.components.view
 
 		private var currentAnim:GAFMovieClip;
 		private var currentAnimId:String;
+		private var bodyAnim:GAFMovieClip;
+		private var currentBodyAnim:GAFMovieClip;
 
 		private var controllableModelsFetched:Boolean;
 
@@ -73,7 +77,8 @@ package com.crazy.thugLife.goSystem.components.view
 			var isLeavingLadder:Boolean = isAvailable(climbable) && climbable.isLeavingLadder;
 
 			var isLeftDirection:Boolean = isAvailable(movable) && movable.isLeftDirection;
-			var isAimingLeft:Boolean = isAvailable(aimable) && aimable.isAimingLeft;
+			var isAimingLeft:Boolean = isAvailable(armed) && armed.isAimingLeft;
+			var isChangingWeapon:Boolean = isAvailable(armed) && armed.isChangingWeapon;
 
 			var playBackwardAnim:Boolean = isLeftDirection != isAimingLeft;
 
@@ -98,11 +103,10 @@ package com.crazy.thugLife.goSystem.components.view
 				playAnimation(CLIMB_ANIMATION);
 				if (model.velocity.length < 10)
 				{
-					gafSkin.stop(true);
+					pauseCurrentAnim();
 				}else
 				{
-					gafSkin.play(true);
-					gafSkin.stop(false);
+					resumeCurrentAnim();
 				}
 			} else
 			if (isStaying)
@@ -110,7 +114,7 @@ package com.crazy.thugLife.goSystem.components.view
 				playAnimation(STAY_ANIMATION);
 			}
 
-			if (isAvailable(aimable))
+			if (isAvailable(armed))
 			{
 				updateAimingView();
 			}
@@ -118,6 +122,22 @@ package com.crazy.thugLife.goSystem.components.view
 			{
 				updateDirection();
 			}
+			if (isChangingWeapon)
+			{
+				playAnimation(currentAnimId, true);
+			}
+		}
+
+		private function resumeCurrentAnim():void
+		{
+			currentAnim.play();
+			currentBodyAnim.play();
+		}
+
+		private function pauseCurrentAnim():void
+		{
+			currentAnim.stop();
+			currentBodyAnim.stop();
 		}
 
 		private function isAvailable(component:IGOSystemComponent):Boolean
@@ -140,10 +160,6 @@ package com.crazy.thugLife.goSystem.components.view
 				if (!climbable)
 				{
 					climbable = gameObject.getComponentByType(IClimbable) as IClimbable;
-				}
-				if (!aimable)
-				{
-					aimable = gameObject.getComponentByType(IAimable) as IAimable;
 				}
 				if (!rotatable)
 				{
@@ -172,15 +188,28 @@ package com.crazy.thugLife.goSystem.components.view
 
 		private function updateAimingView():void
 		{
-			if (gunArm)
+			if (gun)
 			{
-				armCurrentPosition.x = gunArm.x;
-				armCurrentPosition.y = gunArm.y;
+				armCurrentPosition.x = gun.x;
+				armCurrentPosition.y = gun.y;
 
-				gafSkin.getChildByName(gafSkin.currentSequence).localToGlobal(armCurrentPosition, armGlobalPosition);
+				currentAnim.localToGlobal(armCurrentPosition, armGlobalPosition);
 				viewContainer.globalToLocal(armGlobalPosition, armGlobalPosition);
 
-				gunArm.rotation = getGunArmAngle(armGlobalPosition, aimable.aimRay.at(100));
+				gun.rotation = getGunArmAngle(armGlobalPosition, armed.aimRay.at(100));
+
+				if (gunArm_1)
+				{
+					gunArm_1.x = gun.x;
+					gunArm_1.y = gun.y;
+					gunArm_1.rotation = gun.rotation;
+				}
+				if (gunArm_2)
+				{
+					gunArm_2.x = gun.x;
+					gunArm_2.y = gun.y;
+					gunArm_2.rotation = gun.rotation;
+				}
 			}
 		}
 
@@ -188,26 +217,47 @@ package com.crazy.thugLife.goSystem.components.view
 		{
 			if (currentAnimId != animationId || force)
 			{
+				/**
+				 * human -> gafSkin
+				 * 	|- stay
+				 * 	|- walk
+				 * 	|- run -> currentAnim
+				 * 		|- body -> body
+				 * 			|- holster
+				 * 			|- pistol
+				 * 			|- shotgun -> bodyAnim
+				 * 				|- stay
+				 * 				|- walk
+				 * 				|- run -> currentBodyAnim
+				 * 					|- gun
+				 * 					|- gunArm_1
+				 * 					|- gunArm_2
+				 * 					(no gun or gunArm_x if WeaponEnum.HOLSTER)
+				 */
+
 				currentAnimId = animationId;
 				currentAnim = gafSkin.getChildByName(animationId) as GAFMovieClip;
 
 				gafSkin.gotoAndStop(animationId);
 
-				currentAnim.gotoAndStop(1);
+				currentAnim.gotoAndPlay(1);
 
-				gafSkin.play(true);
-				gafSkin.stop(false);
+				body = currentAnim.getChildByName("body") as GAFMovieClip;
+				body.gotoAndStop(isAvailable(armed) ? armed.currentWeapon.name : WeaponEnum.HOLSTER.name);
 
-				gunArm = null;
+				bodyAnim = body.getChildByName(armed.currentWeapon.name) as GAFMovieClip;
+				bodyAnim.gotoAndStop(animationId);
 
-				if (currentAnim.getChildByName("body"))
-				{
-					gunArm = (currentAnim.getChildByName("body") as DisplayObjectContainer)
-							.getChildByName("gunArm");
-				}
+				currentBodyAnim = bodyAnim.getChildByName(animationId) as GAFMovieClip;
+				currentBodyAnim.gotoAndPlay(1);
 
-				//gunArm.pivotY = -25;
-				//gunArm.pivotX = -10;
+				gun = null;
+				gunArm_1 = null;
+				gunArm_2 = null;
+
+				gun = currentBodyAnim.getChildByName("gun");
+				gunArm_1 = currentBodyAnim.getChildByName("gunArm_1");
+				gunArm_2 = currentBodyAnim.getChildByName("gunArm_2");
 			}
 		}
 

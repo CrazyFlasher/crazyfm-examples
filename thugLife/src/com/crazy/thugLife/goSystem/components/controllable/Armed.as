@@ -3,16 +3,44 @@
  */
 package com.crazy.thugLife.goSystem.components.controllable
 {
+	import com.crazy.thugLife.enums.GameInputActionEnum;
 	import com.crazy.thugLife.enums.WeaponEnum;
-	import com.crazyfm.devkit.goSystem.components.controllable.AbstractPhysControllable;
+	import com.crazyfm.devkit.goSystem.components.input.AbstractInputActionVo;
 
-	public class Armed extends AbstractPhysControllable implements IArmed
+	import flash.geom.Point;
+
+	public class Armed extends Aimable implements IArmed
 	{
 		private var _currentWeapon:WeaponEnum;
+
+		private var _isChangingWeapon:Boolean;
 
 		public function Armed()
 		{
 			super();
+		}
+
+		override protected function handleInputAction(actionVo:AbstractInputActionVo):void
+		{
+			super.handleInputAction(actionVo);
+
+			if (actionVo.action == GameInputActionEnum.CHANGE_WEAPON)
+			{
+				if (_currentWeapon == WeaponEnum.PISTOL)
+				{
+					setCurrentWeapon(WeaponEnum.HOLSTER);
+				}else
+				{
+					setCurrentWeapon(WeaponEnum.PISTOL);
+				}
+			}
+		}
+
+		override public function interact(timePassed:Number):void
+		{
+			super.interact(timePassed);
+
+			_isChangingWeapon = false;
 		}
 
 		public function get currentWeapon():WeaponEnum
@@ -22,7 +50,23 @@ package com.crazy.thugLife.goSystem.components.controllable
 
 		public function setCurrentWeapon(value:WeaponEnum):IArmed
 		{
+			if (_currentWeapon == value)
+			{
+				return this;
+			}
+
 			_currentWeapon = value;
+
+			switch (_currentWeapon)
+			{
+				case WeaponEnum.PISTOL:
+					setAimBeginPosition(new Point(0, -18), 30);
+					break;
+				default:
+					setAimBeginPosition(new Point(0, 0), 0);
+			}
+
+			_isChangingWeapon = true;
 
 			return this;
 		}
@@ -32,6 +76,11 @@ package com.crazy.thugLife.goSystem.components.controllable
 			_currentWeapon = null;
 
 			return this;
+		}
+
+		public function get isChangingWeapon():Boolean
+		{
+			return _isChangingWeapon;
 		}
 	}
 }

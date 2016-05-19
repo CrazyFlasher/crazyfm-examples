@@ -17,6 +17,7 @@ package com.crazy.thugLife.enums
 		public static const STOP_VERTICAL:GameInputActionEnum = new GameInputActionEnum("STOP_VERTICAL");
 		public static const TOGGLE_RUN:GameInputActionEnum = new GameInputActionEnum("TOGGLE_RUN");
 		public static const AIM:GameInputActionEnum = new GameInputActionEnum("AIM");
+		public static const CHANGE_WEAPON:GameInputActionEnum = new GameInputActionEnum("CHANGE_WEAPON");
 
 		public function GameInputActionEnum(name:String)
 		{

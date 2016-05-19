@@ -7,10 +7,11 @@ package com.crazy.thugLife.enums
 
 	public class WeaponEnum extends Enum
 	{
-		public static const PISTOL:WeaponEnum = new WeaponEnum("PISTOL", 1);
-		public static const RIFLE:WeaponEnum = new WeaponEnum("RIFLE", 2);
-		public static const SHOTGUN:WeaponEnum = new WeaponEnum("SHOTGUN", 3);
-		public static const BAZOOKA:WeaponEnum = new WeaponEnum("BAZOOKA", 4);
+		public static const HOLSTER:WeaponEnum = new WeaponEnum("holster", 0);
+		public static const PISTOL:WeaponEnum = new WeaponEnum("pistol", 1);
+		public static const RIFLE:WeaponEnum = new WeaponEnum("rifle", 2);
+		public static const SHOTGUN:WeaponEnum = new WeaponEnum("shotgun", 3);
+		public static const BAZOOKA:WeaponEnum = new WeaponEnum("bazooka", 4);
 
 		private var _id:int;
 

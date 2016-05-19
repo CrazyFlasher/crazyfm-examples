@@ -4,12 +4,12 @@
 package com.crazy.thugLife.goSystem.components.controllable
 {
 	import com.crazy.thugLife.enums.WeaponEnum;
-	import com.crazyfm.extension.goSystem.IGOSystemComponent;
 
-	public interface IArmed extends IGOSystemComponent
+	public interface IArmed extends IAimable
 	{
 		function get currentWeapon():WeaponEnum;
 		function setCurrentWeapon(value:WeaponEnum):IArmed;
 		function removeWeapon():IArmed;
+		function get isChangingWeapon():Boolean;
 	}
 }

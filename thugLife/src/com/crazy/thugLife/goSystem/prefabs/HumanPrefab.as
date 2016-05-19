@@ -6,7 +6,6 @@ package com.crazy.thugLife.goSystem.prefabs
 	import com.catalystapps.gaf.data.GAFBundle;
 	import com.catalystapps.gaf.display.GAFMovieClip;
 	import com.crazy.thugLife.enums.WeaponEnum;
-	import com.crazy.thugLife.goSystem.components.controllable.Aimable;
 	import com.crazy.thugLife.goSystem.components.controllable.Armed;
 	import com.crazy.thugLife.goSystem.components.controllable.Climbable;
 	import com.crazy.thugLife.goSystem.components.controllable.Jumpable;
@@ -19,8 +18,6 @@ package com.crazy.thugLife.goSystem.prefabs
 	import com.crazyfm.devkit.goSystem.components.physyics.view.IPhysBodyObjectView;
 	import com.crazyfm.extension.goSystem.GOSystemObject;
 	import com.crazyfm.extensions.physics.IBodyObject;
-
-	import flash.geom.Point;
 
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
@@ -48,12 +45,10 @@ package com.crazy.thugLife.goSystem.prefabs
 		{
 			addComponent(new InteractivePhysObjectModel(bodyObject.body));
 			addComponent(new Armed()
-				.setCurrentWeapon(WeaponEnum.PISTOL));
+				.setCurrentWeapon(WeaponEnum.HOLSTER));
 			addComponent(new Jumpable(300));
 			addComponent(new Climbable(100));
 			addComponent(new Movable(75));
-			addComponent(new Aimable()
-				.setAimBeginPosition(new Point(0, -18), 30));
 			addComponent(new Rotatable());
 //			addComponent(new PhysBodyObjectFromDataView(mainViewContainer, bodyObject.data.shapeDataList, 0x00CC00));
 			addComponent(new RayView(mainViewContainer));
