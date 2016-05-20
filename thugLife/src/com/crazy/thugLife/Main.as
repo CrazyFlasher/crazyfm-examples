@@ -8,6 +8,8 @@ package com.crazy.thugLife
 	import com.crazy.thugLife.enums.GameInputActionEnum;
 	import com.crazy.thugLife.goSystem.prefabs.HumanPrefab;
 	import com.crazy.thugLife.goSystem.prefabs.IHumanPrefab;
+	import com.crazyfm.core.common.AppFactory;
+	import com.crazyfm.core.common.ns_app_factory;
 	import com.crazyfm.core.mvc.event.ISignalEvent;
 	import com.crazyfm.devkit.goSystem.components.camera.Camera;
 	import com.crazyfm.devkit.goSystem.components.camera.ICamera;
@@ -19,14 +21,19 @@ package com.crazy.thugLife
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysWorldModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.view.starling.PhysBodyObjectFromDataView;
 	import com.crazyfm.devkit.goSystem.mechanisms.StarlingEnterFrameMechanism;
-	import com.crazyfm.devkit.physics.factories.CFPhysicsObjectFactory;
-	import com.crazyfm.devkit.physics.factories.CFPhysicsVoFactory;
+	import com.crazyfm.devkit.physics.CFBodyObject;
+	import com.crazyfm.devkit.physics.CFShapeObject;
 	import com.crazyfm.extension.goSystem.GOSystem;
 	import com.crazyfm.extension.goSystem.GOSystemObject;
 	import com.crazyfm.extension.goSystem.IGOSystem;
 	import com.crazyfm.extension.goSystem.events.GOSystemSignalEnum;
 	import com.crazyfm.extensions.physics.IBodyObject;
+	import com.crazyfm.extensions.physics.IJointObject;
+	import com.crazyfm.extensions.physics.IShapeObject;
+	import com.crazyfm.extensions.physics.IVertexObject;
 	import com.crazyfm.extensions.physics.IWorldObject;
+	import com.crazyfm.extensions.physics.JointObject;
+	import com.crazyfm.extensions.physics.VertexObject;
 	import com.crazyfm.extensions.physics.WorldObject;
 	import com.crazyfm.extensions.physics.vo.units.WorldDataVo;
 
@@ -39,6 +46,8 @@ package com.crazy.thugLife
 	import starling.core.Starling;
 	import starling.display.Sprite;
 	import starling.events.Event;
+
+	use namespace ns_app_factory;
 
 	public class Main extends Sprite
 	{
@@ -63,11 +72,22 @@ package com.crazy.thugLife
 
 			Starling.current.showStats = true;
 
-			var worldData:WorldDataVo = new CFPhysicsVoFactory().parseWorld(JSON.parse((new WorldClass() as ByteArray).toString()));
-
-			worldObject = new WorldObject(worldData, new CFPhysicsObjectFactory());
+			createPhysics();
 
 			addEventListener(Event.ADDED_TO_STAGE, added);
+		}
+
+		private function createPhysics():void
+		{
+			AppFactory.map(IWorldObject, WorldObject);
+			AppFactory.map(IBodyObject, CFBodyObject);
+			AppFactory.map(IShapeObject, CFShapeObject);
+			AppFactory.map(IJointObject, JointObject);
+			AppFactory.map(IVertexObject, VertexObject);
+
+			var worldData:WorldDataVo = getNewInstance(WorldDataVo, JSON.parse((new WorldClass() as ByteArray).toString()));
+
+			worldObject = getNewInstance(WorldObject, worldData);
 		}
 
 		private function added():void
