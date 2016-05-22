@@ -6,26 +6,47 @@ package com.crazy.thugLife
 	import com.catalystapps.gaf.core.ZipToGAFAssetConverter;
 	import com.catalystapps.gaf.data.GAFBundle;
 	import com.crazy.thugLife.enums.GameInputActionEnum;
+	import com.crazy.thugLife.goSystem.components.controllable.Aimable;
+	import com.crazy.thugLife.goSystem.components.controllable.Armed;
+	import com.crazy.thugLife.goSystem.components.controllable.Climbable;
+	import com.crazy.thugLife.goSystem.components.controllable.IAimable;
+	import com.crazy.thugLife.goSystem.components.controllable.IArmed;
+	import com.crazy.thugLife.goSystem.components.controllable.IClimbable;
+	import com.crazy.thugLife.goSystem.components.controllable.IJumpable;
+	import com.crazy.thugLife.goSystem.components.controllable.IMovable;
+	import com.crazy.thugLife.goSystem.components.controllable.IRotatable;
+	import com.crazy.thugLife.goSystem.components.controllable.Jumpable;
+	import com.crazy.thugLife.goSystem.components.controllable.Movable;
+	import com.crazy.thugLife.goSystem.components.controllable.Rotatable;
 	import com.crazy.thugLife.goSystem.prefabs.HumanPrefab;
 	import com.crazy.thugLife.goSystem.prefabs.IHumanPrefab;
-	import com.crazyfm.core.common.AppFactory;
 	import com.crazyfm.core.common.ns_app_factory;
+	import com.crazyfm.core.factory.AppFactory;
 	import com.crazyfm.core.mvc.event.ISignalEvent;
 	import com.crazyfm.devkit.goSystem.components.camera.Camera;
 	import com.crazyfm.devkit.goSystem.components.camera.ICamera;
+	import com.crazyfm.devkit.goSystem.components.input.AbstractInputActionVo;
 	import com.crazyfm.devkit.goSystem.components.input.keyboard.KeyboardInput;
 	import com.crazyfm.devkit.goSystem.components.input.keyboard.KeysToActionMapping;
+	import com.crazyfm.devkit.goSystem.components.input.mouse.MouseActionVo;
 	import com.crazyfm.devkit.goSystem.components.input.mouse.MouseInput;
 	import com.crazyfm.devkit.goSystem.components.input.mouse.MouseToActionMapping;
+	import com.crazyfm.devkit.goSystem.components.physyics.model.IInteractivePhysObjectModel;
+	import com.crazyfm.devkit.goSystem.components.physyics.model.IPhysBodyObjectModel;
+	import com.crazyfm.devkit.goSystem.components.physyics.model.IPhysWorldModel;
+	import com.crazyfm.devkit.goSystem.components.physyics.model.InteractivePhysObjectModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysBodyObjectModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.model.PhysWorldModel;
 	import com.crazyfm.devkit.goSystem.components.physyics.view.starling.PhysBodyObjectFromDataView;
 	import com.crazyfm.devkit.goSystem.mechanisms.StarlingEnterFrameMechanism;
 	import com.crazyfm.devkit.physics.CFBodyObject;
 	import com.crazyfm.devkit.physics.CFShapeObject;
+	import com.crazyfm.devkit.physics.vo.units.CFShapeDataVo;
 	import com.crazyfm.extension.goSystem.GOSystem;
 	import com.crazyfm.extension.goSystem.GOSystemObject;
 	import com.crazyfm.extension.goSystem.IGOSystem;
+	import com.crazyfm.extension.goSystem.IGOSystemMechanism;
+	import com.crazyfm.extension.goSystem.IGOSystemObject;
 	import com.crazyfm.extension.goSystem.events.GOSystemSignalEnum;
 	import com.crazyfm.extensions.physics.IBodyObject;
 	import com.crazyfm.extensions.physics.IJointObject;
@@ -35,6 +56,7 @@ package com.crazy.thugLife
 	import com.crazyfm.extensions.physics.JointObject;
 	import com.crazyfm.extensions.physics.VertexObject;
 	import com.crazyfm.extensions.physics.WorldObject;
+	import com.crazyfm.extensions.physics.vo.units.ShapeDataVo;
 	import com.crazyfm.extensions.physics.vo.units.WorldDataVo;
 
 	import flash.geom.Rectangle;
@@ -70,24 +92,48 @@ package com.crazy.thugLife
 		{
 			super();
 
-			Starling.current.showStats = true;
-
-			createPhysics();
-
-			addEventListener(Event.ADDED_TO_STAGE, added);
+			init();
 		}
 
-		private function createPhysics():void
+		private function init():void
 		{
-			AppFactory.map(IWorldObject, WorldObject);
-			AppFactory.map(IBodyObject, CFBodyObject);
-			AppFactory.map(IShapeObject, CFShapeObject);
-			AppFactory.map(IJointObject, JointObject);
-			AppFactory.map(IVertexObject, VertexObject);
+			Starling.current.showStats = true;
 
-			var worldData:WorldDataVo = getNewInstance(WorldDataVo, JSON.parse((new WorldClass() as ByteArray).toString()));
+			AppFactory.getSingletonInstance()
+				.registerPool(AbstractInputActionVo, 5)
+				.registerPool(MouseActionVo, 1)
 
-			worldObject = getNewInstance(WorldObject, worldData);
+				.map(ShapeDataVo, CFShapeDataVo)
+				.map(IWorldObject, WorldObject)
+				.map(IBodyObject, CFBodyObject)
+				.map(IShapeObject, CFShapeObject)
+				.map(IJointObject, JointObject)
+				.map(IVertexObject, VertexObject)
+
+				.map(IHumanPrefab, HumanPrefab)
+				.map(ICamera, Camera)
+				.map(IPhysWorldModel, PhysWorldModel)
+
+				.map(IGOSystem, GOSystem)
+				.map(IGOSystemMechanism, StarlingEnterFrameMechanism)
+				.map(IGOSystemObject, GOSystemObject)
+
+				.map(IPhysBodyObjectModel, PhysBodyObjectModel)
+				.map(IInteractivePhysObjectModel, InteractivePhysObjectModel)
+
+				.map(IMovable, Movable)
+				.map(IJumpable, Jumpable)
+				.map(IClimbable, Climbable)
+				.map(IRotatable, Rotatable)
+				.map(IAimable, Aimable)
+				.map(IArmed, Armed)
+			;
+
+			var worldData:WorldDataVo = getInstance(WorldDataVo, JSON.parse((new WorldClass() as ByteArray).toString()));
+
+			worldObject = getInstance(WorldObject, worldData);
+
+			addEventListener(Event.ADDED_TO_STAGE, added);
 		}
 
 		private function added():void
@@ -114,13 +160,21 @@ package com.crazy.thugLife
 		{
 			var keysToAction:Vector.<KeysToActionMapping> = new <KeysToActionMapping>[
 				new KeysToActionMapping(GameInputActionEnum.MOVE_LEFT, new <uint>[Keyboard.LEFT]),
+				new KeysToActionMapping(GameInputActionEnum.MOVE_LEFT, new <uint>[Keyboard.A]),
 				new KeysToActionMapping(GameInputActionEnum.RUN_LEFT, new <uint>[Keyboard.LEFT, Keyboard.SHIFT]),
+				new KeysToActionMapping(GameInputActionEnum.RUN_LEFT, new <uint>[Keyboard.A, Keyboard.SHIFT]),
 				new KeysToActionMapping(GameInputActionEnum.MOVE_RIGHT, new <uint>[Keyboard.RIGHT]),
+				new KeysToActionMapping(GameInputActionEnum.MOVE_RIGHT, new <uint>[Keyboard.D]),
 				new KeysToActionMapping(GameInputActionEnum.RUN_RIGHT, new <uint>[Keyboard.RIGHT, Keyboard.SHIFT]),
+				new KeysToActionMapping(GameInputActionEnum.RUN_RIGHT, new <uint>[Keyboard.D, Keyboard.SHIFT]),
 				new KeysToActionMapping(GameInputActionEnum.MOVE_UP, new <uint>[Keyboard.UP]),
+				new KeysToActionMapping(GameInputActionEnum.MOVE_UP, new <uint>[Keyboard.W]),
 				new KeysToActionMapping(GameInputActionEnum.MOVE_DOWN, new <uint>[Keyboard.DOWN]),
+				new KeysToActionMapping(GameInputActionEnum.MOVE_DOWN, new <uint>[Keyboard.S]),
 				new KeysToActionMapping(GameInputActionEnum.STOP_HORIZONTAL, null, new <uint>[Keyboard.LEFT, Keyboard.RIGHT]),
+				new KeysToActionMapping(GameInputActionEnum.STOP_HORIZONTAL, null, new <uint>[Keyboard.A, Keyboard.D]),
 				new KeysToActionMapping(GameInputActionEnum.STOP_VERTICAL, null, new <uint>[Keyboard.UP, Keyboard.DOWN]),
+				new KeysToActionMapping(GameInputActionEnum.STOP_VERTICAL, null, new <uint>[Keyboard.W, Keyboard.S]),
 				new KeysToActionMapping(GameInputActionEnum.TOGGLE_RUN, null, new <uint>[Keyboard.CAPS_LOCK]),
 				new KeysToActionMapping(GameInputActionEnum.CHANGE_WEAPON, null, new <uint>[Keyboard.Z])
 			];
@@ -137,17 +191,18 @@ package com.crazy.thugLife
 			var mainViewContainer:Sprite = new Sprite();
 			addChild(mainViewContainer);
 
-			var goSystem:IGOSystem = new GOSystem(new StarlingEnterFrameMechanism(1 / Starling.current.nativeStage.frameRate))
-					.addGameObject(new GOSystemObject()
-							.addComponent(new PhysWorldModel(space))
-							.addComponent(camera = new Camera(mainViewContainer, 0.5)))
-					.addGameObject(user = new HumanPrefab(userBodyObject, gafBundle, mainViewContainer)
-							.addInput(new MouseInput(mainViewContainer, mouseToAction))
-							.addInput(new KeyboardInput(stage, keysToAction)))
-					.addGameObject(enemy = new HumanPrefab(enemyBodyObject, gafBundle, mainViewContainer))
-					.addGameObject(new GOSystemObject()
-							.addComponent(new PhysBodyObjectModel(floorBodyObject.body))
-							.addComponent(new PhysBodyObjectFromDataView(mainViewContainer, floorBodyObject.data.shapeDataList, 0xFFCC00))
+			var goSystem:IGOSystem =
+					(getInstance(IGOSystem, getInstance(IGOSystemMechanism, 1 / Starling.current.nativeStage.frameRate)) as IGOSystem)
+					.addGameObject((getInstance(IGOSystemObject) as IGOSystemObject)
+							.addComponent(getInstance(IPhysWorldModel, space))
+							.addComponent(camera = getInstance(ICamera, mainViewContainer, 0.5)))
+					.addGameObject((user = getInstance(IHumanPrefab, userBodyObject, gafBundle, mainViewContainer) as IHumanPrefab)
+							.addInput(getInstance(MouseInput, mainViewContainer, mouseToAction))
+							.addInput(getInstance(KeyboardInput, stage, keysToAction)))
+					.addGameObject(enemy = getInstance(IHumanPrefab, enemyBodyObject, gafBundle, mainViewContainer))
+					.addGameObject((getInstance(IGOSystemObject) as IGOSystemObject)
+							.addComponent(getInstance(IPhysBodyObjectModel, floorBodyObject.body))
+							.addComponent(getInstance(PhysBodyObjectFromDataView, mainViewContainer, floorBodyObject.data.shapeDataList, 0xFFCC00))
 					);
 
 			goSystem.addSignalListener(GOSystemSignalEnum.STEP, onGOSystemStep);
