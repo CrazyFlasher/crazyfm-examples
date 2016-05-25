@@ -31,4 +31,3 @@ echo Certificate creation FAILED.
 echo.
 
 :end
-pause
