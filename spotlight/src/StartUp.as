@@ -6,7 +6,7 @@ package
 	import flash.display.StageScaleMode;
 	import flash.utils.getDefinitionByName;
 
-	[SWF(width="960", height="540", frameRate="30", backgroundColor="#000000")]
+	[SWF(width="1920", height="1080", frameRate="30", backgroundColor="#000000")]
 
 	/**
 	 * Document class of this example
