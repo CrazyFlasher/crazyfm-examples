@@ -3,7 +3,7 @@
  */
 package com.crazyfm.example.bubblePattern.models
 {
-	import com.crazyfm.core.mvc.event.ISignalEvent;
+	import com.crazyfm.core.mvc.message.IMessage;
 	import com.crazyfm.core.mvc.model.AbstractModel;
 	import com.crazyfm.example.bubblePattern.signals.AppViewSignalType;
 	import com.crazyfm.example.bubblePattern.signals.UserDataModelSignalType;
@@ -16,10 +16,10 @@ package com.crazyfm.example.bubblePattern.models
 
 		public function UserDataModel()
 		{
-			addSignalListener(AppViewSignalType.FIRST_NAME_CLICKED, onFirstNameClicked);
+			addMessageListener(AppViewSignalType.FIRST_NAME_CLICKED, onFirstNameClicked);
 		}
 
-		private function onFirstNameClicked(e:ISignalEvent):void
+		private function onFirstNameClicked(e:IMessage):void
 		{
 			firstName = "olo";
 		}
@@ -33,7 +33,7 @@ package com.crazyfm.example.bubblePattern.models
 		{
 			_firstName = value;
 
-			dispatchSignal(UserDataModelSignalType.FIRSTNAME_CHANGED);
+			dispatchMessage(UserDataModelSignalType.FIRSTNAME_CHANGED);
 		}
 
 		public function get lastName():String
@@ -45,7 +45,7 @@ package com.crazyfm.example.bubblePattern.models
 		{
 			_lastName = value;
 
-			dispatchSignal(UserDataModelSignalType.LASTNAME_CHANGED);
+			dispatchMessage(UserDataModelSignalType.LASTNAME_CHANGED);
 		}
 
 		public function get age():int
@@ -57,7 +57,7 @@ package com.crazyfm.example.bubblePattern.models
 		{
 			_age = value;
 
-			dispatchSignal(UserDataModelSignalType.AGE_CHANGED);
+			dispatchMessage(UserDataModelSignalType.AGE_CHANGED);
 		}
 	}
 }

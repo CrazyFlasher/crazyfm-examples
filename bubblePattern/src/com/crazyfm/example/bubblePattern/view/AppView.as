@@ -3,12 +3,12 @@
  */
 package com.crazyfm.example.bubblePattern.view
 {
+	import com.crazyfm.core.mvc.message.IMessage;
 	import com.crazyfm.core.mvc.view.AbstractView;
 	import com.crazyfm.example.bubblePattern.signals.AppViewSignalType;
 	import com.crazyfm.example.bubblePattern.signals.UserDataModelSignalType;
 
 	import flash.display.DisplayObjectContainer;
-
 	import flash.events.MouseEvent;
 
 	public class AppView extends AbstractView implements IAppView
@@ -24,6 +24,8 @@ package com.crazyfm.example.bubblePattern.view
 			super();
 
 			this.container = container;
+
+			init();
 		}
 
 		private function init():void
@@ -47,9 +49,9 @@ package com.crazyfm.example.bubblePattern.view
 
 			container.addEventListener(MouseEvent.CLICK, buttonClick);
 
-			addSignalListener(UserDataModelSignalType.FIRSTNAME_CHANGED, onFirstNameChanged);
-			addSignalListener(UserDataModelSignalType.LASTNAME_CHANGED, onLastNameChanged);
-			addSignalListener(UserDataModelSignalType.AGE_CHANGED, onAgeChanged);
+			addMessageListener(UserDataModelSignalType.FIRSTNAME_CHANGED, onFirstNameChanged);
+			addMessageListener(UserDataModelSignalType.LASTNAME_CHANGED, onLastNameChanged);
+			addMessageListener(UserDataModelSignalType.AGE_CHANGED, onAgeChanged);
 		}
 
 		public function onAgeChanged():void
@@ -62,7 +64,7 @@ package com.crazyfm.example.bubblePattern.view
 			lastName.alpha = lastName.alpha == 0.5 ? 1 : 0.5;
 		}
 
-		public function onFirstNameChanged():void
+		public function onFirstNameChanged(m:IMessage):void
 		{
 			firstName.alpha = firstName.alpha == 0.5 ? 1 : 0.5;
 		}
@@ -72,13 +74,13 @@ package com.crazyfm.example.bubblePattern.view
 			switch (event.target)
 			{
 				case firstName:
-					dispatchSignal(AppViewSignalType.FIRST_NAME_CLICKED);
+					dispatchMessage(AppViewSignalType.FIRST_NAME_CLICKED);
 					break;
 				case lastName:
-					dispatchSignal(AppViewSignalType.LAST_NAME_CLICKED);
+					dispatchMessage(AppViewSignalType.LAST_NAME_CLICKED);
 					break;
 				case age:
-					dispatchSignal(AppViewSignalType.AGE_CLICKED);
+					dispatchMessage(AppViewSignalType.AGE_CLICKED);
 					break;
 			}
 		}
@@ -86,7 +88,7 @@ package com.crazyfm.example.bubblePattern.view
 		override public function dispose():void
 		{
 			container.removeEventListener(MouseEvent.CLICK, buttonClick);
-			removeAllSignalListeners();
+			removeAllMessageListeners();
 
 			super.dispose();
 		}

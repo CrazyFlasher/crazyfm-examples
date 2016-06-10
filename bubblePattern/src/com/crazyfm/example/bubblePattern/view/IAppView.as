@@ -7,8 +7,6 @@ package com.crazyfm.example.bubblePattern.view
 
 	public interface IAppView extends IView
 	{
-		function onAgeChanged():void;
-		function onLastNameChanged():void;
-		function onFirstNameChanged():void;
+
 	}
 }
