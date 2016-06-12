@@ -24,13 +24,13 @@ package com.crazyfm.example.bubblePattern.contexts
 		private var userModel:IUserDataModel;
 		private var appView:IAppView;
 
-		private var viewContainer:DisplayObjectContainer;
+		private var displayObjectContainer:DisplayObjectContainer;
 
-		public function AppContext(factory:AppFactory, viewContainer:DisplayObjectContainer)
+		public function AppContext(factory:AppFactory, displayObjectContainer:DisplayObjectContainer)
 		{
 			super(factory);
 
-			this.viewContainer = viewContainer;
+			this.displayObjectContainer = displayObjectContainer;
 
 			init();
 		}
@@ -43,12 +43,12 @@ package com.crazyfm.example.bubblePattern.contexts
 			userModel = factory.getSingleton(IUserDataModel) as IUserDataModel;
 			addModel(userModel);
 
-			appView = factory.getInstance(IAppView, viewContainer) as IAppView;
+			appView = factory.getInstance(IAppView, displayObjectContainer) as IAppView;
 			addView(appView);
 
-			map(AppViewSignalType.FIRST_NAME_CLICKED, ChangeFirstNameCommand);
+			/*map(AppViewSignalType.FIRST_NAME_CLICKED, ChangeFirstNameCommand);
 			map(AppViewSignalType.LAST_NAME_CLICKED, ChangeLastNameCommand);
-			map(AppViewSignalType.AGE_CLICKED, ChangeAgeCommand);
+			map(AppViewSignalType.AGE_CLICKED, ChangeAgeCommand);*/
 		}
 	}
 }
