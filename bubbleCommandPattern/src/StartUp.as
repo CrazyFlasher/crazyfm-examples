@@ -9,7 +9,7 @@ package
 	[SWF(width="500", height="500", frameRate="60", backgroundColor="#000000")]
 
 	/**
-	 * Document class of this example
+	 * Document class of this example.
 	 */
 	public class StartUp extends AbstractInternalPreloader
 	{
@@ -29,14 +29,14 @@ package
 		{
 			//We can make that ordinary way:
 
-			//import com.crazyfm.example.ballClick.Main;
+			//import com.crazyfm.example.bubblePattern.Main;
 			//...
 			//stage.addChild(new Main());
 
 			//But in that case, preloader won't show until all Main dependencies are preloaded,
 			//and user will see blank screen longer.
 
-			var MainClass:Class = getDefinitionByName("com.crazyfm.example.bubblePattern.Main") as Class;
+			var MainClass:Class = getDefinitionByName("com.crazyfm.example.bubbleCommandPattern.Main") as Class;
 			stage.addChild(new MainClass());
 			stage.removeChild(this);
 		}

@@ -1,7 +1,7 @@
 /**
  * Created by Anton Nefjodov on 9.06.2016.
  */
-package com.crazyfm.example.bubblePattern.models
+package com.crazyfm.example.bubbleCommandPattern.models
 {
 	import com.crazyfm.core.mvc.model.IModel;
 

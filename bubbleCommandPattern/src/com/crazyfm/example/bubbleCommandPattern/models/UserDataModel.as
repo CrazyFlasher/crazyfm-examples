@@ -1,12 +1,10 @@
 /**
  * Created by Anton Nefjodov on 9.06.2016.
  */
-package com.crazyfm.example.bubblePattern.models
+package com.crazyfm.example.bubbleCommandPattern.models
 {
-	import com.crazyfm.core.mvc.message.IMessage;
 	import com.crazyfm.core.mvc.model.AbstractModel;
-	import com.crazyfm.example.bubblePattern.signals.AppViewSignalType;
-	import com.crazyfm.example.bubblePattern.signals.UserDataModelSignalType;
+	import com.crazyfm.example.bubbleCommandPattern.messages.UserDataModelMessageType;
 
 	public class UserDataModel extends AbstractModel implements IUserDataModel
 	{
@@ -16,12 +14,7 @@ package com.crazyfm.example.bubblePattern.models
 
 		public function UserDataModel()
 		{
-			addMessageListener(AppViewSignalType.FIRST_NAME_CLICKED, onFirstNameClicked);
-		}
-
-		private function onFirstNameClicked(e:IMessage):void
-		{
-			firstName = "olo";
+			super();
 		}
 
 		public function get firstName():String
@@ -33,7 +26,7 @@ package com.crazyfm.example.bubblePattern.models
 		{
 			_firstName = value;
 
-			dispatchMessage(UserDataModelSignalType.FIRSTNAME_CHANGED);
+			dispatchMessage(UserDataModelMessageType.FIRSTNAME_CHANGED, _firstName);
 		}
 
 		public function get lastName():String
@@ -45,7 +38,7 @@ package com.crazyfm.example.bubblePattern.models
 		{
 			_lastName = value;
 
-			dispatchMessage(UserDataModelSignalType.LASTNAME_CHANGED);
+			dispatchMessage(UserDataModelMessageType.LASTNAME_CHANGED, _lastName);
 		}
 
 		public function get age():int
@@ -57,7 +50,7 @@ package com.crazyfm.example.bubblePattern.models
 		{
 			_age = value;
 
-			dispatchMessage(UserDataModelSignalType.AGE_CHANGED);
+			dispatchMessage(UserDataModelMessageType.AGE_CHANGED, _age.toString());
 		}
 	}
 }

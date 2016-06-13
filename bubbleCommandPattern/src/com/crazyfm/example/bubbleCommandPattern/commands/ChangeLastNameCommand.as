@@ -1,10 +1,10 @@
 /**
  * Created by Anton Nefjodov on 9.06.2016.
  */
-package com.crazyfm.example.bubblePattern.commands
+package com.crazyfm.example.bubbleCommandPattern.commands
 {
 	import com.crazyfm.core.mvc.command.AbstractCommand;
-	import com.crazyfm.example.bubblePattern.models.IUserDataModel;
+	import com.crazyfm.example.bubbleCommandPattern.models.IUserDataModel;
 
 	public class ChangeLastNameCommand extends AbstractCommand
 	{

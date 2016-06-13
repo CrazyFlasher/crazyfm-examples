@@ -26,7 +26,7 @@
             <arg value="-library-path+=${libs_path}/crazyfm"/>
             <!-- output -->
             <arg value="-output=${swf}/${project.title}.swf"/>
-            <arg value="-frame=two,com.crazyfm.example.bubblePattern.Main"/>
+            <arg value="-frame=two,com.crazyfm.example.bubbleCommandPattern.Main"/>
             <arg value="-keep-as3-metadata+=Inject"/>
             <arg value="-keep-as3-metadata+=PostConstruct"/>
             <arg value="-debug"/>
