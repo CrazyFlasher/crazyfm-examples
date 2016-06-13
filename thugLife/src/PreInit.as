@@ -3,16 +3,16 @@
  */
 package {
 	import com.crazy.thugLife.Main;
-	import com.crazyfm.extension.starlingApp.initializer.models.StarlingConfig;
-	import com.crazyfm.extension.starlingApp.initializer.models.StarlingInitializerContext;
+	import com.crazyfm.extension.starlingApp.configs.StarlingConfig;
+	import com.crazyfm.extension.starlingApp.contexts.StarlingInitializerContext;
 
 	import flash.display.Sprite;
 	import flash.display3D.Context3DProfile;
 	import flash.events.Event;
 
 	/**
-	 * PreInit is needed to setup Starling and proceed to Main initialization.
-	 * Main extends starling.display.Sprite.
+	 * PreInit is needed to setup <code>Starling</code> and proceed to <code>Main</code> initialization.
+	 * <code>Main</code> extends <code>starling.display.Sprite</code>.
 	 */
 	public class PreInit extends Sprite
 	{
@@ -35,7 +35,7 @@ package {
 
 			//Creates IContext, that initializes Starling.
 			//This IContext dispatches StarlingInitializerSignal.STARLING_INITIALIZED signal, when starling is ready
-			//and automatically creates Main object.
+			//and automatically creates <code>Main</code> object.
 			new StarlingInitializerContext(stage, Main, properties);
 		}
 	}
