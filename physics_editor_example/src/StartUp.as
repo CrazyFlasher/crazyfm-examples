@@ -5,7 +5,7 @@ package
 {
 	import com.crazyfm.extensions.physics.IWorldObject;
 	import com.crazyfm.extensions.physics.WorldObject;
-	import com.crazyfm.extensions.physics.utils.PhysicsParser;
+	import com.crazyfm.extensions.physics.vo.units.WorldDataVo;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -42,8 +42,7 @@ package
 
 		private function init():void
 		{
-			world = new WorldObject();
-			world.data = PhysicsParser.parseWorld(JSON.parse((new WorldClass() as ByteArray).toString()));
+			world = new WorldObject(new WorldDataVo(JSON.parse((new WorldClass() as ByteArray).toString())));
 
 			createDebugDraw();
 
