@@ -15,7 +15,6 @@ package com.crazy.thugLife.main.contexts
 	import com.crazyfm.core.mvc.message.IMessage;
 
 	import flash.ui.Keyboard;
-	import flash.utils.setInterval;
 
 	import starling.core.Starling;
 	import starling.display.Stage;
@@ -44,11 +43,11 @@ package com.crazy.thugLife.main.contexts
 
 			addMessageListener(ContextMessageType.EXIT, onContextExit);
 
-//			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 
 			launchLobby();
 
-			setInterval(switchContexts, 250);
+//			setInterval(switchContexts, 400);
 		}
 
 		private function onKeyUp(event:KeyboardEvent, keyCode:uint):void

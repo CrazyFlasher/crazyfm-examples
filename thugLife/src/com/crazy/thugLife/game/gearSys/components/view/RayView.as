@@ -37,6 +37,7 @@ package com.crazy.thugLife.game.gearSys.components.view
 				aimable = gameObject.getComponentByType(IAimable) as IAimable;
 			}
 
+			//TODO:
 			var pt:Vec2 = aimable.aimRay.at(Math.min(aimable.aimRay.maxDistance, 1000));
 
 			rayGfx.graphics.clear();

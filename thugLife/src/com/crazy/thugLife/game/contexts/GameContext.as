@@ -39,6 +39,7 @@ package com.crazy.thugLife.game.contexts
 	import com.crazyfm.devkit.gearSys.components.physyics.model.PhysWorldModel;
 	import com.crazyfm.devkit.gearSys.components.physyics.view.starling.PhysBodyObjectFromDataView;
 	import com.crazyfm.devkit.gearSys.mechanisms.StarlingEnterFrameMechanism;
+	import com.crazyfm.devkit.gearSys.mechanisms.StarlingTimerMechanism;
 	import com.crazyfm.devkit.physics.CFBodyObject;
 	import com.crazyfm.devkit.physics.CFShapeObject;
 	import com.crazyfm.devkit.physics.vo.units.CFShapeDataVo;
@@ -47,6 +48,7 @@ package com.crazy.thugLife.game.contexts
 	import com.crazyfm.extension.gearSys.IGearSys;
 	import com.crazyfm.extension.gearSys.IGearSysMechanism;
 	import com.crazyfm.extension.gearSys.IGearSysObject;
+	import com.crazyfm.extension.gearSys.mechanisms.EnterFrameMechanism;
 	import com.crazyfm.extension.gearSys.messages.GearSysMessageEnum;
 	import com.crazyfm.extensions.physics.IBodyObject;
 	import com.crazyfm.extensions.physics.IJointObject;
@@ -121,7 +123,8 @@ package com.crazy.thugLife.game.contexts
 					.map(IPhysWorldModel, PhysWorldModel)
 
 					.map(IGearSys, GearSys)
-					.map(IGearSysMechanism, StarlingEnterFrameMechanism)
+//					.map(IGearSysMechanism, StarlingEnterFrameMechanism)
+					.map(IGearSysMechanism, EnterFrameMechanism)
 					.map(IGearSysObject, GearSysObject)
 
 					.map(IPhysBodyObjectModel, PhysBodyObjectModel)

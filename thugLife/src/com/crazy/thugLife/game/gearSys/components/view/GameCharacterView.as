@@ -245,7 +245,7 @@ package com.crazy.thugLife.game.gearSys.components.view
 				body = currentAnim.getChildByName("body") as GAFMovieClip;
 				body.gotoAndStop(isAvailable(armed) ? armed.currentWeapon.name : WeaponEnum.HOLSTER.name);
 
-				bodyAnim = body.getChildByName(armed.currentWeapon.name) as GAFMovieClip;
+				bodyAnim = body.getChildByName(isAvailable(armed) ? armed.currentWeapon.name : WeaponEnum.HOLSTER.name) as GAFMovieClip;
 				bodyAnim.gotoAndStop(animationId);
 
 				currentBodyAnim = bodyAnim.getChildByName(animationId) as GAFMovieClip;

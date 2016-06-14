@@ -40,6 +40,7 @@ package com.crazy.thugLife.game.gearSys.prefabs
 
 		private var userSkin:IPhysBodyObjectView;
 		private var armed:IArmed;
+		private var physObj:IInteractivePhysObjectModel;
 
 		public function HumanPrefab(bodyObject:IBodyObject)
 		{
@@ -51,15 +52,15 @@ package com.crazy.thugLife.game.gearSys.prefabs
 		[PostConstruct]
 		public function configureComponents():void
 		{
-			addComponent(factory.getInstance(IInteractivePhysObjectModel, bodyObject.body));
-			addComponent(armed = (factory.getInstance(IArmed) as IArmed)
-				.setCurrentWeapon(WeaponEnum.HOLSTER));
+			addComponent(physObj = factory.getInstance(IInteractivePhysObjectModel, bodyObject.body));
+//			addComponent(armed = (factory.getInstance(IArmed) as IArmed)
+//				.setCurrentWeapon(WeaponEnum.HOLSTER));
 			addComponent(factory.getInstance(IJumpable, 300));
 			addComponent(factory.getInstance(IClimbable, 100));
 			addComponent(factory.getInstance(IMovable, 75));
 			addComponent(factory.getInstance(IRotatable));
 //			addComponent(factory.getInstance(PhysBodyObjectFromDataView, mainViewContainer, bodyObject.data.shapeDataList, 0x00CC00));
-			addComponent(factory.getInstance(RayView));
+//			addComponent(factory.getInstance(RayView));
 			addComponent(userSkin = factory.getInstance(GameCharacterView, new GAFMovieClip(gafBundle.getGAFTimeline("test_assets", "human"))));
 		}
 
@@ -77,7 +78,7 @@ package com.crazy.thugLife.game.gearSys.prefabs
 
 		public function get aimPosition():Vec2
 		{
-			return armed.aimPosition;
+			return armed ? armed.aimPosition : physObj.worldCenterOfMass;
 		}
 	}
 }
