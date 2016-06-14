@@ -53,14 +53,14 @@ package com.crazy.thugLife.game.gearSys.prefabs
 		public function configureComponents():void
 		{
 			addComponent(physObj = factory.getInstance(IInteractivePhysObjectModel, bodyObject.body));
-//			addComponent(armed = (factory.getInstance(IArmed) as IArmed)
-//				.setCurrentWeapon(WeaponEnum.HOLSTER));
+			addComponent(armed = (factory.getInstance(IArmed) as IArmed)
+				.setCurrentWeapon(WeaponEnum.HOLSTER));
 			addComponent(factory.getInstance(IJumpable, 300));
 			addComponent(factory.getInstance(IClimbable, 100));
 			addComponent(factory.getInstance(IMovable, 75));
 			addComponent(factory.getInstance(IRotatable));
 //			addComponent(factory.getInstance(PhysBodyObjectFromDataView, mainViewContainer, bodyObject.data.shapeDataList, 0x00CC00));
-//			addComponent(factory.getInstance(RayView));
+			addComponent(factory.getInstance(RayView));
 			addComponent(userSkin = factory.getInstance(GameCharacterView, new GAFMovieClip(gafBundle.getGAFTimeline("test_assets", "human"))));
 		}
 

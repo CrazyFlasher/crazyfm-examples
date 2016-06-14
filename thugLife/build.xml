@@ -35,10 +35,10 @@
             <arg value="-library-path+=${libs_path}/crazyfm"/>
             <arg value="-output=${swf}/${project.title}.swf"/>
             <arg value="-frame=two,PreInit"/>
-            <arg value="-keep-as3-metadata+=Inject"/>
+            <arg value="-keep-as3-metadata+=Autowired"/>
             <arg value="-keep-as3-metadata+=PostConstruct"/>
-            <arg value="-debug"/>
             <arg value="-compiler.advanced-telemetry"/>
+            <arg value="-debug=false"/>
         </java>
         <!--mxmlc file="${src}/StartUp.as" output="${swf}/${project.title}.swf">
             <load-config filename="${FLEX_HOME}/frameworks/flex-config.xml" />

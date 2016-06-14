@@ -16,6 +16,8 @@ package com.crazy.thugLife.game.gearSys.components.view
 
 		private var rayGfx:Shape;
 
+		private var aimableFetched:Boolean;
+
 		public function RayView()
 		{
 			super();
@@ -32,18 +34,22 @@ package com.crazy.thugLife.game.gearSys.components.view
 		{
 			super.interact(timePassed);
 
-			if (!aimable)
+			if (!aimable && !aimableFetched)
 			{
 				aimable = gameObject.getComponentByType(IAimable) as IAimable;
+				aimableFetched = true;
 			}
 
-			//TODO:
-			var pt:Vec2 = aimable.aimRay.at(Math.min(aimable.aimRay.maxDistance, 1000));
+			if (aimable)
+			{
+				//TODO:
+				var pt:Vec2 = aimable.aimRay.at(Math.min(aimable.aimRay.maxDistance, 1000));
 
-			rayGfx.graphics.clear();
-			rayGfx.graphics.lineStyle(1, 0xFF0000);
-			rayGfx.graphics.moveTo(aimable.aimRay.origin.x, aimable.aimRay.origin.y);
-			rayGfx.graphics.lineTo(pt.x, pt.y);
+				rayGfx.graphics.clear();
+				rayGfx.graphics.lineStyle(1, 0xFF0000);
+				rayGfx.graphics.moveTo(aimable.aimRay.origin.x, aimable.aimRay.origin.y);
+				rayGfx.graphics.lineTo(pt.x, pt.y);
+			}
 		}
 	}
 }

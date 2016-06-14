@@ -27,9 +27,9 @@
             <!-- output -->
             <arg value="-output=${swf}/${project.title}.swf"/>
             <arg value="-frame=two,com.crazyfm.example.bubbleCommandPattern.Main"/>
-            <arg value="-keep-as3-metadata+=Inject"/>
+            <arg value="-keep-as3-metadata+=Autowired"/>
             <arg value="-keep-as3-metadata+=PostConstruct"/>
-            <arg value="-debug"/>
+            <arg value="-debug=false"/>
         </java>
     </target>
     <target name="clean">

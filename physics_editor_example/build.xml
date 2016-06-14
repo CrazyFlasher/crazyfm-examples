@@ -36,7 +36,9 @@
             <arg value="-library-path+=${libs_path}/crazyfm"/>
             <!-- output -->
             <arg value="-output=${swf}/${project.title}.swf"/>
-            <arg value="-debug"/>
+            <arg value="-keep-as3-metadata+=Autowired"/>
+            <arg value="-keep-as3-metadata+=PostConstruct"/>
+            <arg value="-debug=false"/>
         </java>
     </target>
     <target name="clean">
