@@ -31,7 +31,7 @@ package com.crazy.thugLife
 				   .map(DisplayObjectContainer, this)
 		           .map(Stage, stage);
 
-			mainContext = factory.getInstance(IMainContext, factory) as IMainContext;
+			mainContext = factory.getInstance(IMainContext, [factory]) as IMainContext;
 		}
 	}
 }

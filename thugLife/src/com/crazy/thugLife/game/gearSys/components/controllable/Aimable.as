@@ -53,12 +53,22 @@ package com.crazy.thugLife.game.gearSys.components.controllable
 			rayOrigin.x = intPhysObject.worldCenterOfMass.x + _aimRayOriginOffset.x;
 			rayOrigin.y = intPhysObject.worldCenterOfMass.y + _aimRayOriginOffset.y;
 
+			_aimPosition.angle = getAngle(rayOrigin, _aimPosition);
+
+//			var distance:Number = Vec2.distance(rayOrigin, _aimPosition);
+//			var diffX:Number = rayOrigin.x - _aimPosition.x;
+//			var diffY:Number = rayOrigin.y - _aimPosition.y;
+
+//			rayOrigin.x -= diffX / distance * _rayOffset;
+//			rayOrigin.y -= diffY / distance * _rayOffset;
+
 			if (!_aimRay)
 			{
 				_aimRay = new Ray(Vec2.get(), Vec2.get(1, 1));
 			}
 			_aimRay.origin = rayOrigin;
-			_aimRay.direction = Vec2.fromPolar(1, getAngle(rayOrigin, _aimPosition));
+//			_aimRay.direction = Vec2.fromPolar(1, getAngle(rayOrigin, _aimPosition), true);
+			_aimRay.direction = _aimPosition;
 
 			_aimRay.origin = _aimRay.at(_rayOffset);
 		}

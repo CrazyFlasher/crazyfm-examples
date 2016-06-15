@@ -77,7 +77,7 @@ package com.crazy.thugLife.game.gearSys.components.view
 			var isLeavingLadder:Boolean = isAvailable(climbable) && climbable.isLeavingLadder;
 
 			var isLeftDirection:Boolean = isAvailable(movable) && movable.isLeftDirection;
-			var isAimingLeft:Boolean = isAvailable(armed) && armed.isAimingLeft;
+			var isAimingLeft:Boolean = isAvailable(rotatable) && rotatable.isRotatedLeft;
 			var isChangingWeapon:Boolean = isAvailable(armed) && armed.isChangingWeapon;
 
 			var playBackwardAnim:Boolean = isLeftDirection != isAimingLeft;
@@ -196,7 +196,8 @@ package com.crazy.thugLife.game.gearSys.components.view
 				currentAnim.localToGlobal(armCurrentPosition, armGlobalPosition);
 				viewContainer.globalToLocal(armGlobalPosition, armGlobalPosition);
 
-				gun.rotation = getGunArmAngle(armGlobalPosition, armed.aimRay.at(100));
+//				gun.rotation = getGunArmAngle(armGlobalPosition, armed.aimPosition);
+				gun.rotation = fixGunArmAngle(armed.aimPosition.angle);
 
 				if (gunArm_1)
 				{
@@ -261,20 +262,16 @@ package com.crazy.thugLife.game.gearSys.components.view
 			}
 		}
 
-		private function getGunArmAngle(p1:Point, p2:Vec2):Number
+		private function fixGunArmAngle(angle:Number):Number
 		{
-			var dx:Number = p1.x - p2.x;
-			var dy:Number = p1.y - p2.y;
-
-			var angleFromTan:Number =  Math.atan2(dy, dx);
 			var finalAngle:Number;
 
 			if (isAvailable(rotatable) && rotatable.isRotatedLeft)
 			{
-				finalAngle = angleFromTan * -1 + additionalRotation;
+				finalAngle = angle * -1 + additionalRotation + Math.PI;
 			}else
 			{
-				finalAngle = angleFromTan + Math.PI - additionalRotation;
+				finalAngle = angle - additionalRotation;
 			}
 
 			return finalAngle;

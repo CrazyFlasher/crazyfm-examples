@@ -37,8 +37,8 @@
             <arg value="-frame=two,PreInit"/>
             <arg value="-keep-as3-metadata+=Autowired"/>
             <arg value="-keep-as3-metadata+=PostConstruct"/>
-            <arg value="-compiler.advanced-telemetry"/>
-            <arg value="-debug=false"/>
+            <arg value="-compiler.advanced-telemetry=${debug}"/>
+            <arg value="-debug=${debug}"/>
         </java>
         <!--mxmlc file="${src}/StartUp.as" output="${swf}/${project.title}.swf">
             <load-config filename="${FLEX_HOME}/frameworks/flex-config.xml" />

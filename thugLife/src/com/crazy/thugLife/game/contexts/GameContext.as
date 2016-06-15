@@ -39,6 +39,7 @@ package com.crazy.thugLife.game.contexts
 	import com.crazyfm.devkit.gearSys.components.physyics.model.PhysWorldModel;
 	import com.crazyfm.devkit.gearSys.components.physyics.view.starling.PhysBodyObjectFromDataView;
 	import com.crazyfm.devkit.gearSys.mechanisms.StarlingEnterFrameMechanism;
+	import com.crazyfm.devkit.gearSys.mechanisms.StarlingJugglerMechanism;
 	import com.crazyfm.devkit.gearSys.mechanisms.StarlingTimerMechanism;
 	import com.crazyfm.devkit.physics.CFBodyObject;
 	import com.crazyfm.devkit.physics.CFShapeObject;
@@ -67,6 +68,8 @@ package com.crazy.thugLife.game.contexts
 	import flash.utils.ByteArray;
 
 	import nape.space.Space;
+
+	import starling.animation.Juggler;
 
 	import starling.core.Starling;
 	import starling.display.DisplayObjectContainer;
@@ -123,7 +126,7 @@ package com.crazy.thugLife.game.contexts
 					.map(IPhysWorldModel, PhysWorldModel)
 
 					.map(IGearSys, GearSys)
-//					.map(IGearSysMechanism, StarlingEnterFrameMechanism)
+//					.map(IGearSysMechanism, StarlingJugglerMechanism)
 					.map(IGearSysMechanism, EnterFrameMechanism)
 					.map(IGearSysObject, GearSysObject)
 
@@ -138,11 +141,12 @@ package com.crazy.thugLife.game.contexts
 					.map(IArmed, Armed)
 
 					.map(IAppFactory, factory)
+					.map(Juggler, Starling.juggler)
 			;
 
-			var worldData:WorldDataVo = factory.getInstance(WorldDataVo, JSON.parse((new WorldClass() as ByteArray).toString()));
+			var worldData:WorldDataVo = factory.getInstance(WorldDataVo, [JSON.parse((new WorldClass() as ByteArray).toString())]);
 
-			worldObject = factory.getInstance(WorldObject, worldData);
+			worldObject = factory.getInstance(WorldObject, [worldData]);
 
 			initGafAssets();
 		}
@@ -195,28 +199,29 @@ package com.crazy.thugLife.game.contexts
 			var enemyBodyObject:IBodyObject = worldObject.bodyObjectById("enemy_1");
 
 			gameViewContainer = new Sprite();
+			gameViewContainer.touchable = false;
 			viewContainer.addChild(gameViewContainer);
 
 			factory.map(DisplayObjectContainer, gameViewContainer);
 			factory.map(GAFBundle, gafBundle);
 			factory.map(Stage, viewContainer.stage);
 
-			var mechanism:IGearSysMechanism = factory.getInstance(IGearSysMechanism, 1 / Starling.current.nativeStage.frameRate) as IGearSysMechanism;
-			camera = factory.getInstance(ICamera, 0.5) as ICamera;
-			user = factory.getInstance(IHumanPrefab, userBodyObject) as IHumanPrefab;
-			enemy = factory.getInstance(IHumanPrefab, enemyBodyObject) as IHumanPrefab;
+			var mechanism:IGearSysMechanism = factory.getInstance(IGearSysMechanism, [1 / Starling.current.nativeStage.frameRate]) as IGearSysMechanism;
+			camera = factory.getInstance(ICamera, [0.5]) as ICamera;
+			user = factory.getInstance(IHumanPrefab, [userBodyObject]) as IHumanPrefab;
+			enemy = factory.getInstance(IHumanPrefab, [enemyBodyObject]) as IHumanPrefab;
 
-			gearSys = (factory.getInstance(IGearSys, mechanism) as IGearSys)
+			gearSys = (factory.getInstance(IGearSys, [mechanism]) as IGearSys)
 				.addGameObject((factory.getInstance(IGearSysObject) as IGearSysObject)
-					.addComponent(factory.getInstance(IPhysWorldModel, space))
+					.addComponent(factory.getInstance(IPhysWorldModel, [space]))
 					.addComponent(camera))
 				.addGameObject(user
-					.addInput(factory.getInstance(MouseInput, mouseToAction))
-					.addInput(factory.getInstance(KeyboardInput, keysToAction)))
+					.addInput(factory.getInstance(MouseInput, [mouseToAction]))
+					.addInput(factory.getInstance(KeyboardInput, [keysToAction])))
 				.addGameObject(enemy)
 				.addGameObject((factory.getInstance(IGearSysObject) as IGearSysObject)
-					.addComponent(factory.getInstance(IPhysBodyObjectModel, floorBodyObject.body))
-					.addComponent(factory.getInstance(PhysBodyObjectFromDataView, floorBodyObject.data.shapeDataList, 0xFFCC00))
+					.addComponent(factory.getInstance(IPhysBodyObjectModel, [floorBodyObject.body]))
+					.addComponent(factory.getInstance(PhysBodyObjectFromDataView, [floorBodyObject.data.shapeDataList, 0xFFCC00]))
 				);
 
 			gearSys.addMessageListener(GearSysMessageEnum.STEP, onGearSystemStep);
@@ -225,6 +230,7 @@ package com.crazy.thugLife.game.contexts
 
 			camera.setFocusObject(user.skin);
 			camera.setViewport(new Rectangle(0, 0, viewContainer.stage.stageWidth, viewContainer.stage.stageHeight));
+			camera.updateViewContainerBounds();
 		}
 
 		private function onGearSystemStep(message:IMessage):void
@@ -239,7 +245,6 @@ package com.crazy.thugLife.game.contexts
 			camera.dispose();
 			worldObject.dispose();
 			gafBundle.dispose();
-			gameViewContainer.removeChildren(0, -1, true);
 			gameViewContainer.removeFromParent(true);
 
 			super.dispose();

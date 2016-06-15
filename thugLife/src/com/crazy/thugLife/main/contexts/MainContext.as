@@ -14,6 +14,8 @@ package com.crazy.thugLife.main.contexts
 	import com.crazyfm.core.mvc.context.IContext;
 	import com.crazyfm.core.mvc.message.IMessage;
 
+	import flash.system.System;
+
 	import flash.ui.Keyboard;
 
 	import starling.core.Starling;
@@ -45,7 +47,7 @@ package com.crazy.thugLife.main.contexts
 
 			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 
-			launchLobby();
+			launchGame();
 
 //			setInterval(switchContexts, 400);
 		}
@@ -88,7 +90,7 @@ package com.crazy.thugLife.main.contexts
 			destroyContext(lobbyContext);
 			lobbyContext = null;
 
-			gameContext = factory.getInstance(IGameContext, new AppFactory()) as IGameContext;
+			gameContext = factory.getInstance(IGameContext, [new AppFactory()]) as IGameContext;
 			addModel(gameContext);
 
 			return this;
@@ -99,7 +101,7 @@ package com.crazy.thugLife.main.contexts
 			destroyContext(gameContext);
 			gameContext = null;
 
-			lobbyContext = factory.getInstance(ILobbyContext, new AppFactory()) as ILobbyContext;
+			lobbyContext = factory.getInstance(ILobbyContext, [new AppFactory()]) as ILobbyContext;
 			addModel(lobbyContext);
 
 			return this;
@@ -113,6 +115,8 @@ package com.crazy.thugLife.main.contexts
 
 				context.dispose();
 			}
+
+			System.pauseForGCIfCollectionImminent(0);
 		}
 	}
 }

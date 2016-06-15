@@ -16,7 +16,7 @@ package
 		public function StartUp()
 		{
 			super();
-			trace("HUJ")
+
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 		}
