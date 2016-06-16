@@ -5,6 +5,7 @@ package com.crazy.thugLife.game.gearSys.components.controllable
 {
 	import com.crazyfm.extension.gearSys.IGearSysComponent;
 
+	Movable;
 	public interface IMovable extends IGearSysComponent
 	{
 		function get isMoving():Boolean;

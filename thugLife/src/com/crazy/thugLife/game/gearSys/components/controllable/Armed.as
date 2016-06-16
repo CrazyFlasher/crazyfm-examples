@@ -34,12 +34,15 @@ package com.crazy.thugLife.game.gearSys.components.controllable
 
 			if (actionVo.action == GameInputActionEnum.CHANGE_WEAPON)
 			{
-				if (_currentWeapon == WeaponEnum.PISTOL)
+				if (!intPhysObject.zeroGravity)
 				{
-					setCurrentWeapon(WeaponEnum.HOLSTER);
-				}else
-				{
-					setCurrentWeapon(WeaponEnum.PISTOL);
+					if (_currentWeapon == WeaponEnum.PISTOL)
+					{
+						setCurrentWeapon(WeaponEnum.HOLSTER);
+					}else
+					{
+						setCurrentWeapon(WeaponEnum.PISTOL);
+					}
 				}
 			}
 		}

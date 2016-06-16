@@ -10,6 +10,7 @@ package com.crazy.thugLife.game.gearSys.components.controllable
 	import nape.geom.Ray;
 	import nape.geom.Vec2;
 
+	Aimable;
 	public interface IAimable extends IGearSysComponent
 	{
 		function get aimPosition():Vec2;

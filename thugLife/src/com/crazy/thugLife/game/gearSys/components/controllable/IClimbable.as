@@ -5,6 +5,7 @@ package com.crazy.thugLife.game.gearSys.components.controllable
 {
 	import com.crazyfm.extension.gearSys.IGearSysComponent;
 
+	Climbable;
 	public interface IClimbable extends IGearSysComponent
 	{
 		function get isClimbing():Boolean;

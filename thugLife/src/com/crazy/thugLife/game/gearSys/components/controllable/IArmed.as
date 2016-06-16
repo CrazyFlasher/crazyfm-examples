@@ -5,6 +5,7 @@ package com.crazy.thugLife.game.gearSys.components.controllable
 {
 	import com.crazy.thugLife.common.enums.WeaponEnum;
 
+	Armed;
 	public interface IArmed extends IAimable
 	{
 		function get currentWeapon():WeaponEnum;

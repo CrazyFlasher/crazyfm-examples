@@ -30,14 +30,16 @@ package com.crazy.thugLife.main.contexts
 		private var gameContext:IGameContext;
 		private var lobbyContext:ILobbyContext;
 
-		public function MainContext(factory:IAppFactory)
+		public function MainContext()
 		{
-			super(factory);
+			super();
 		}
 
 		[PostConstruct]
-		public function init():void
+		override public function init():void
 		{
+			super.init();
+
 			Starling.current.showStats = true;
 
 			factory.map(IGameContext, GameContext);
@@ -90,7 +92,8 @@ package com.crazy.thugLife.main.contexts
 			destroyContext(lobbyContext);
 			lobbyContext = null;
 
-			gameContext = factory.getInstance(IGameContext, [new AppFactory()]) as IGameContext;
+			factory.map(IAppFactory, new AppFactory());
+			gameContext = factory.getInstance(IGameContext) as IGameContext;
 			addModel(gameContext);
 
 			return this;
@@ -101,7 +104,8 @@ package com.crazy.thugLife.main.contexts
 			destroyContext(gameContext);
 			gameContext = null;
 
-			lobbyContext = factory.getInstance(ILobbyContext, [new AppFactory()]) as ILobbyContext;
+			factory.map(IAppFactory, new AppFactory());
+			lobbyContext = factory.getInstance(ILobbyContext) as ILobbyContext;
 			addModel(lobbyContext);
 
 			return this;

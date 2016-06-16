@@ -15,6 +15,8 @@ package
 	{
 		public function StartUp()
 		{
+			GlobalSettings.logEnabled = true;
+
 			super();
 
 			stage.align = StageAlign.TOP_LEFT;

@@ -22,39 +22,36 @@ package com.crazy.thugLife.game.gearSys.prefabs
 	import com.crazyfm.extensions.physics.IBodyObject;
 
 	import nape.geom.Vec2;
+	import nape.phys.Body;
 
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 
 	public class HumanPrefab extends GearSysObject implements IHumanPrefab
 	{
-		/*[Autowired]
-		public var mainViewContainer:DisplayObjectContainer;*/
-
 		[Autowired]
 		public var gafBundle:GAFBundle;
 
 		[Autowired]
 		public var factory:IAppFactory;
 
-		private var bodyObject:IBodyObject;
+		[Autowired]
+		public var bodyDataObject:IBodyObject;
 
 		private var userSkin:IPhysBodyObjectView;
 		private var armed:IArmed;
 		private var physObj:IInteractivePhysObjectModel;
 
-		public function HumanPrefab(bodyObject:IBodyObject)
+		public function HumanPrefab()
 		{
 			super();
-
-			this.bodyObject = bodyObject;
 		}
 
 		[PostConstruct]
 		public function configureComponents():void
 		{
-			addComponent(physObj = factory.getInstance(IInteractivePhysObjectModel, [bodyObject.body]));
-			addComponent(armed = (factory.getInstance(IArmed) as IArmed)
+			addComponent(physObj = factory.map(Body, bodyDataObject.body).getInstance(IInteractivePhysObjectModel));
+			addComponent(armed = factory.getInstance(IArmed)
 				.setCurrentWeapon(WeaponEnum.PISTOL));
 			addComponent(factory.getInstance(IJumpable, [300]));
 			addComponent(factory.getInstance(IClimbable, [100]));

@@ -5,6 +5,7 @@ package com.crazy.thugLife.game.gearSys.components.controllable
 {
 	import com.crazyfm.extension.gearSys.IGearSysComponent;
 
+	Rotatable;
 	public interface IRotatable extends IGearSysComponent
 	{
 		function get isRotatedLeft():Boolean;

@@ -3,7 +3,6 @@
  */
 package com.crazy.thugLife.lobby.contexts
 {
-	import com.crazyfm.core.factory.IAppFactory;
 	import com.crazyfm.core.mvc.context.AbstractContext;
 
 	import starling.display.DisplayObjectContainer;
@@ -13,15 +12,9 @@ package com.crazy.thugLife.lobby.contexts
 		[Autowired]
 		public var viewContainer:DisplayObjectContainer;
 
-		public function LobbyContext(factory:IAppFactory)
+		public function LobbyContext()
 		{
-			super(factory);
-		}
-
-		[PostConstruct]
-		public function init():void
-		{
-
+			super();
 		}
 	}
 }

@@ -20,7 +20,6 @@ package com.crazy.thugLife.game.contexts
 	import com.crazy.thugLife.game.gearSys.components.controllable.Rotatable;
 	import com.crazy.thugLife.game.gearSys.prefabs.HumanPrefab;
 	import com.crazy.thugLife.game.gearSys.prefabs.IHumanPrefab;
-	import com.crazyfm.core.factory.IAppFactory;
 	import com.crazyfm.core.mvc.context.AbstractContext;
 	import com.crazyfm.core.mvc.message.IMessage;
 	import com.crazyfm.devkit.gearSys.components.camera.Camera;
@@ -38,9 +37,6 @@ package com.crazy.thugLife.game.contexts
 	import com.crazyfm.devkit.gearSys.components.physyics.model.PhysBodyObjectModel;
 	import com.crazyfm.devkit.gearSys.components.physyics.model.PhysWorldModel;
 	import com.crazyfm.devkit.gearSys.components.physyics.view.starling.PhysBodyObjectFromDataView;
-	import com.crazyfm.devkit.gearSys.mechanisms.StarlingEnterFrameMechanism;
-	import com.crazyfm.devkit.gearSys.mechanisms.StarlingJugglerMechanism;
-	import com.crazyfm.devkit.gearSys.mechanisms.StarlingTimerMechanism;
 	import com.crazyfm.devkit.physics.CFBodyObject;
 	import com.crazyfm.devkit.physics.CFShapeObject;
 	import com.crazyfm.devkit.physics.vo.units.CFShapeDataVo;
@@ -59,7 +55,6 @@ package com.crazy.thugLife.game.contexts
 	import com.crazyfm.extensions.physics.JointObject;
 	import com.crazyfm.extensions.physics.VertexObject;
 	import com.crazyfm.extensions.physics.WorldObject;
-	import com.crazyfm.extensions.physics.factory.PhysFactory;
 	import com.crazyfm.extensions.physics.vo.units.ShapeDataVo;
 	import com.crazyfm.extensions.physics.vo.units.WorldDataVo;
 
@@ -67,10 +62,10 @@ package com.crazy.thugLife.game.contexts
 	import flash.ui.Keyboard;
 	import flash.utils.ByteArray;
 
+	import nape.phys.Body;
 	import nape.space.Space;
 
 	import starling.animation.Juggler;
-
 	import starling.core.Starling;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Sprite;
@@ -100,48 +95,44 @@ package com.crazy.thugLife.game.contexts
 
 		private var camera:ICamera;
 
-		public function GameContext(factory:IAppFactory)
+		public function GameContext()
 		{
-			super(factory);
+			super();
 		}
 
 		[PostConstruct]
-		public function init():void
+		override public function init():void
 		{
-			PhysFactory.instance = factory;
+			super.init();
 
-			factory
-					.registerPool(AbstractInputActionVo, 5)
-					.registerPool(MouseActionVo, 1)
+			factory.verbose = true;
 
-					.map(ShapeDataVo, CFShapeDataVo)
-					.map(IWorldObject, WorldObject)
-					.map(IBodyObject, CFBodyObject)
-					.map(IShapeObject, CFShapeObject)
-					.map(IJointObject, JointObject)
-					.map(IVertexObject, VertexObject)
+			factory.registerPool(AbstractInputActionVo, 5)
+				   .registerPool(MouseActionVo, 1)
 
-					.map(IHumanPrefab, HumanPrefab)
-					.map(ICamera, Camera)
-					.map(IPhysWorldModel, PhysWorldModel)
+				   .map(ShapeDataVo, CFShapeDataVo)
+				   .map(IBodyObject, CFBodyObject)
+				   .map(IShapeObject, CFShapeObject)
 
-					.map(IGearSys, GearSys)
-//					.map(IGearSysMechanism, StarlingJugglerMechanism)
-					.map(IGearSysMechanism, EnterFrameMechanism)
-					.map(IGearSysObject, GearSysObject)
+//				   .map(IHumanPrefab, HumanPrefab)
+//				   .map(ICamera, Camera)
+//				   .map(IPhysWorldModel, PhysWorldModel)
 
-					.map(IPhysBodyObjectModel, PhysBodyObjectModel)
-					.map(IInteractivePhysObjectModel, InteractivePhysObjectModel)
+//				   .map(IGearSys, GearSys)
+				   .map(IGearSysMechanism, EnterFrameMechanism)
+//				   .map(IGearSysObject, GearSysObject)
 
-					.map(IMovable, Movable)
-					.map(IJumpable, Jumpable)
-					.map(IClimbable, Climbable)
-					.map(IRotatable, Rotatable)
-					.map(IAimable, Aimable)
-					.map(IArmed, Armed)
+//				   .map(IPhysBodyObjectModel, PhysBodyObjectModel)
+//				   .map(IInteractivePhysObjectModel, InteractivePhysObjectModel)
 
-					.map(IAppFactory, factory)
-					.map(Juggler, Starling.juggler)
+//				   .map(IMovable, Movable)
+//				   .map(IJumpable, Jumpable)
+//				   .map(IClimbable, Climbable)
+//				   .map(IRotatable, Rotatable)
+//				   .map(IAimable, Aimable)
+//				   .map(IArmed, Armed)
+
+				   .map(Juggler, Starling.juggler)
 			;
 
 			var worldData:WorldDataVo = factory.getInstance(WorldDataVo, [JSON.parse((new WorldClass() as ByteArray).toString())]);
@@ -193,7 +184,6 @@ package com.crazy.thugLife.game.contexts
 				new MouseToActionMapping(GameInputActionEnum.AIM, false, false, false, true)
 			];
 
-			var space:Space = worldObject.space;
 			var floorBodyObject:IBodyObject = worldObject.bodyObjectById("ground");
 			var userBodyObject:IBodyObject = worldObject.bodyObjectById("user");
 			var enemyBodyObject:IBodyObject = worldObject.bodyObjectById("enemy_1");
@@ -205,22 +195,27 @@ package com.crazy.thugLife.game.contexts
 			factory.map(DisplayObjectContainer, gameViewContainer);
 			factory.map(GAFBundle, gafBundle);
 			factory.map(Stage, viewContainer.stage);
+			factory.map(Space, worldObject.space);
+			factory.map(Vector.<MouseToActionMapping> as Class, mouseToAction);
+			factory.map(Vector.<KeysToActionMapping> as Class, keysToAction);
 
-			var mechanism:IGearSysMechanism = factory.getInstance(IGearSysMechanism, [1 / Starling.current.nativeStage.frameRate]) as IGearSysMechanism;
-			camera = factory.getInstance(ICamera, [0.5]) as ICamera;
-			user = factory.getInstance(IHumanPrefab, [userBodyObject]) as IHumanPrefab;
-			enemy = factory.getInstance(IHumanPrefab, [enemyBodyObject]) as IHumanPrefab;
+			var mechanism:IGearSysMechanism = factory.map(Number, 1 / Starling.current.nativeStage.frameRate).getInstance(IGearSysMechanism);
 
-			gearSys = (factory.getInstance(IGearSys, [mechanism]) as IGearSys)
+			camera = factory.map(Number, 0.5).getInstance(ICamera);
+			user = factory.map(IBodyObject, userBodyObject).getInstance(IHumanPrefab);
+			enemy = factory.map(IBodyObject, enemyBodyObject).getInstance(IHumanPrefab);
+			gearSys = factory.map(IGearSysMechanism, mechanism).getInstance(IGearSys);
+
+			gearSys
 				.addGameObject((factory.getInstance(IGearSysObject) as IGearSysObject)
-					.addComponent(factory.getInstance(IPhysWorldModel, [space]))
+					.addComponent(factory.getInstance(IPhysWorldModel))
 					.addComponent(camera))
 				.addGameObject(user
-					.addInput(factory.getInstance(MouseInput, [mouseToAction]))
-					.addInput(factory.getInstance(KeyboardInput, [keysToAction])))
+					.addInput(factory.getInstance(MouseInput))
+					.addInput(factory.getInstance(KeyboardInput)))
 				.addGameObject(enemy)
 				.addGameObject((factory.getInstance(IGearSysObject) as IGearSysObject)
-					.addComponent(factory.getInstance(IPhysBodyObjectModel, [floorBodyObject.body]))
+					.addComponent(factory.map(Body, floorBodyObject.body).getInstance(IPhysBodyObjectModel))
 					.addComponent(factory.getInstance(PhysBodyObjectFromDataView, [floorBodyObject.data.shapeDataList, 0xFFCC00]))
 				);
 
@@ -230,7 +225,6 @@ package com.crazy.thugLife.game.contexts
 
 			camera.setFocusObject(user.skin);
 			camera.setViewport(new Rectangle(0, 0, viewContainer.stage.stageWidth, viewContainer.stage.stageHeight));
-			camera.updateViewContainerBounds();
 		}
 
 		private function onGearSystemStep(message:IMessage):void

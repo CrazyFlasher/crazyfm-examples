@@ -10,6 +10,7 @@ package com.crazy.thugLife.game.gearSys.prefabs
 
 	import starling.display.DisplayObject;
 
+	HumanPrefab;
 	public interface IHumanPrefab extends IGearSysObject
 	{
 		function get skin():DisplayObject;

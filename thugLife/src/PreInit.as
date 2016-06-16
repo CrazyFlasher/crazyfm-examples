@@ -3,10 +3,14 @@
  */
 package {
 	import com.crazy.thugLife.Main;
+	import com.crazyfm.core.factory.AppFactory;
+	import com.crazyfm.core.factory.IAppFactory;
 	import com.crazyfm.extension.starlingApp.configs.StarlingConfig;
-	import com.crazyfm.extension.starlingApp.contexts.StarlingInitializerContext;
+	import com.crazyfm.extension.starlingApp.initializer.IStarlingInitializer;
+	import com.crazyfm.extension.starlingApp.initializer.StarlingInitializer;
 
 	import flash.display.Sprite;
+	import flash.display.Stage;
 	import flash.display3D.Context3DProfile;
 	import flash.events.Event;
 
@@ -27,16 +31,24 @@ package {
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, added);
 
-			var properties:StarlingConfig = new StarlingConfig();
-			properties.stageWidth = stage.stageWidth;
-			properties.stageHeight = stage.stageHeight;
-			properties.context3DProfile = Context3DProfile.BASELINE; //to keep antialiasing
-			properties.antiAliasing = 8;
+			var starlingConfig:StarlingConfig = new StarlingConfig();
+			starlingConfig.stageWidth = stage.stageWidth;
+			starlingConfig.stageHeight = stage.stageHeight;
+			starlingConfig.context3DProfile = Context3DProfile.BASELINE; //to keep antialiasing
+			starlingConfig.antiAliasing = 8;
 
-			//Creates IContext, that initializes Starling.
-			//This IContext dispatches StarlingInitializerSignal.STARLING_INITIALIZED signal, when starling is ready
-			//and automatically creates <code>Main</code> object.
-			new StarlingInitializerContext(stage, Main, properties);
+			/**
+			 * Creates instance, that initializes Starling.
+			 * This IContext dispatches <code>StarlingInitializerMessage.STARLING_INITIALIZED</code> message, when starling is ready
+			 * and automatically creates <code>Main</code> object.
+			 */
+
+			var factory:IAppFactory = new AppFactory()
+				   .map(IStarlingInitializer, StarlingInitializer)
+				   .map(Stage, stage)
+				   .map(StarlingConfig, starlingConfig);
+
+			factory.getInstance(IStarlingInitializer, [Main]);
 		}
 	}
 }
