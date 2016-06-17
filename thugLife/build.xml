@@ -31,6 +31,7 @@
             <arg value="${src}/StartUp.as"/>
             <arg value="-source-path+=${src}"/>
             <arg value="-swf-version=${swf-version}"/>
+            <arg value="-library-path+=${internal_libs_path}"/>
             <arg value="-library-path+=${libs_path}"/>
             <arg value="-library-path+=${libs_path}/crazyfm"/>
             <arg value="-output=${swf}/${project.title}.swf"/>
