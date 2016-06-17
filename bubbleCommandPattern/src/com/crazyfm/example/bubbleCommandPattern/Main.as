@@ -25,10 +25,11 @@ package com.crazyfm.example.bubbleCommandPattern
 		private function init(e:Event):void
 		{
 			var factory:IAppFactory = new AppFactory();
-			factory.map(IContext, AppContext)
-				   .map(DisplayObjectContainer, this);
+			factory.mapToType(IContext, AppContext)
+				   .mapToValue(DisplayObjectContainer, this)
+				   .mapToValue(IAppFactory, factory);
 
-			var context:IContext = factory.getInstance(IContext) as IContext;
+			factory.getInstance(IContext);
 		}
 	}
 }

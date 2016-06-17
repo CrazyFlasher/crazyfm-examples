@@ -29,7 +29,7 @@
             <arg value="-frame=two,com.crazyfm.example.bubbleCommandPattern.Main"/>
             <arg value="-keep-as3-metadata+=Autowired"/>
             <arg value="-keep-as3-metadata+=PostConstruct"/>
-            <arg value="-debug=false"/>
+            <arg value="-debug=${debug}"/>
         </java>
     </target>
     <target name="clean">

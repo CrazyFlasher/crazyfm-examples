@@ -35,6 +35,7 @@ package com.crazyfm.example.bubbleCommandPattern.view.ui
 
 			button = new Button();
 			button.x = 105;
+
 			button.addEventListener(MouseEvent.CLICK, buttonClicked);
 
 			addChild(textField);

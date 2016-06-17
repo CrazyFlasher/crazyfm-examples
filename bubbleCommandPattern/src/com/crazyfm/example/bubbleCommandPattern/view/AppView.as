@@ -75,13 +75,13 @@ package com.crazyfm.example.bubbleCommandPattern.view
 			switch (event.currentTarget)
 			{
 				case firstName:
-					dispatchMessage(AppViewMessageType.FIRST_NAME_CLICKED);
+					dispatchMessage(AppViewMessageType.FIRST_NAME_CLICKED, null, true);
 					break;
 				case lastName:
-					dispatchMessage(AppViewMessageType.LAST_NAME_CLICKED);
+					dispatchMessage(AppViewMessageType.LAST_NAME_CLICKED, null, true);
 					break;
 				case age:
-					dispatchMessage(AppViewMessageType.AGE_CLICKED);
+					dispatchMessage(AppViewMessageType.AGE_CLICKED, null, true);
 					break;
 			}
 		}

@@ -26,7 +26,7 @@ package com.crazyfm.example.bubbleCommandPattern.models
 		{
 			_firstName = value;
 
-			dispatchMessage(UserDataModelMessageType.FIRSTNAME_CHANGED, _firstName);
+			dispatchMessage(UserDataModelMessageType.FIRSTNAME_CHANGED, _firstName, true);
 		}
 
 		public function get lastName():String
@@ -38,7 +38,7 @@ package com.crazyfm.example.bubbleCommandPattern.models
 		{
 			_lastName = value;
 
-			dispatchMessage(UserDataModelMessageType.LASTNAME_CHANGED, _lastName);
+			dispatchMessage(UserDataModelMessageType.LASTNAME_CHANGED, _lastName, true);
 		}
 
 		public function get age():int
@@ -50,7 +50,7 @@ package com.crazyfm.example.bubbleCommandPattern.models
 		{
 			_age = value;
 
-			dispatchMessage(UserDataModelMessageType.AGE_CHANGED, _age.toString());
+			dispatchMessage(UserDataModelMessageType.AGE_CHANGED, _age.toString(), true);
 		}
 	}
 }

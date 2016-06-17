@@ -50,7 +50,7 @@ package com.crazy.thugLife.game.gearSys.prefabs
 		[PostConstruct]
 		public function configureComponents():void
 		{
-			addComponent(physObj = factory.map(Body, bodyDataObject.body).getInstance(IInteractivePhysObjectModel));
+			addComponent(physObj = factory.mapToValue(Body, bodyDataObject.body).getInstance(IInteractivePhysObjectModel));
 			addComponent(armed = factory.getInstance(IArmed)
 				.setCurrentWeapon(WeaponEnum.PISTOL));
 			addComponent(factory.getInstance(IJumpable, [300]));

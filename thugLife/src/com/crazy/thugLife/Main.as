@@ -27,10 +27,10 @@ package com.crazy.thugLife
 		private function init():void
 		{
 			var factory:IAppFactory = new AppFactory();
-			factory.map(IMainContext, MainContext)
-				   .map(IAppFactory, factory)
-				   .map(DisplayObjectContainer, this)
-		           .map(Stage, stage);
+			factory.mapToType(IMainContext, MainContext)
+				   .mapToValue(IAppFactory, factory)
+				   .mapToValue(DisplayObjectContainer, this)
+		           .mapToValue(Stage, stage);
 
 			mainContext = factory.getInstance(IMainContext) as IMainContext;
 		}

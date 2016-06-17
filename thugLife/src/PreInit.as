@@ -44,11 +44,12 @@ package {
 			 */
 
 			var factory:IAppFactory = new AppFactory()
-				   .map(IStarlingInitializer, StarlingInitializer)
-				   .map(Stage, stage)
-				   .map(StarlingConfig, starlingConfig);
+				   .mapToType(IStarlingInitializer, StarlingInitializer)
+				   .mapToValue(Stage, stage)
+				   .mapToValue(StarlingConfig, starlingConfig)
+				   .mapToValue(Class, Main);
 
-			factory.getInstance(IStarlingInitializer, [Main]);
+			factory.getInstance(IStarlingInitializer);
 		}
 	}
 }

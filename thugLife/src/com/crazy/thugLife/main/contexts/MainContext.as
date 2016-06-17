@@ -42,8 +42,8 @@ package com.crazy.thugLife.main.contexts
 
 			Starling.current.showStats = true;
 
-			factory.map(IGameContext, GameContext);
-			factory.map(ILobbyContext, LobbyContext);
+			factory.mapToType(IGameContext, GameContext);
+			factory.mapToType(ILobbyContext, LobbyContext);
 
 			addMessageListener(ContextMessageType.EXIT, onContextExit);
 
@@ -92,8 +92,8 @@ package com.crazy.thugLife.main.contexts
 			destroyContext(lobbyContext);
 			lobbyContext = null;
 
-			factory.map(IAppFactory, new AppFactory());
-			gameContext = factory.getInstance(IGameContext) as IGameContext;
+			factory.mapToValue(IAppFactory, new AppFactory());
+			gameContext = factory.getInstance(IGameContext);
 			addModel(gameContext);
 
 			return this;
@@ -104,8 +104,8 @@ package com.crazy.thugLife.main.contexts
 			destroyContext(gameContext);
 			gameContext = null;
 
-			factory.map(IAppFactory, new AppFactory());
-			lobbyContext = factory.getInstance(ILobbyContext) as ILobbyContext;
+			factory.mapToValue(IAppFactory, new AppFactory());
+			lobbyContext = factory.getInstance(ILobbyContext);
 			addModel(lobbyContext);
 
 			return this;

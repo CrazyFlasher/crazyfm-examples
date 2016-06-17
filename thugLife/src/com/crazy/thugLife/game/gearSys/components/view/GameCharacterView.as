@@ -17,6 +17,8 @@ package com.crazy.thugLife.game.gearSys.components.view
 
 	import nape.geom.Vec2;
 
+	import starling.animation.Juggler;
+
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -32,6 +34,9 @@ package com.crazy.thugLife.game.gearSys.components.view
 		private const JUMP_ANIMATION:String = "jump";
 		private const CLIMB_ANIMATION:String = "climb";
 		private const CLIMB_OUT_ANIMATION:String = "climbOut";
+
+		[Autowired]
+		public var juggler:Juggler;
 
 		private var movable:IMovable;
 		private var jumpable:IJumpable;
@@ -299,13 +304,13 @@ package com.crazy.thugLife.game.gearSys.components.view
 			}
 
 			tween.rotateTo(value);
-			Starling.juggler.add(tween);
+			juggler.add(tween);
 		}
 
 		override public function dispose():void
 		{
 			if (tween) {
-				Starling.juggler.remove(tween);
+				juggler.remove(tween);
 				tween = null;
 			}
 

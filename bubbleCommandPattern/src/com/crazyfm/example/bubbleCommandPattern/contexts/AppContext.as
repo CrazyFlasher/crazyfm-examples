@@ -26,20 +26,23 @@ package com.crazyfm.example.bubbleCommandPattern.contexts
 
 		public function AppContext()
 		{
-			super(new AppFactory());
+			super();
 		}
 
 		[PostConstruct]
-		public function init():void
+		override public function init():void
 		{
-			factory.map(IUserDataModel, UserDataModel)
-				   .map(IAppView, AppView)
-				   .map(DisplayObjectContainer, displayObjectContainer);
+			super.init();
 
-			userModel = factory.getSingleton(IUserDataModel) as IUserDataModel;
+			factory.mapToType(IUserDataModel, UserDataModel)
+				   .mapToType(IAppView, AppView)
+				   .mapToValue(DisplayObjectContainer, displayObjectContainer);
+
+			userModel = factory.getInstance(IUserDataModel);
+			factory.mapToValue(IUserDataModel, userModel);
 			addModel(userModel);
 
-			appView = factory.getInstance(IAppView) as IAppView;
+			appView = factory.getInstance(IAppView);
 			addView(appView);
 
 			map(AppViewMessageType.FIRST_NAME_CLICKED, ChangeFirstNameCommand);
