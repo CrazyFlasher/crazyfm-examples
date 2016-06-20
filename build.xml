@@ -18,7 +18,7 @@
         <ant antfile="build.xml" target="package" dir="${basedir}/goSystem_physics_starling_editor" inheritall="false"/>
     </target>
     <target name="copy_all">
-        <copy todir="build">
+        <copy todir="out">
             <fileset dir="${basedir}/ballClick/out/swf"/>
             <fileset dir="${basedir}/ballClick_starling/out/swf"/>
             <fileset dir="${basedir}/ballClick_starling_nape/out/swf"/>
