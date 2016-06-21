@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <project name="crazyfm-examples" basedir="." default="package">
 
-    <property file="../crazyfm/build/ant/common.properties"/>
+    <property file="build.properties"/>
+    <property file="${crazyfm_path}/crazyfm/build/ant/common.properties"/>
 
     <target name="package" depends="build_all,copy_all"/>
     <target name="build_all">
