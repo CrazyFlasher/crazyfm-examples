@@ -3,6 +3,8 @@
  */
 package
 {
+	import com.crazyfm.core.factory.AppFactory;
+	import com.crazyfm.core.factory.IAppFactory;
 	import com.crazyfm.extensions.physics.IWorldObject;
 	import com.crazyfm.extensions.physics.WorldObject;
 	import com.crazyfm.extensions.physics.vo.units.WorldDataVo;
@@ -42,7 +44,12 @@ package
 
 		private function init():void
 		{
-			world = new WorldObject(new WorldDataVo(JSON.parse((new WorldClass() as ByteArray).toString())));
+			var factory:IAppFactory = new AppFactory();
+			factory.mapToValue(IAppFactory, factory);
+
+			var worldData:WorldDataVo = factory.getInstance(WorldDataVo, [JSON.parse((new WorldClass() as ByteArray).toString())])
+
+			world = factory.getInstance(WorldObject, [worldData]);
 
 			createDebugDraw();
 

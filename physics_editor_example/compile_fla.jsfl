@@ -1,6 +1,8 @@
-var baseDir = "@@@";
-var fileURI = FLfile.platformPathToURI(baseDir + "test.fla");
-var jsonURI = FLfile.platformPathToURI(baseDir + "test.json");
+var baseDir = "@@@1";
+var flaName = "@@@2";
+var jsonName = "@@@3";
+var fileURI = FLfile.platformPathToURI(baseDir + flaName);
+var jsonURI = FLfile.platformPathToURI(baseDir + jsonName);
 fl.openDocument(fileURI);
 fl.sourcePath = "../src";
 fl.getDocumentDOM().docClass = "com.crazyfm.extensions.flashPhysicsEditor.FlashPhysicsJSONBuilder";

@@ -1,50 +1,27 @@
 <?xml version="1.0"?>
-<project name="crazyfm-example-physics_editor_example" basedir="." default="package">
-	
-	<property environment="env."/>
-	<property name="FLEX_HOME" location="${env.FLEX_HOME}"/>
+<project name="crazyfm-example-physics_editor_example" basedir="." default="commons.package">
+    <property name="path" value="../../crazyfm"/>
 
-    <property name="src" value="${basedir}/src"/>
-    <property name="out" value="${basedir}/out"/>
-    <property name="doc" value="${out}/doc"/>
-    <property name="swf" value="${out}/swf"/>
+    <import file="${basedir}/../../crazyfm/build/ant/commons.xml"/>
+
+    <property name="swf_name" value="${ant.project.name}-${ver.num}"/>
+    <property name="main_class" value="StartUp"/>
+
     <property name="jslf" value="${basedir}/compile_fla.jsfl"/>
     <property name="jslf_copy" value="${basedir}/compile_fla_copy.jsfl"/>
 
-    <property file="build.properties"/>
+    <target name="swf" depends="build_resources,commons.swf">
+    </target>
 
-    <target name="package" depends="clean,build_resources,swf"/>
     <target name="build_resources">
+        <delete file="${jslf_copy}"/>
         <copy file="${jslf}" tofile="${jslf_copy}"/>
-        <replace file="${jslf_copy}" token="@@@" value="${basedir}/resources/"/>
+        <replace file="${jslf_copy}" token="@@@1" value="${basedir}/resources/"/>
+        <replace file="${jslf_copy}" token="@@@2" value="test.fla"/>
+        <replace file="${jslf_copy}" token="@@@3" value="test.json"/>
         <replace file="${jslf_copy}" token="\" value="/"/>
-        <exec executable="${flash_ide}">
+        <exec executable="${FLASH_IDE_EXE}">
             <arg line="${jslf_copy}"/>
         </exec>
-    </target>
-    <target name="swf">
-        <mkdir dir="${swf}"/>
-        <echo>-----------------------------------</echo>
-        <echo>[swf] Building example...</echo>
-        <echo>-----------------------------------</echo>
-        <java jar="${FLEX_HOME}/lib/mxmlc.jar" dir="${FLEX_HOME}/frameworks" fork="true" failonerror="true">
-            <arg value="${src}/StartUp.as"/>
-            <arg value="-source-path+=${src}"/>
-            <arg value="-swf-version=${swf-version}"/>
-            <!-- libs -->
-            <arg value="-library-path+=${libs_path}"/>
-            <arg value="-library-path+=${libs_path}/crazyfm"/>
-            <!-- output -->
-            <arg value="-output=${swf}/${project.title}.swf"/>
-            <arg value="-keep-as3-metadata+=Autowired"/>
-            <arg value="-keep-as3-metadata+=PostConstruct"/>
-            <arg value="-debug=false"/>
-        </java>
-    </target>
-    <target name="clean">
-        <echo>-----------------------------------</echo>
-        <echo>[clean] Cleaning build directory...</echo>
-        <echo>-----------------------------------</echo>
-        <delete dir="${out}"/>
     </target>
 </project>

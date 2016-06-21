@@ -1,29 +1,18 @@
 <?xml version="1.0"?>
 <project name="crazyfm-examples" basedir="." default="package">
 
-    <property environment="env."/>
-    <property name="FLEX_HOME" location="${env.FLEX_HOME}"/>
-
-    <property file="build.properties"/>
-
-    <taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+    <property file="../crazyfm/build/ant/common.properties"/>
 
     <target name="package" depends="build_all,copy_all"/>
     <target name="build_all">
         <echo>[build_all] Building all examples...</echo>
-        <ant antfile="build.xml" target="package" dir="${basedir}/ballClick" inheritall="false"/>
-        <ant antfile="build.xml" target="package" dir="${basedir}/ballClick_starling" inheritall="false"/>
-        <ant antfile="build.xml" target="package" dir="${basedir}/ballClick_starling_nape" inheritall="false"/>
-        <ant antfile="build.xml" target="package" dir="${basedir}/physics_editor_example" inheritall="false"/>
-        <ant antfile="build.xml" target="package" dir="${basedir}/goSystem_physics_starling_editor" inheritall="false"/>
+        <ant antfile="build.xml" target="swf" dir="${basedir}/bubbleCommandPattern" inheritall="false"/>
+        <ant antfile="build.xml" target="swf" dir="${basedir}/physics_editor_example" inheritall="false"/>
     </target>
     <target name="copy_all">
         <copy todir="out">
-            <fileset dir="${basedir}/ballClick/out/swf"/>
-            <fileset dir="${basedir}/ballClick_starling/out/swf"/>
-            <fileset dir="${basedir}/ballClick_starling_nape/out/swf"/>
+            <fileset dir="${basedir}/bubbleCommandPattern/out/swf"/>
             <fileset dir="${basedir}/physics_editor_example/out/swf"/>
-            <fileset dir="${basedir}/goSystem_physics_starling_editor/out/swf"/>
         </copy>
     </target>
     <target name="clean">
