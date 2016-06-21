@@ -3,14 +3,13 @@
  */
 package com.crazyfm.example.bubbleCommandPattern.contexts
 {
-	import com.crazyfm.core.factory.AppFactory;
 	import com.crazyfm.core.mvc.context.AbstractContext;
 	import com.crazyfm.example.bubbleCommandPattern.commands.ChangeAgeCommand;
 	import com.crazyfm.example.bubbleCommandPattern.commands.ChangeFirstNameCommand;
 	import com.crazyfm.example.bubbleCommandPattern.commands.ChangeLastNameCommand;
+	import com.crazyfm.example.bubbleCommandPattern.messages.AppViewMessageType;
 	import com.crazyfm.example.bubbleCommandPattern.models.IUserDataModel;
 	import com.crazyfm.example.bubbleCommandPattern.models.UserDataModel;
-	import com.crazyfm.example.bubbleCommandPattern.messages.AppViewMessageType;
 	import com.crazyfm.example.bubbleCommandPattern.view.AppView;
 	import com.crazyfm.example.bubbleCommandPattern.view.IAppView;
 

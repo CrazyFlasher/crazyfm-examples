@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="crazyfm-example-physics_editor_example" basedir="." default="commons.package">
+<project name="crazyfm-example-physics_editor_example" basedir="." default="commons.swf">
     <property name="path" value="../../crazyfm"/>
 
     <import file="${basedir}/../../crazyfm/build/ant/commons.xml"/>
