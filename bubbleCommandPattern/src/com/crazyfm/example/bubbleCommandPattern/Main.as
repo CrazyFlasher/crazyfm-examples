@@ -19,6 +19,8 @@ package com.crazyfm.example.bubbleCommandPattern
 		{
 			super();
 
+			GlobalSettings.logEnabled = true;
+
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 

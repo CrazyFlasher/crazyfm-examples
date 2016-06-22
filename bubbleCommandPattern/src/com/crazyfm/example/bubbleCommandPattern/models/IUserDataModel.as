@@ -5,6 +5,7 @@ package com.crazyfm.example.bubbleCommandPattern.models
 {
 	import com.crazyfm.core.mvc.model.IModel;
 
+	UserDataModel;
 	public interface IUserDataModel extends IModel
 	{
 		function get firstName():String;

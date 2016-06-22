@@ -33,9 +33,7 @@ package com.crazyfm.example.bubbleCommandPattern.contexts
 		{
 			super.init();
 
-			factory.mapToType(IUserDataModel, UserDataModel)
-				   .mapToType(IAppView, AppView)
-				   .mapToValue(DisplayObjectContainer, displayObjectContainer);
+			factory.mapToValue(DisplayObjectContainer, displayObjectContainer);
 
 			userModel = factory.getInstance(IUserDataModel);
 			factory.mapToValue(IUserDataModel, userModel);
