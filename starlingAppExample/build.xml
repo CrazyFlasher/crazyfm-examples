@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<project name="crazyfm-example-starlingAppExample" basedir="." default="commons.swf">
+    <property name="path" value="../../crazyfm"/>
+
+    <import file="${basedir}/../../crazyfm/build/ant/commons.xml"/>
+
+    <property name="swf_name" value="${ant.project.name}-${ver.num}"/>
+    <property name="main_class" value="PreInit"/>
+</project>
