@@ -7,7 +7,7 @@
     <property name="swf_name" value="${ant.project.name}-${ver.num}"/>
     <property name="main_class" value="StartUp"/>
 
-    <!--property name="jslf" value="${basedir}/compile_fla.jsfl"/>
+    <property name="jslf" value="${basedir}/compile_fla.jsfl"/>
     <property name="jslf_copy" value="${basedir}/compile_fla_copy.jsfl"/>
 
     <target name="swf" depends="build_resources,commons.swf">
@@ -23,5 +23,5 @@
         <exec executable="${FLASH_IDE_EXE}">
             <arg line="${jslf_copy}"/>
         </exec>
-    </target-->
+    </target>
 </project>

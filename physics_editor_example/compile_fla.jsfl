@@ -10,4 +10,4 @@ doc.libraryPath = "../../../crazyfm/dependencies/crazyfm/";
 doc.testMovie();
 fl.outputPanel.save(jsonURI);
 fl.closeDocument(doc, false);
-fl.quit(false);
+//fl.quit(false);
